@@ -25,7 +25,7 @@ export default function NavBar() {
                     <Link
                         key={link.title}
                         to={link.href}
-                        className="text-white text-lg"
+                        className="text-white text-lg "
                     >
                         {link.title}
                     </Link>

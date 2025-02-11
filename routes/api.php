@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LogosController;
+use App\Http\Controllers\NosotrosInicioController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SliderImageController;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,4 @@ Route::get('/alladmins', [AdminController::class, 'index']);
 Route::apiResource('/slider', SliderController::class);
 Route::apiResource('/sliderimage', SliderImageController::class);
 Route::apiResource("/logos", LogosController::class);
+Route::apiResource('/nosotrosinicio', NosotrosInicioController::class);

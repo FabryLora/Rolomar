@@ -18,7 +18,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
     const nextSlide = () => {
         if (sliderInfo.images) {
             setCurrentIndex(
-                (prevIndex) => (prevIndex + 1) % sliderInfo.images.length
+                (prevIndex) => (prevIndex + 1) % sliderInfo?.images?.length
             );
         }
     };
@@ -32,8 +32,8 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             <div className="absolute inset-0 bg-black opacity-30 z-20"></div>
             {/* Contenedor de imágenes con transición */}
             <div className="absolute inset-0">
-                {sliderInfo.images &&
-                    sliderInfo.images.map((image, index) => (
+                {sliderInfo?.images &&
+                    sliderInfo?.images.map((image, index) => (
                         <img
                             key={index}
                             src={image.image_url}
@@ -51,24 +51,24 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
                 <div>
                     <div className="relative text-6xl font-bold">
                         <span className="absolute bottom-[2px] text-primary-blue">
-                            {sliderInfo.title}
+                            {sliderInfo?.title}
                         </span>
                         <span className="text-gray-700">
-                            {sliderInfo.title}
+                            {sliderInfo?.title}
                         </span>
                     </div>
                     <div className="relative text-[25px]">
                         <span className="absolute bottom-[1px] text-primary-blue">
-                            {sliderInfo.subtitle}
+                            {sliderInfo?.subtitle}
                         </span>
                         <span className="text-gray-700">
-                            {sliderInfo.subtitle}
+                            {sliderInfo?.subtitle}
                         </span>
                     </div>
                 </div>
 
                 <Link
-                    to={sliderInfo.link}
+                    to={sliderInfo?.link}
                     className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
                 >
                     MAS INFO
@@ -76,10 +76,10 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Indicadores */}
-            {sliderInfo.images.length > 1 && (
+            {sliderInfo?.images?.length > 1 && (
                 <div className="absolute bottom-16 left-20 max-sm:left-6 flex space-x-2 z-30">
-                    {sliderInfo.images &&
-                        sliderInfo.images.map((_, index) => (
+                    {sliderInfo?.images &&
+                        sliderInfo?.images?.map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => goToSlide(index)}

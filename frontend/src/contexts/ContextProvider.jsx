@@ -19,6 +19,8 @@ const StateContext = createContext({
     fetchSliderImage: () => {},
     logos: {},
     fetchLogos: () => {},
+    nosotrosInicio: {},
+    fetchNosotrosInicio: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -30,6 +32,7 @@ export const ContextProvider = ({ children }) => {
     const [sliderInfo, setSliderInfo] = useState({});
     const [sliderImage, setSliderImage] = useState([]);
     const [logos, setLogos] = useState({});
+    const [nosotrosInicio, setNosotrosInicio] = useState({});
 
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
@@ -99,12 +102,19 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchNosotrosInicio = () => {
+        axiosClient.get("/nosotrosinicio").then(({ data }) => {
+            setNosotrosInicio(data.data[0]);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
         fetchSliderInfo();
         fetchSliderImage();
         fetchLogos();
+        fetchNosotrosInicio();
     }, []);
 
     useEffect(() => {
@@ -122,6 +132,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                nosotrosInicio,
+                fetchNosotrosInicio,
                 logos,
                 fetchLogos,
                 sliderInfo,

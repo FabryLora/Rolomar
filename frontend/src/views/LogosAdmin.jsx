@@ -63,10 +63,10 @@ export default function LogosAdmin() {
                                     </div>
                                     <div className="flex items-center justify-center w-1/2">
                                         <div className="text-center items-center h-fit self-center">
-                                            <div className="mt-4 flex text-sm/6 text-gray-600">
+                                            <div className="mt-4 flex flex-col text-sm/6 text-gray-600">
                                                 <label
                                                     htmlFor="logoprincipal"
-                                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                                                    className="relative cursor-pointer rounded-md  font-semibold bg-indigo-600 text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-gray-200"
                                                 >
                                                     <span>Cambiar Imagen</span>
                                                     <input
@@ -82,6 +82,7 @@ export default function LogosAdmin() {
                                                         className="sr-only"
                                                     />
                                                 </label>
+                                                <p> {principal?.name}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -105,10 +106,10 @@ export default function LogosAdmin() {
                                     </div>
                                     <div className="flex items-center justify-center w-1/2">
                                         <div className="text-center items-center h-fit self-center">
-                                            <div className="mt-4 flex text-sm/6 text-gray-600">
+                                            <div className="mt-4 flex flex-col text-sm/6 text-gray-600">
                                                 <label
                                                     htmlFor="secundario"
-                                                    className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                                                    className="relative cursor-pointer rounded-md  font-semibold bg-indigo-600 text-white focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-gray-200"
                                                 >
                                                     <span>Cambiar Imagen</span>
                                                     <input
@@ -124,6 +125,7 @@ export default function LogosAdmin() {
                                                         className="sr-only"
                                                     />
                                                 </label>
+                                                <p> {secundario?.name} </p>
                                             </div>
                                         </div>
                                     </div>
