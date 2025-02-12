@@ -28,7 +28,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
     };
 
     return (
-        <div className="relative w-full h-[750px] overflow-hidden">
+        <div className="relative w-full h-[800px] overflow-hidden">
             <div className="absolute inset-0 bg-black opacity-30 z-20"></div>
             {/* Contenedor de imágenes con transición */}
             <div className="absolute inset-0">
@@ -37,7 +37,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
                         <img
                             key={index}
                             src={image.image_url}
-                            className={`absolute inset-0 w-full h-full object-cover object-bottom transition-opacity duration-700 ease-in-out ${
+                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
                                 index === currentIndex
                                     ? "opacity-100 z-10"
                                     : "opacity-0 z-0"
@@ -47,32 +47,11 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Contenido estático */}
-            <div className="absolute inset-0 flex flex-col justify-center gap-16 pl-20 max-sm:pl-6 text-white font-roboto z-30">
+            <div className="absolute inset-0 flex flex-col -bottom-32 justify-center pl-20 max-sm:pl-6 text-white  z-30">
                 <div>
-                    <div className="relative text-6xl font-bold">
-                        <span className="absolute bottom-[2px] text-primary-blue">
-                            {sliderInfo?.title}
-                        </span>
-                        <span className="text-gray-700">
-                            {sliderInfo?.title}
-                        </span>
-                    </div>
-                    <div className="relative text-[25px]">
-                        <span className="absolute bottom-[1px] text-primary-blue">
-                            {sliderInfo?.subtitle}
-                        </span>
-                        <span className="text-gray-700">
-                            {sliderInfo?.subtitle}
-                        </span>
-                    </div>
+                    <h1 className="text-5xl">{sliderInfo?.title}</h1>
+                    <p className="text-xl">{sliderInfo?.subtitle}</p>
                 </div>
-
-                <Link
-                    to={sliderInfo?.link}
-                    className=" flex justify-center items-center bg-primary-red text-white w-[172px] h-[47px] font-roboto-condensed"
-                >
-                    MAS INFO
-                </Link>
             </div>
 
             {/* Indicadores */}

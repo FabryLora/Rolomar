@@ -1,23 +1,30 @@
+import { motion } from "motion/react";
 import BrandSlider from "../components/BrandSlider";
 import Carousel from "../components/Carousel";
+import NovedadesCard from "../components/NovedadesCard";
 import SearchBar from "../components/SearchBar";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
-    const { nosotrosInicio } = useStateContext();
+    const { nosotrosInicio, novedades } = useStateContext();
 
     return (
         <div>
             <Carousel />
             <SearchBar />
-            <div className="flex flex-row h-[573px]">
-                <div className="w-full">
+            <div className="flex flex-row h-[700px]">
+                <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    className="w-full"
+                >
                     <img
                         className="w-full h-full object-cover"
                         src={nosotrosInicio?.image_url}
                         alt=""
                     />
-                </div>
+                </motion.div>
                 <style>
                     {`
                     .custom-container ul, ol, li, h1, h2, h3,h4,h5,h6 {
@@ -31,7 +38,12 @@ export default function Home() {
                                     }
                     `}
                 </style>
-                <div className="flex flex-col bg-primary-red w-full">
+                <motion.div
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 1 }}
+                    className="flex flex-col bg-primary-red w-full"
+                >
                     <div
                         dangerouslySetInnerHTML={{
                             __html: nosotrosInicio?.text,
@@ -41,9 +53,19 @@ export default function Home() {
                     <button className="h-[41px] w-[181px] bg-white text-primary-red mx-20 mb-10">
                         Más información
                     </button>
-                </div>
+                </motion.div>
             </div>
             <BrandSlider />
+            <div className="flex flex-row flex-wrap justify-start gap-10 px-20">
+                {novedades
+                    .filter((novedad) => Number(novedad?.featured) === 1)
+                    .map((novedad) => (
+                        <NovedadesCard
+                            key={novedad.id}
+                            novedadObject={novedad}
+                        />
+                    ))}
+            </div>
         </div>
     );
 }

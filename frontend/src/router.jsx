@@ -1,10 +1,16 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
+import Contacto from "./views/Contacto";
+import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
 import Home from "./views/Home";
 import LogosAdmin from "./views/LogosAdmin";
+import Nosotros from "./views/Nosotros";
+import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
+import Novedades from "./views/Novedades";
+import NovedadesAdmin from "./views/NovedadesAdmin";
 import SliderAdmin from "./views/SliderAdmin";
 
 const router = createBrowserRouter([
@@ -19,6 +25,18 @@ const router = createBrowserRouter([
             {
                 path: "/inicio",
                 element: <Home />,
+            },
+            {
+                path: "/nosotros",
+                element: <Nosotros />,
+            },
+            {
+                path: "/novedades",
+                element: <Novedades />,
+            },
+            {
+                path: "/contacto",
+                element: <Contacto />,
             },
         ],
     },
@@ -41,6 +59,18 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/nosotros-inicio",
                 element: <NosotrosInicioAdmin />,
+            },
+            {
+                path: "/dashboard/novedades",
+                element: <NovedadesAdmin />,
+            },
+            {
+                path: "/dashboard/nosotros",
+                element: <NosotrosAdmin />,
+            },
+            {
+                path: "/dashboard/contacto",
+                element: <ContactoAdmin />,
             },
         ],
     },

@@ -21,6 +21,12 @@ const StateContext = createContext({
     fetchLogos: () => {},
     nosotrosInicio: {},
     fetchNosotrosInicio: () => {},
+    novedades: [],
+    fetchNovedades: () => {},
+    nosotros: {},
+    fetchNosotros: () => {},
+    contactInfo: {},
+    fetchContactInfo: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -33,6 +39,9 @@ export const ContextProvider = ({ children }) => {
     const [sliderImage, setSliderImage] = useState([]);
     const [logos, setLogos] = useState({});
     const [nosotrosInicio, setNosotrosInicio] = useState({});
+    const [novedades, setNovedades] = useState([]);
+    const [nosotros, setNosotros] = useState({});
+    const [contactInfo, setContactInfo] = useState({});
 
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
@@ -108,6 +117,24 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchNovedades = () => {
+        axiosClient.get("/novedades").then(({ data }) => {
+            setNovedades(data.data);
+        });
+    };
+
+    const fetchNosotros = () => {
+        axiosClient.get("/nosotros").then(({ data }) => {
+            setNosotros(data.data[0]);
+        });
+    };
+
+    const fetchContactInfo = () => {
+        axiosClient.get("/contact-info").then(({ data }) => {
+            setContactInfo(data.data[0]);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
@@ -115,6 +142,9 @@ export const ContextProvider = ({ children }) => {
         fetchSliderImage();
         fetchLogos();
         fetchNosotrosInicio();
+        fetchNovedades();
+        fetchNosotros();
+        fetchContactInfo();
     }, []);
 
     useEffect(() => {
@@ -132,6 +162,12 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                contactInfo,
+                fetchContactInfo,
+                nosotros,
+                fetchNosotros,
+                novedades,
+                fetchNovedades,
                 nosotrosInicio,
                 fetchNosotrosInicio,
                 logos,
