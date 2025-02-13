@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
 
 export default function DefaultLayout() {
@@ -23,7 +24,7 @@ export default function DefaultLayout() {
         <div>
             <NavBar />
             {cleanPathname[0] !== "inicio" && (
-                <div className="flex flex-row gap-1 absolute left-20 top-[125px]">
+                <div className="flex flex-row gap-1 max-w-[1240px] mx-auto py-10">
                     <Link to={"/"}>Inicio</Link>
                     <p>{"/"}</p>
                     <Link className="font-bold" to={`/${cleanPathname[0]}`}>
@@ -32,6 +33,7 @@ export default function DefaultLayout() {
                 </div>
             )}
             <Outlet />
+            <Footer />
         </div>
     );
 }

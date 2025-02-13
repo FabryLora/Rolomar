@@ -52,63 +52,69 @@ export default function NavBar() {
 
     return (
         <div
-            className={`h-[100px] top-0 left-0 w-full z-40 flex flex-row justify-between items-center px-20 transition-all duration-300 ${
+            className={`h-[100px] top-0 left-0 w-full z-40 items-center transition-all duration-300 ${
                 scrolled || cleanPathname[0] !== "inicio"
                     ? "bg-white shadow-md text-black"
                     : "bg-transparent text-black"
             } ${cleanPathname[0] === "inicio" ? "fixed" : "sticky"}`}
         >
-            <Link to="/" className="h-[77px] w-[125px]">
-                <img
-                    className="w-full h-full object-cover"
-                    src={
-                        scrolled || cleanPathname[0] !== "inicio"
-                            ? logos?.secundario_url
-                            : logos?.principal_url
-                    }
-                    alt="Logo"
-                />
-            </Link>
-            <div className="flex flex-row gap-10 text-base items-center">
-                {links.map((link) => (
-                    <Link
-                        key={link.title}
-                        to={link.href}
-                        className={`text-lg transition-colors relative ${
+            <div className="flex flex-row items-center justify-between mx-auto max-w-[1240px] h-full">
+                <Link to="/" className="h-[77px] w-[125px]">
+                    <img
+                        className="w-full h-full object-cover"
+                        src={
                             scrolled || cleanPathname[0] !== "inicio"
-                                ? "text-black"
-                                : "text-white"
+                                ? logos?.secundario_url
+                                : logos?.principal_url
+                        }
+                        alt="Logo"
+                    />
+                </Link>
+                <div className="flex flex-row gap-10 text-base items-center">
+                    {links.map((link) => (
+                        <Link
+                            key={link.title}
+                            to={link.href}
+                            className={`text-lg transition-colors relative ${
+                                scrolled || cleanPathname[0] !== "inicio"
+                                    ? "text-black"
+                                    : "text-white"
+                            }`}
+                            onMouseEnter={() => handleMouseEnter(link.title)}
+                            onMouseLeave={() => handleMouseLeave(link.title)}
+                        >
+                            {link.title}
+                            <AnimatePresence>
+                                {link.line && (
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: "100%" }}
+                                        exit={{ width: 0 }}
+                                        className={`h-[3px] w-full absolute -bottom-1 left-0 ${
+                                            cleanPathname[0] === "inicio" &&
+                                            !scrolled
+                                                ? "bg-white"
+                                                : "bg-black"
+                                        }`} // Cambiar color de la línea
+                                    ></motion.div>
+                                )}
+                            </AnimatePresence>
+                        </Link>
+                    ))}
+                    <button
+                        className={`h-[41px] w-[154px] border transition-all ${
+                            scrolled || cleanPathname[0] !== "inicio"
+                                ? "border-black text-black hover:bg-black hover:text-white"
+                                : "border-white text-white hover:bg-white hover:text-black"
+                        } ${
+                            cleanPathname[0] === "inicio"
+                                ? ""
+                                : "text-primary-red border-primary-red hover:text-black hover:bg-primary-red"
                         }`}
-                        onMouseEnter={() => handleMouseEnter(link.title)}
-                        onMouseLeave={() => handleMouseLeave(link.title)}
                     >
-                        {link.title}
-                        <AnimatePresence>
-                            {link.line && (
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: "100%" }}
-                                    exit={{ width: 0 }}
-                                    className={`h-[3px] w-full absolute -bottom-1 left-0 ${
-                                        cleanPathname[0] === "inicio" &&
-                                        !scrolled
-                                            ? "bg-white"
-                                            : "bg-black"
-                                    }`} // Cambiar color de la línea
-                                ></motion.div>
-                            )}
-                        </AnimatePresence>
-                    </Link>
-                ))}
-                <button
-                    className={`h-[41px] w-[154px] border transition-all ${
-                        scrolled || cleanPathname[0] !== "inicio"
-                            ? "border-black text-black hover:bg-black hover:text-white"
-                            : "border-white text-white hover:bg-white hover:text-black"
-                    }`}
-                >
-                    Zona Privada
-                </button>
+                        Zona Privada
+                    </button>
+                </div>
             </div>
         </div>
     );

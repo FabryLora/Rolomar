@@ -1,7 +1,7 @@
 export default function SearchBar() {
     return (
         <div className="h-[147px] bg-primary-red flex items-center">
-            <div className="flex flex-row px-20 justify-between w-full h-[55px] gap-10">
+            <div className="flex flex-row max-w-[1240px] mx-auto justify-between w-full h-[55px]">
                 <select
                     className="w-[190px] text-primary-red pl-2"
                     name=""

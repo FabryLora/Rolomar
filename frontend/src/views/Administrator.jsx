@@ -12,7 +12,7 @@ import rolomarLogo from "../assets/logos/logo-principal.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
-    const { adminToken, setAdminToken, adminInfo } = useStateContext();
+    const { adminToken, setAdminToken, adminInfo, logos } = useStateContext();
     const [sidebar, setSidebar] = useState(true);
 
     const MotionFontAwesomeIcon = motion.create(FontAwesomeIcon);
@@ -169,12 +169,12 @@ export default function Administrator() {
                         animate={{ x: 0 }}
                         exit={{ x: -300 }}
                         transition={{ ease: "linear", duration: 0.2 }}
-                        className="flex flex-col h-screen w-[300px] bg-primary-red text-white"
+                        className="flex flex-col h-screen w-[300px] bg-primary-red text-white overflow-y-auto"
                     >
                         <Link to={"/"} className="w-full p-6">
                             <img
                                 className="w-full h-full object-cover"
-                                src={rolomarLogo}
+                                src={logos?.principal_url}
                                 alt=""
                             />
                         </Link>

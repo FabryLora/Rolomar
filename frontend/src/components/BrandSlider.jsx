@@ -17,7 +17,7 @@ const brands = [
 
 export default function BrandSlider() {
     return (
-        <div className="w-full pl-20 pr-10 py-10">
+        <div className="w-full max-w-[1240px] mx-auto py-10">
             <Swiper
                 modules={[Pagination, Autoplay]}
                 spaceBetween={20}

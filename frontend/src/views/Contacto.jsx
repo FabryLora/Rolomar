@@ -67,7 +67,7 @@ export default function Contacto() {
     }; */
 
     return (
-        <div className="flex px-20">
+        <div className="flex  max-w-[1240px] mx-auto">
             <ToastContainer />
 
             <div className=" text-[#515A53] py-20 flex flex-col gap-20 w-full">

@@ -9,7 +9,6 @@ export default function NosotrosInicioAdmin() {
 
     const [text, setText] = useState();
     const [image, setImage] = useState();
-
     const editorRef = useRef(null);
 
     useEffect(() => {

@@ -28,16 +28,16 @@ export default function Nosotros() {
 
     return (
         <div>
-            <div className="flex flex-col lg:flex-row items-center my-20 px-20 font-roboto-condensed justify-center w-full h-full">
+            <div className="flex flex-col lg:flex-row items-center my-10 mx-auto font-roboto-condensed justify-between max-w-[1240px] h-full">
                 {/* Imagen - 50% */}
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="w-full lg:w-1/2 flex justify-center items-center mb-6 lg:mb-0"
+                    className="w-[600px] h-[511px] flex justify-center items-center mb-6 lg:mb-0"
                 >
                     <img
-                        className="w-full h-auto sm:h-[300px] md:h-[450px] lg:h-[678px] object-cover"
+                        className="w-full h-full object-cover"
                         src={nosotros?.image_url}
                         alt="¿Quiénes somos?"
                     />
@@ -59,7 +59,7 @@ export default function Nosotros() {
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="flex flex-col h-full w-full lg:w-1/2 md:max-w-full lg:max-w-none items-center"
+                    className="flex flex-col h-full w-[600px] md:max-w-full lg:max-w-none items-center"
                 >
                     <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[678px] w-full">
                         <div
@@ -73,11 +73,11 @@ export default function Nosotros() {
             </div>
 
             <div className="h-fit w-full bg-special-white flex justify-center pb-20 bg-[#F5F5F5]">
-                <div className="w-full px-20">
+                <div className="mx-auto max-w-[1240px]">
                     <h2 className="font-bold text-[40px] py-20">
-                        ¿Porque elegirnos?
+                        ¿Por que elegirnos?
                     </h2>
-                    <div className="flex flex-row flex-wrap gap-y-20 justify-between max-lg:justify-center">
+                    <div className="flex flex-row flex-wrap gap-y-20 justify-between gap-5">
                         {nosotrosInfo.map((info, index) => (
                             <NosotrosCard
                                 key={index}

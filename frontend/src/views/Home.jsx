@@ -12,7 +12,7 @@ export default function Home() {
         <div>
             <Carousel />
             <SearchBar />
-            <div className="flex flex-row h-[700px]">
+            <div className="flex flex-row h-[700px] my-10 bg-primary-red">
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
@@ -40,9 +40,9 @@ export default function Home() {
                 </style>
                 <motion.div
                     initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
+                    whileInView={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="flex flex-col bg-primary-red w-full"
+                    className="flex flex-col w-full"
                 >
                     <div
                         dangerouslySetInnerHTML={{
@@ -56,7 +56,12 @@ export default function Home() {
                 </motion.div>
             </div>
             <BrandSlider />
-            <div className="flex flex-row flex-wrap justify-start gap-10 px-20">
+            <motion.div
+                initial={{ x: 100, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ duration: 1 }}
+                className="flex flex-row flex-wrap justify-between max-w-[1240px] mx-auto  py-10"
+            >
                 {novedades
                     .filter((novedad) => Number(novedad?.featured) === 1)
                     .map((novedad) => (
@@ -65,7 +70,7 @@ export default function Home() {
                             novedadObject={novedad}
                         />
                     ))}
-            </div>
+            </motion.div>
         </div>
     );
 }
