@@ -2,7 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Producto;
+use App\Models\Categoria;
+use App\Models\GrupoDeProductos;
 use App\Models\Productos;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Bus\Queueable;
@@ -11,7 +12,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Http;
 
 class ImportarProductosJob implements ShouldQueue
 {
@@ -19,52 +19,51 @@ class ImportarProductosJob implements ShouldQueue
 
     protected $archivoPath;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct($archivoPath)
     {
         $this->archivoPath = $archivoPath;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle()
     {
-        $filePath = storage_path('app/' . $this->archivoPath);
-
-        // Cargar el archivo Excel
+        $filePath = Storage::path($this->archivoPath);
         $spreadsheet = IOFactory::load($filePath);
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray(null, true, true, true);
 
-        // Iterar sobre las filas (suponiendo que la primera fila es el encabezado)
         foreach ($rows as $index => $row) {
-            if ($index === 1) continue; // Saltar la fila de encabezado
+            if ($index === 1) continue; // Saltar encabezado
 
             $codigo = $row['A'];
-            $nombre = $row['B'];
-            $categoria = $row['C'];
+            $nombreProducto = $row['B'];
+            $medida = $row['C'];
             $imagen = $row['D'];
+            $categoriaNombre = $row['E'];
+            $precioMayorista = $row['F'];
+            $precioMinorista = $row['G'];
 
-            // Manejo de la imagen si es una URL
-            $imagenPath = null;
-            if (filter_var($imagen, FILTER_VALIDATE_URL)) {
-                $imagenData = Http::get($imagen)->body();
-                $nombreImagen = 'imagenes/' . uniqid() . '.jpg';
-                Storage::put('public/' . $nombreImagen, $imagenData);
-                $imagenPath = $nombreImagen;
-            } else {
-                $imagenPath = $imagen; // Si es solo el nombre del archivo
-            }
+            // Buscar o crear la categoría
+            $categoria = Categoria::firstOrCreate(['nombre' => $categoriaNombre], [
+                'imagen' => $imagen
+            ]);
 
-            // Guardar en la base de datos
+            // Buscar o crear el grupo de productos dentro de la categoría
+            $grupoDeProductos = GrupoDeProductos::firstOrCreate([
+                'nombre' => $nombreProducto,
+                'categoria_id' => $categoria->id
+            ], [
+                'imagen' => $imagen
+            ]);
+
+            // Crear el producto asociado al grupo de productos
             Productos::create([
-                'codigo'    => $codigo,
-                'nombre'    => $nombre,
-                'categoria' => $categoria,
-                'imagen'    => $imagenPath,
+                'codigo' => $codigo,
+                'nombre' => $nombreProducto,
+                'medida' => $medida,
+                'imagen' => $imagen,
+                'precio_mayorista' => $precioMayorista,
+                'precio_minorista' => $precioMinorista,
+                'grupo_id' => $grupoDeProductos->id
             ]);
         }
     }

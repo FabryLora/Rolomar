@@ -139,6 +139,16 @@ export default function Administrator() {
                 },
             ],
         },
+        {
+            id: "excel",
+            open: false,
+            title: "Subir Excel",
+            icon: faHouse,
+            href: "#",
+            subHref: [
+                { title: "Productos", href: "/dashboard/subir-productos" },
+            ],
+        },
     ]);
 
     const [userMenu, setUserMenu] = useState(false);

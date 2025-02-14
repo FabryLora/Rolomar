@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useEffect } from "react";
 import mision from "../assets/iconos/mision-icon.svg";
 import valores from "../assets/iconos/valores-icon.svg";
 import vision from "../assets/iconos/vision-icon.svg";
@@ -7,6 +8,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Nosotros() {
     const { nosotros, metadatos } = useStateContext();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     const nosotrosInfo = [
         {

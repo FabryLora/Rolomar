@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Productos extends Model
+class Categoria extends Model
 {
     protected $guarded = [];
 
-    public function grupo()
+    public function grupos()
     {
-        return $this->belongsTo(GrupoDeProductos::class);
+        return $this->hasMany(GrupoDeProductos::class);
     }
 }

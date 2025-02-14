@@ -11,7 +11,9 @@ import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
+import Productos from "./views/Productos";
 import SliderAdmin from "./views/SliderAdmin";
+import SubirProductos from "./views/SubirProductos";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "/contacto",
                 element: <Contacto />,
+            },
+            {
+                path: "/productos",
+                element: <Productos />,
             },
         ],
     },
@@ -71,6 +77,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/contacto",
                 element: <ContactoAdmin />,
+            },
+            {
+                path: "/dashboard/subir-productos",
+                element: <SubirProductos />,
             },
         ],
     },

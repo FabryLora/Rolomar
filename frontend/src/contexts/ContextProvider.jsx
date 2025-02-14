@@ -27,6 +27,12 @@ const StateContext = createContext({
     fetchNosotros: () => {},
     contactInfo: {},
     fetchContactInfo: () => {},
+    productos: [],
+    grupoDeProductos: [],
+    categorias: [],
+    fetchProductos: () => {},
+    fetchGrupoDeProductos: () => {},
+    fetchCategorias: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -42,6 +48,9 @@ export const ContextProvider = ({ children }) => {
     const [novedades, setNovedades] = useState([]);
     const [nosotros, setNosotros] = useState({});
     const [contactInfo, setContactInfo] = useState({});
+    const [productos, setProductos] = useState([]);
+    const [grupoDeProductos, setGrupoDeProductos] = useState([]);
+    const [categorias, setCategorias] = useState([]);
 
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
@@ -135,6 +144,24 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchProductos = () => {
+        axiosClient.get("/productos").then(({ data }) => {
+            setProductos(data.data);
+        });
+    };
+
+    const fetchGrupoDeProductos = () => {
+        axiosClient.get("/grupo-de-productos").then(({ data }) => {
+            setGrupoDeProductos(data.data);
+        });
+    };
+
+    const fetchCategorias = () => {
+        axiosClient.get("/categorias").then(({ data }) => {
+            setCategorias(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
@@ -145,6 +172,9 @@ export const ContextProvider = ({ children }) => {
         fetchNovedades();
         fetchNosotros();
         fetchContactInfo();
+        fetchProductos();
+        fetchGrupoDeProductos();
+        fetchCategorias();
     }, []);
 
     useEffect(() => {
@@ -162,6 +192,12 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                productos,
+                fetchProductos,
+                grupoDeProductos,
+                fetchGrupoDeProductos,
+                categorias,
+                fetchCategorias,
                 contactInfo,
                 fetchContactInfo,
                 nosotros,

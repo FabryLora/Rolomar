@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import { useEffect } from "react";
 import BrandSlider from "../components/BrandSlider";
 import Carousel from "../components/Carousel";
 import NovedadesCard from "../components/NovedadesCard";
@@ -7,6 +8,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
     const { nosotrosInicio, novedades } = useStateContext();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div>
