@@ -44,13 +44,16 @@ class ImportarProductosJob implements ShouldQueue
 
             // Buscar o crear la categoría
             $categoria = Categoria::firstOrCreate(['nombre' => $categoriaNombre], [
-                'imagen' => $imagen
+                'imagen' => $imagen,
+                'orden' => null
             ]);
 
             // Buscar o crear el grupo de productos dentro de la categoría
             $grupoDeProductos = GrupoDeProductos::firstOrCreate([
                 'nombre' => $nombreProducto,
-                'categoria_id' => $categoria->id
+                'categoria_id' => $categoria->id,
+                'orden' => null,
+                'destacado' => null
             ], [
                 'imagen' => $imagen
             ]);
@@ -63,7 +66,7 @@ class ImportarProductosJob implements ShouldQueue
                 'imagen' => $imagen,
                 'precio_mayorista' => $precioMayorista,
                 'precio_minorista' => $precioMinorista,
-                'grupo_id' => $grupoDeProductos->id
+                'grupo_de_productos_id' => $grupoDeProductos->id
             ]);
         }
     }

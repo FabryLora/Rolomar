@@ -14,7 +14,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div>
+        <div className="overflow-hidden">
             <Carousel />
             <SearchBar />
             <div className="flex flex-row h-[700px] my-10 bg-primary-red">

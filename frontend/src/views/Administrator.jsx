@@ -44,7 +44,6 @@ export default function Administrator() {
                     title: "Nosotros Inicio",
                     href: "/dashboard/nosotros-inicio",
                 },
-                { title: "Calidad Inicio", href: "/dashboard/calidad-inicio" },
             ],
         },
         {
@@ -70,17 +69,7 @@ export default function Administrator() {
             href: "#",
             subHref: [{ title: "Nosotros", href: "/dashboard/nosotros" }],
         },
-        {
-            id: "calidad",
-            open: false,
-            title: "Calidad",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                { title: "Contenido", href: "/dashboard/contenido" },
-                { title: "Archivos", href: "/dashboard/archivos" },
-            ],
-        },
+
         {
             id: "novedades",
             open: false,

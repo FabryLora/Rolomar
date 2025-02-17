@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\GrupoDeProductosResource;
 use App\Models\GrupoDeProductos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class GrupoDeProductosController extends Controller
 {
@@ -25,9 +26,17 @@ class GrupoDeProductosController extends Controller
     {
         $data = $request->validate([
             'nombre' => 'required',
-            'image' => 'required',
+            'imagen' => 'nullable|file',
+            'destacado' => 'nullable',
+            'orden' => 'nullable',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
+
+        if ($request->hasFile('imagen')) {
+            $imagePath = $request->file('imagen')->store('images', 'public');
+            $data["imagen"] = $imagePath;
+        }
+
 
         $grupo = GrupoDeProductos::create($data);
 
@@ -53,9 +62,25 @@ class GrupoDeProductosController extends Controller
 
         $data = $request->validate([
             'nombre' => 'required',
-            'image' => 'required',
+            'imagen' => 'nullable|file',
+            'destacado' => 'nullable',
+            'orden' => 'nullable',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
+
+        if ($request->hasFile('imagen')) {
+            // Eliminar la imagen existente del sistema de archivos
+            if ($grupoDeProductos->imagen) {
+                $absolutePath = public_path('storage/' . $grupoDeProductos->imagen);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
+            }
+
+            // Guardar la nueva imagen
+            $imagePath = $request->file('imagen')->store('images', 'public');
+            $data["imagen"] = $imagePath;
+        }
 
         $grupoDeProductos->update($data);
 

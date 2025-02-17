@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\Categoria;
 use App\Models\GrupoDeProductos;
-use App\Models\Productos;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,7 +20,7 @@ return new class extends Migration
             $table->string('imagen')->nullable();
             $table->decimal('precio_mayorista', 10, 2);
             $table->decimal('precio_minorista', 10, 2);
-            $table->foreignIdFor(GrupoDeProductos::class, 'grupo_id')->constrained();
+            $table->foreignIdFor(GrupoDeProductos::class, 'grupo_de_productos_id')->constrained();
             $table->timestamps();
         });
     }

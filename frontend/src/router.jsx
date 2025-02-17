@@ -1,17 +1,22 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
+import CategoriasAdmin from "./views/CategoriasAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
+import GeneralView from "./views/GeneralView";
+import GruposDeProductos from "./views/GruposDeProductos";
 import Home from "./views/Home";
 import LogosAdmin from "./views/LogosAdmin";
+import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
 import Productos from "./views/Productos";
+import ProductosAdmin from "./views/ProductosAdmin";
 import SliderAdmin from "./views/SliderAdmin";
 import SubirProductos from "./views/SubirProductos";
 
@@ -43,6 +48,14 @@ const router = createBrowserRouter([
             {
                 path: "/productos",
                 element: <Productos />,
+            },
+            {
+                path: "/productos/:id",
+                element: <GeneralView />,
+            },
+            {
+                path: "/productos/:id/:id",
+                element: <MultipleView />,
             },
         ],
     },
@@ -81,6 +94,18 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/subir-productos",
                 element: <SubirProductos />,
+            },
+            {
+                path: "/dashboard/categorias",
+                element: <CategoriasAdmin />,
+            },
+            {
+                path: "/dashboard/grupo-de-productos",
+                element: <GruposDeProductos />,
+            },
+            {
+                path: "/dashboard/productos",
+                element: <ProductosAdmin />,
             },
         ],
     },

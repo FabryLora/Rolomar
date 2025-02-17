@@ -17,7 +17,8 @@ class CategoriaResource extends JsonResource
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'imagen' => $this->imagen,
+            'imagen_url' => $this->imagen ? url('storage/' . $this->imagen) : null,
+            'orden' => $this->orden,
             'grupos' => GrupoDeProductosResource::collection($this->whenLoaded('grupos')),
         ];
     }

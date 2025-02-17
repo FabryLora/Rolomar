@@ -20,8 +20,8 @@ class ProductosResource extends JsonResource
             'nombre' => $this->nombre,
             'medida' => $this->medida,
             'imagen' => $this->imagen,
-            'precio_mayorista' => $this->grupo->nombre,
-            'precio_minorista' => $this->grupo->categoria->nombre,
+            'precio_mayorista' => $this->precio_mayorista,
+            'precio_minorista' => $this->precio_minorista,
         ];
     }
 }

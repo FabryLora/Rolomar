@@ -24,9 +24,15 @@ class CategoriaController extends Controller
     {
         $data = $request->validate([
             'nombre' => 'required',
-            'imagen' => 'required',
+            'imagen' => 'nullable|file',
+            'orden' => 'nullable',
 
         ]);
+
+        if ($request->hasFile('imagen')) {
+            $imagePath = $request->file('imagen')->store('images', 'public');
+            $data["imagen"] = $imagePath;
+        }
 
         $categoria = Categoria::create($data);
 
@@ -54,8 +60,14 @@ class CategoriaController extends Controller
 
         $data = $request->validate([
             'nombre' => 'required',
-            'imagen' => 'required',
+            'imagen' => 'nullable|file',
+            'orden' => 'nullable',
         ]);
+
+        if ($request->hasFile('imagen')) {
+            $imagePath = $request->file('imagen')->store('images', 'public');
+            $data["imagen"] = $imagePath;
+        }
 
         $categoria->update($data);
 
