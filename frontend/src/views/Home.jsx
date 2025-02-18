@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import BrandSlider from "../components/BrandSlider";
 import Carousel from "../components/Carousel";
 import NovedadesCard from "../components/NovedadesCard";
@@ -7,7 +8,19 @@ import SearchBar from "../components/SearchBar";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
-    const { nosotrosInicio, novedades } = useStateContext();
+    const { nosotrosInicio, novedades, grupoDeProductos, categorias } =
+        useStateContext();
+
+    const encontrarCategoria = (id) => {
+        return categorias.find((categoria) => categoria.id === id)?.nombre;
+    };
+
+    const quitarTildes = (cadena) => {
+        return cadena
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    };
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -17,6 +30,42 @@ export default function Home() {
         <div className="overflow-hidden">
             <Carousel />
             <SearchBar />
+            <div className="max-w-[1240px] mx-auto py-10">
+                <div>
+                    <h1 className="text-4xl font-bold">Productos destacados</h1>
+                    <div className="flex flex-row flex-wrap justify-between gap-y-10">
+                        {grupoDeProductos
+                            ?.filter((grup) => grup?.destacado == "1")
+                            ?.map((grupo, index) => (
+                                <Link
+                                    to={`/productos/${encontrarCategoria(
+                                        grupo?.categoria_id
+                                    )?.toLowerCase()}/${quitarTildes(
+                                        grupo?.nombre
+                                            ?.split(" ")
+                                            .join("-")
+                                            .toLowerCase()
+                                    )}`}
+                                    key={index}
+                                    className="w-[288px] h-[347px] border"
+                                >
+                                    <div className="h-[85%] w-full">
+                                        <img
+                                            className="w-full h-full object-contain"
+                                            src={grupo?.imagen_url}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="h-[15%] w-full border-t">
+                                        <h2 className="pl-2 text-base font-bold">
+                                            {grupo?.nombre}
+                                        </h2>
+                                    </div>
+                                </Link>
+                            ))}
+                    </div>
+                </div>
+            </div>
             <div className="flex flex-row h-[700px] my-10 bg-primary-red">
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}

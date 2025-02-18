@@ -1,13 +1,16 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Administradores from "./views/Administradores";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
 import CategoriasAdmin from "./views/CategoriasAdmin";
+import ClientesAdmin from "./views/ClientesAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
 import DefaultLayout from "./views/DefaultLayout";
 import GeneralView from "./views/GeneralView";
 import GruposDeProductos from "./views/GruposDeProductos";
 import Home from "./views/Home";
+import Login from "./views/Login";
 import LogosAdmin from "./views/LogosAdmin";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
@@ -17,10 +20,19 @@ import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
 import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
+import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
 import SubirProductos from "./views/SubirProductos";
 
 const router = createBrowserRouter([
+    {
+        path: "/registro",
+        element: <Signup />,
+    },
+    {
+        path: "/iniciar-sesion",
+        element: <Login />,
+    },
     {
         path: "/",
         element: <DefaultLayout />,
@@ -106,6 +118,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/productos",
                 element: <ProductosAdmin />,
+            },
+            {
+                path: "/dashboard/clientes",
+                element: <ClientesAdmin />,
+            },
+            {
+                path: "/dashboard/administradores",
+                element: <Administradores />,
             },
         ],
     },

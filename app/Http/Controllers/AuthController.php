@@ -18,29 +18,28 @@ class AuthController extends Controller
     public function signup(Request $request)
     {
         $data = $request->validate([
-            'name' => "required|string|max:255",
+            'nomcuit' => "required|string|max:255",
             'email' => "required|string|email|max:255|unique:users,email",
             "password" => "required|confirmed|string|min:8",
-            "razon_social" => "required|string|max:100",
-            "dni" => "required|string|max:100",
-            "telefono" => "required|string|max:100",
+            "cuit" => "required|string|max:100",
             "direccion" => "required|string|max:100",
             "provincia" => "nullable|string|max:100",
             "localidad" => "nullable|string|max:100",
-            "codigo_postal" => "required|string|max:100",
+            "lista" => "nullable|string|max:100",
+            "autorizado" => "nullable|boolean"
+
         ]);
 
         /** @var \App\Models\User $user */
         $user = User::create([
-            'name' => $data['name'],
+            'nomcuit' => $data['nomcuit'],
             'email' => $data['email'],
-            'razon_social' => $data['razon_social'],
-            'dni' => $data['dni'],
-            'telefono' => $data['telefono'],
+            'cuit' => $data['cuit'],
             'direccion' => $data['direccion'],
             'provincia' => $data['provincia'],
             'localidad' => $data['localidad'],
-            'codigo_postal' => $data['codigo_postal'],
+            'lista' => $data['lista'],
+            'autorizado' => $data['autorizado'] ?? false,
             'password' => bcrypt($data['password'])
         ]);
         $token = $user->createToken('main')->plainTextToken;
@@ -55,7 +54,7 @@ class AuthController extends Controller
     {
 
         $credentials = $request->validate([
-            'name' => "required|string|max:255",
+            'nomcuit' => "required|string|max:255",
             "password" => "required",
             'remember' => 'boolean',
         ]);
@@ -69,6 +68,15 @@ class AuthController extends Controller
         }
         /**  @var \App\Models\User $user */
         $user = Auth::user();
+
+
+        if (!$user->autorizado) {
+            Auth::logout();
+            return response([
+                'error' => 'Your account is not authorized. Please contact support.'
+            ], 403);
+        }
+
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
@@ -109,16 +117,15 @@ class AuthController extends Controller
         }
 
         $data = $request->validate([
-            'name' => 'sometimes|string|max:255',
+            'nomcuit' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|max:255|unique:users,email,' . $id,
-            'razon_social' => 'nullable|string|max:255',
-            'dni' => 'nullable|string|max:20',
-            'telefono' => 'nullable|string|max:20',
+            'cuit' => 'nullable|string|max:20',
             'direccion' => 'nullable|string|max:255',
             'provincia' => 'nullable|string|max:255',
             'localidad' => 'nullable|string|max:255',
-            'codigo_postal' => 'nullable|string|max:20',
             'password' => 'nullable|string|min:6|confirmed',
+            'lista' => 'nullable|string|max:255',
+            'autorizado' => 'nullable|boolean'
         ]);
 
         // Solo actualiza la contraseña si se proporciona

@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-/* import ReactDOMServer from "react-dom/server"; */
-import { ToastContainer /* toast */ } from "react-toastify";
+import ReactDOMServer from "react-dom/server";
+import { ToastContainer, toast } from "react-toastify";
 import letterIcon from "../assets/iconos/letter-red-icon.svg";
 import locationIcon from "../assets/iconos/location-red-icon.svg";
 import phoneIcon from "../assets/iconos/phone-red-icon.svg";
 import whatsappIcon from "../assets/iconos/whatsapp-red-icon.svg";
-/* import axiosClient from "../axios";
-import EmailTemplate from "../components/EmailTemplate"; */
+
+import axiosClient from "../axios";
+import EmailTemplate from "../components/EmailTemplate";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
-    const { contactInfo, metadatos } = useStateContext();
+    const { contactInfo } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -46,7 +47,7 @@ export default function Contacto() {
         setFormData({ ...formData, [name]: value });
     };
 
-    /* const sendEmail = async (e) => {
+    const sendEmail = async (e) => {
         e.preventDefault();
         setIsSubmitting(true); // Inicia el estado de carga
 
@@ -68,7 +69,7 @@ export default function Contacto() {
         } finally {
             setIsSubmitting(false); // Restablece el estado después de la petición
         }
-    }; */
+    };
 
     return (
         <div className="flex  max-w-[1240px] mx-auto">
@@ -95,7 +96,7 @@ export default function Contacto() {
                     <div className="w-1/2 flex justify-end max-md:w-full max-md:flex-col">
                         <form
                             className="w-fit flex flex-col gap-10 max-md:w-full"
-                            /* onSubmit={sendEmail} */
+                            onSubmit={sendEmail}
                         >
                             <div className="grid grid-cols-2 grid-rows-2 gap-5 items-center justify-center w-fit max-md:grid-cols-1  max-md:w-full ">
                                 {inputInfo.map((info, index) => (

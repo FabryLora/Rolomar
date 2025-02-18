@@ -7,6 +7,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function GeneralView() {
     const { categorias } = useStateContext();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const location = useLocation();
 
     const [cleanPathname, setCleanPathname] = useState(
@@ -52,7 +56,7 @@ export default function GeneralView() {
                     </Link>
                 ))}
             </div>
-            <div className="w-full flex flex-row">
+            <div className="w-full flex flex-row flex-wrap gap-10 min-h-[800px]">
                 {categorias
                     ?.find(
                         (category) =>
@@ -74,11 +78,11 @@ export default function GeneralView() {
                             key={index}
                             className="flex flex-col w-[288px] h-fit border"
                         >
-                            <div className="min-w-[288px] min-h-[270px] flex justify-center items-center">
-                                {grupo?.image ? (
+                            <div className="w-full h-[270px] flex justify-center items-center">
+                                {grupo?.imagen_url ? (
                                     <img
                                         className="w-full h-full object-cover"
-                                        src={grupo?.image}
+                                        src={grupo?.imagen_url}
                                         alt=""
                                     />
                                 ) : (

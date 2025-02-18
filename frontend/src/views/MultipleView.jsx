@@ -6,7 +6,15 @@ export default function MultipleView() {
     const { categorias, grupoDeProductos } = useStateContext();
     const { id } = useParams();
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const location = useLocation();
+
+    const encontrarCategoria = (id) => {
+        return categorias.find((categoria) => categoria.id === id)?.nombre;
+    };
 
     const grupoObjeto = grupoDeProductos?.find(
         (grupo) =>
@@ -101,11 +109,46 @@ export default function MultipleView() {
                         ))}
                     </tbody>
                 </table>
-                <div className="py-10 flex flex-col">
+                <div className="py-10 flex flex-col gap-5">
                     <h2 className="font-bold text-2xl">
                         Productos relacionados
                     </h2>
-                    <div></div>
+                    <div className="flex flex-row flex-wrap justify-between gap-y-10">
+                        {grupoDeProductos
+                            ?.filter(
+                                (grup) =>
+                                    grup?.categoria_id ===
+                                    grupoObjeto?.categoria_id
+                            )
+                            ?.map((grupo, index) => (
+                                <Link
+                                    onClick={() => window.scrollTo(0, 0)}
+                                    to={`/productos/${encontrarCategoria(
+                                        grupo?.categoria_id
+                                    )?.toLowerCase()}/${quitarTildes(
+                                        grupo?.nombre
+                                            ?.split(" ")
+                                            .join("-")
+                                            .toLowerCase()
+                                    )}`}
+                                    key={index}
+                                    className="w-[288px] h-[347px] border"
+                                >
+                                    <div className="h-[85%] w-full">
+                                        <img
+                                            className="w-full h-full object-contain"
+                                            src={grupo?.imagen_url}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className="h-[15%] w-full border-t">
+                                        <h2 className="pl-2 text-base font-bold">
+                                            {grupo?.nombre}
+                                        </h2>
+                                    </div>
+                                </Link>
+                            ))}
+                    </div>
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NosotrosInicioController;
 use App\Http\Controllers\NovedadesController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\SendContactInfoController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SliderImageController;
 use Illuminate\Support\Facades\Route;
@@ -43,11 +44,13 @@ Route::apiResource('/novedades', NovedadesController::class);
 Route::apiResource('/nosotros', NosotrosController::class);
 Route::apiResource('/contact-info', ContactInfoController::class);
 
-//Importar masivo bro
+//Importar excels
 Route::post('/importar-excel', [ImportController::class, 'importar']);
-
 
 //Productos
 Route::apiResource('/productos', ProductosController::class);
 Route::apiResource('/categorias', CategoriaController::class);
 Route::apiResource('/grupo-de-productos', GrupoDeProductosController::class);
+
+//Emails
+Route::post('/sendcontact', [SendContactInfoController::class, 'sendReactEmail']);
