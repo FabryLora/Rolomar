@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import letterIcon from "../assets/iconos/letter-red-icon.svg";
 import locationIcon from "../assets/iconos/location-red-icon.svg";
 import phoneIcon from "../assets/iconos/phone-red-icon.svg";
@@ -6,11 +7,26 @@ import whatsappIcon from "../assets/iconos/whatsapp-red-icon.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Footer() {
-    const { contactInfo, logos } = useStateContext();
+    const { contactInfo, logos, categoryInfo, userToken } = useStateContext();
 
     function removeAccents(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return str?.normalize("NFD")?.replace(/[\u0300-\u036f]/g, "");
     }
+
+    const soloDejarNumeros = (str) => {
+        return str?.replace(/\D/g, "");
+    };
+    const location = useLocation();
+
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
+    useEffect(() => {
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
 
     const contactoInfo = [
         {
@@ -40,7 +56,11 @@ export default function Footer() {
                 </div>
 
                 {/* footer nav */}
-                <div className="flex flex-col gap-7 order-2 max-sm:px-8">
+                <div
+                    className={`flex flex-col gap-7 order-2 max-sm:px-8 ${
+                        cleanPathname[0] == "privado" ? "hidden" : ""
+                    }`}
+                >
                     <h2 className="text-xl font-semibold">Secciones</h2>
                     <div className="grid grid-cols-2 grid-rows-4 gap-4 gap-x-10">
                         <Link className="text-base" to={"/inicio"}>
@@ -87,9 +107,9 @@ export default function Footer() {
             {/* copy y derechos */}
             <div className="h-[60px] flex flex-row justify-between items-center text-[14px] bg-primary-blue-dark order-2 w-[1240px] mx-auto">
                 <p>
-                    © Copyright 2024{" "}
-                    <span className="font-semibold">Conman</span>. Todos los
-                    derechos reservados
+                    © Copyright 2025{" "}
+                    <span className="font-semibold">Rolomar Diesel</span>. Todos
+                    los derechos reservados
                 </p>
                 <p>by Osole</p>
             </div>

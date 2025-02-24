@@ -3,14 +3,18 @@ import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import CategoryAdminCard from "../components/CategoryAdminCard";
 import { useStateContext } from "../contexts/ContextProvider";
+
 export default function CategoriasAdmin() {
     const { categorias, fetchCategorias } = useStateContext();
 
     const [imagen, setImagen] = useState();
     const [nombre, setNombre] = useState();
     const [orden, setOrden] = useState();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState("");
+    const itemsPerPage = 10;
 
-    const hanldeFileChange = (e) => {
+    const handleFileChange = (e) => {
         setImagen(e.target.files[0]);
     };
 
@@ -24,13 +28,11 @@ export default function CategoriasAdmin() {
         formData.append("orden", orden);
 
         try {
-            const response = await axiosClient.post("/categorias", formData, {
+            await axiosClient.post("/categorias", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-
-            console.log(response);
             fetchCategorias();
             toast.success("Guardado correctamente");
         } catch (error) {
@@ -38,23 +40,43 @@ export default function CategoriasAdmin() {
         }
     };
 
+    // Filtrar categorías por búsqueda
+    const filteredCategorias = categorias.filter((category) =>
+        category.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Calcular los datos a mostrar en la página actual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredCategorias.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+    );
+    const totalPages = Math.ceil(filteredCategorias.length / itemsPerPage);
+
     return (
         <div className="flex flex-col w-full">
             <ToastContainer />
             <div className="flex flex-col w-[90%] mx-auto py-10 gap-3">
                 <h1 className="text-2xl">Categorias</h1>
+                <input
+                    type="text"
+                    placeholder="Buscar categoría..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-md w-full"
+                />
                 <div className="flex justify-center w-full">
-                    <table className=" w-full shadow-md ">
-                        <thead className=" bg-gray-400">
-                            <tr className=" text-center">
-                                <td className=" min-w-[200px] py-2">Imagen</td>
+                    <table className="w-full shadow-md">
+                        <thead className="bg-gray-400">
+                            <tr className="text-center">
+                                <td className="min-w-[200px] py-2">Imagen</td>
                                 <td>Nombre</td>
-
                                 <td>Orden</td>
                                 <td>Editar</td>
                             </tr>
                         </thead>
-                        <tbody className=" text-center ">
+                        <tbody className="text-center">
                             <tr className="h-[80px]">
                                 <td>
                                     <label
@@ -65,7 +87,7 @@ export default function CategoriasAdmin() {
                                     </label>
                                     <input
                                         id="imagen"
-                                        onChange={hanldeFileChange}
+                                        onChange={handleFileChange}
                                         className="hidden"
                                         type="file"
                                     />
@@ -80,7 +102,6 @@ export default function CategoriasAdmin() {
                                         placeholder="Nombre de la categoria"
                                     />
                                 </td>
-
                                 <td className="table-cell">
                                     <input
                                         value={orden}
@@ -100,7 +121,7 @@ export default function CategoriasAdmin() {
                                     </button>
                                 </td>
                             </tr>
-                            {categorias.map((category) => (
+                            {currentItems.map((category) => (
                                 <CategoryAdminCard
                                     key={category.id}
                                     category={category}
@@ -108,6 +129,32 @@ export default function CategoriasAdmin() {
                             ))}
                         </tbody>
                     </table>
+                </div>
+                {/* Paginación */}
+                <div className="flex justify-center mt-4">
+                    <button
+                        onClick={() =>
+                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-gray-300 rounded-l-md disabled:opacity-50"
+                    >
+                        Anterior
+                    </button>
+                    <span className="px-4 py-2 bg-gray-200">
+                        Página {currentPage} de {totalPages}
+                    </span>
+                    <button
+                        onClick={() =>
+                            setCurrentPage((prev) =>
+                                Math.min(prev + 1, totalPages)
+                            )
+                        }
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-gray-300 rounded-r-md disabled:opacity-50"
+                    >
+                        Siguiente
+                    </button>
                 </div>
             </div>
         </div>

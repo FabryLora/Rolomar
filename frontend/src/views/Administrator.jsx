@@ -131,11 +131,15 @@ export default function Administrator() {
         {
             id: "excel",
             open: false,
-            title: "Subir Excel",
+            title: "Cargar datos",
             icon: faHouse,
             href: "#",
             subHref: [
-                { title: "Productos", href: "/dashboard/subir-productos" },
+                {
+                    title: "Cargar productos",
+                    href: "/dashboard/subir-productos",
+                },
+                { title: "Cargar usuarios", href: "/dashboard/subir-usuarios" },
             ],
         },
     ]);

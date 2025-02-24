@@ -18,6 +18,24 @@ export default function GruposDeProductos() {
     const [orden, setOrden] = useState();
     const [categoriaId, setCategoriaId] = useState();
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    // Calcular el total de páginas
+    const totalPages = Math.ceil(grupoDeProductos?.length / itemsPerPage);
+
+    // Obtener los productos de la página actual
+    const currentItems = grupoDeProductos?.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+
     const handleFileChange = (e) => {
         setImagen(e.target.files[0]);
     };
@@ -219,14 +237,12 @@ export default function GruposDeProductos() {
                         <th scope="col" className="px-6 py-3 text-center">
                             Imagenes de portada
                         </th>
-
                         <th scope="col" className="px-6 py-3 text-center">
                             Nombre
                         </th>
                         <th scope="col" className="px-6 py-3 text-center">
                             Categoria
                         </th>
-
                         <th scope="col" className="px-6 py-3 text-center">
                             Orden
                         </th>
@@ -239,11 +255,32 @@ export default function GruposDeProductos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {grupoDeProductos?.map((grupo, index) => (
+                    {currentItems?.map((grupo, index) => (
                         <GrupoDeProductoRow key={index} grupoObject={grupo} />
                     ))}
                 </tbody>
             </table>
+            <div className="flex justify-center items-center py-4 gap-3 bg-gray-800 text-gray-400">
+                <button
+                    className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 text-black"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
+                    Anterior
+                </button>
+
+                <span>
+                    Página {currentPage} de {totalPages}
+                </span>
+
+                <button
+                    className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 text-black"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    Siguiente
+                </button>
+            </div>
         </div>
     );
 }

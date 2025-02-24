@@ -9,7 +9,11 @@ export default function CategoryCard({ categoryObject }) {
     return (
         <Link
             to={`/productos/${quitarTildes(
-                categoryObject?.nombre?.split(" ")?.join("-")?.toLowerCase()
+                categoryObject?.nombre
+                    ?.split(" ")
+                    ?.join("-")
+                    ?.toLowerCase()
+                    .replace(/-+$/g, "")
             )}`}
             className="w-[288px] h-[288px] relative border flex justify-center items-center text-white"
         >

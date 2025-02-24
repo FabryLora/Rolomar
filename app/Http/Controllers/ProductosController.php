@@ -29,7 +29,8 @@ class ProductosController extends Controller
             'imagen' => 'required',
             'precio_minorista' => 'required',
             'precio_mayorista' => 'required',
-            'grupo_de_productos_id' => 'required|exists:grupo_de_productos,id',
+            'grupo_de_productos_id' => 'nullable|exists:grupo_de_productos,id',
+            'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
         $producto = Productos::create($data);
@@ -59,7 +60,8 @@ class ProductosController extends Controller
             'nombre' => 'required',
             'medida' => 'required',
             'imagen' => 'required',
-            'grupo_de_productos_id' => 'required|exists:grupo_de_productos,id',
+            'grupo_de_productos_id' => 'nullable|exists:grupo_de_productos,id',
+            'categoria_id' => 'nullable|exists:categorias,id',
             'precio_minorista' => 'required',
             'precio_mayorista' => 'required',
         ]);

@@ -13,7 +13,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        return CategoriaResource::collection(Categoria::with('grupos')->get());
+        return CategoriaResource::collection(Categoria::with(['grupos', 'productos'])->get());
     }
 
 
@@ -44,7 +44,7 @@ class CategoriaController extends Controller
      */
     public function show(Categoria $categoria)
     {
-        $categoria->load('grupos');
+        $categoria->load(['grupos', 'productos']);
         return new CategoriaResource($categoria);
     }
 

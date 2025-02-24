@@ -18,8 +18,13 @@ export default function MultipleView() {
 
     const grupoObjeto = grupoDeProductos?.find(
         (grupo) =>
-            quitarTildes(grupo?.nombre?.split(" ").join("-").toLowerCase()) ===
-            id
+            quitarTildes(
+                grupo?.nombre
+                    ?.split(" ")
+                    .join("-")
+                    .toLowerCase()
+                    .replace(/-+$/g, "")
+            ) === id
     );
 
     const [cleanPathname, setCleanPathname] = useState(
@@ -42,7 +47,7 @@ export default function MultipleView() {
 
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-row justify-between gap-10">
-            <div className="w-fit max-sm:w-full flex flex-col ">
+            <div className="w-[20%] max-sm:w-full flex flex-col ">
                 {categorias?.map((categoria, index) => (
                     <Link
                         to={`/productos/${quitarTildes(
@@ -50,18 +55,22 @@ export default function MultipleView() {
                                 ?.split(" ")
                                 ?.join("-")
                                 ?.toLowerCase()
+                                .replace(/-+$/g, "")
                         )}`}
                         key={index}
-                        className={`text-[16px] border-y border-[#EAEAEA] py-2 w-full pr-20 text-left ${
+                        className={`text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left ${
                             cleanPathname[1] ===
                             quitarTildes(
-                                categoria?.nombre?.split(" ")?.join("-")
+                                categoria?.nombre
+                                    ?.split(" ")
+                                    ?.join("-")
+                                    ?.replace(/-+$/g, "")
                             )?.toLowerCase()
                                 ? "font-bold"
                                 : ""
                         }`}
                     >
-                        {categoria?.nombre?.toUpperCase()}
+                        {categoria?.nombre?.toUpperCase().replace(/-+$/g, "")}
                     </Link>
                 ))}
             </div>
@@ -87,7 +96,7 @@ export default function MultipleView() {
                             <th></th>
                             <th className="text-left py-2">CODIGO</th>
                             <th className="text-left">DESCRIPCION</th>
-                            <th className="text-left">MEDIDA</th>
+
                             <th></th>
                         </tr>
                     </thead>
@@ -99,7 +108,7 @@ export default function MultipleView() {
                                 </td>
                                 <td>{producto?.codigo}</td>
                                 <td>{producto?.nombre}</td>
-                                <td>{producto?.medida}</td>
+
                                 <td className="text-center">
                                     <button className="w-[181px] h-[41px] border border-primary-red text-primary-red hover:bg-primary-red hover:text-white">
                                         Consultar
@@ -120,6 +129,7 @@ export default function MultipleView() {
                                     grup?.categoria_id ===
                                     grupoObjeto?.categoria_id
                             )
+                            ?.slice(0, 6)
                             ?.map((grupo, index) => (
                                 <Link
                                     onClick={() => window.scrollTo(0, 0)}
@@ -130,6 +140,7 @@ export default function MultipleView() {
                                             ?.split(" ")
                                             .join("-")
                                             .toLowerCase()
+                                            .replace(/-+$/g, "")
                                     )}`}
                                     key={index}
                                     className="w-[288px] h-[347px] border"

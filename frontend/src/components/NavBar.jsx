@@ -1,11 +1,12 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function NavBar() {
-    const { logos, setUserToken } = useStateContext();
+    const { logos, setUserToken, userToken, userInfo } = useStateContext();
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const [userMenu, setUserMenu] = useState(false);
@@ -13,10 +14,27 @@ export default function NavBar() {
     const [error, setError] = useState(false);
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
+    const [registro, setRegistro] = useState(false);
+
+    const menuRef = useRef(null);
 
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
     );
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setUserMenu(false);
+                setRegistro(false); // Cierra el contenedor si se hace clic fuera
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         setCleanPathname(
@@ -40,9 +58,25 @@ export default function NavBar() {
         { title: "Contacto", href: "/contacto", line: false },
     ]);
 
+    const [linksPrivado, setLinksPrivado] = useState([
+        { title: "Productos", href: "/privado/productos", line: false },
+        { title: "Carrito", href: "/privado/carrito", line: false },
+        { title: "Mis pedidos", href: "/privado/mis-pedidos", line: false },
+        {
+            title: "Lista de precios",
+            href: "/privado/lista-de-precios",
+            line: false,
+        },
+    ]);
+
     const handleMouseEnter = (title) => {
         setLinks(
             links.map((link) =>
+                link.title === title ? { ...link, line: true } : link
+            )
+        );
+        setLinksPrivado(
+            linksPrivado.map((link) =>
                 link.title === title ? { ...link, line: true } : link
             )
         );
@@ -51,6 +85,11 @@ export default function NavBar() {
     const handleMouseLeave = (title) => {
         setLinks(
             links.map((link) =>
+                link.title === title ? { ...link, line: false } : link
+            )
+        );
+        setLinksPrivado(
+            linksPrivado.map((link) =>
                 link.title === title ? { ...link, line: false } : link
             )
         );
@@ -99,6 +138,55 @@ export default function NavBar() {
             });
     };
 
+    const [errorSignup, setErrorSignup] = useState(null);
+    const [submitingSignup, setSubmitingSignup] = useState(false);
+
+    const [userSubmitInfo, setUserSubmitInfo] = useState({
+        nomcuit: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        cuit: "",
+        direccion: "",
+        provincia: "",
+        localidad: "",
+        lista: "1",
+    });
+
+    const handleChange = (event) => {
+        setUserSubmitInfo({
+            ...userSubmitInfo,
+            lista: event.target.value,
+        });
+    };
+
+    const onSubmitSignup = (ev) => {
+        ev.preventDefault();
+        setSubmitingSignup(true);
+        axiosClient
+            .post("/signup", userSubmitInfo)
+            .then(({ data }) => {
+                setRegistro(false);
+                toast.success(
+                    "Usuario registrado correctamente. Espera a que un administrador apruebe tu cuenta.",
+                    { position: "top-center", autoClose: 5000 }
+                );
+                setSubmitingSignup(false);
+            })
+            .catch((error) => {
+                if (error.response) {
+                    setErrorSignup(
+                        Object.values(error.response.data.errors || {})
+                            .flat()
+                            .join(" ")
+                    );
+                } else {
+                    setErrorSignup("Ocurrió un error. Intenta nuevamente.");
+                }
+                setSubmitingSignup(false);
+            });
+    };
+
     return (
         <div
             className={`h-[100px] top-0 left-0 w-full z-40 items-center transition-all duration-300 ${
@@ -107,6 +195,7 @@ export default function NavBar() {
                     : "bg-transparent text-black"
             } ${cleanPathname[0] === "inicio" ? "fixed" : "sticky"}`}
         >
+            <ToastContainer />
             <div className="flex flex-row items-center justify-between mx-auto max-w-[1240px] h-full">
                 <Link to="/" className="h-[77px] w-[125px]">
                     <img
@@ -120,37 +209,77 @@ export default function NavBar() {
                     />
                 </Link>
                 <div className="flex flex-row gap-10 text-base items-center">
-                    {links.map((link) => (
-                        <Link
-                            key={link.title}
-                            to={link.href}
-                            className={`text-lg transition-colors relative ${
-                                scrolled || cleanPathname[0] !== "inicio"
-                                    ? "text-black"
-                                    : "text-white"
-                            }`}
-                            onMouseEnter={() => handleMouseEnter(link.title)}
-                            onMouseLeave={() => handleMouseLeave(link.title)}
-                        >
-                            {link.title}
-                            <AnimatePresence>
-                                {link.line && (
-                                    <motion.div
-                                        initial={{ width: 0 }}
-                                        animate={{ width: "100%" }}
-                                        exit={{ width: 0 }}
-                                        className={`h-[3px] w-full absolute -bottom-1 left-0 ${
-                                            cleanPathname[0] === "inicio" &&
-                                            !scrolled
-                                                ? "bg-white"
-                                                : "bg-black"
-                                        }`} // Cambiar color de la línea
-                                    ></motion.div>
-                                )}
-                            </AnimatePresence>
-                        </Link>
-                    ))}
-                    <div className="relative">
+                    {cleanPathname[0] !== "privado" &&
+                        links.map((link) => (
+                            <Link
+                                key={link.title}
+                                to={link.href}
+                                className={`text-lg transition-colors relative ${
+                                    scrolled || cleanPathname[0] !== "inicio"
+                                        ? "text-black"
+                                        : "text-white"
+                                }`}
+                                onMouseEnter={() =>
+                                    handleMouseEnter(link.title)
+                                }
+                                onMouseLeave={() =>
+                                    handleMouseLeave(link.title)
+                                }
+                            >
+                                {link.title}
+                                <AnimatePresence>
+                                    {link.line && (
+                                        <motion.div
+                                            initial={{ width: 0 }}
+                                            animate={{ width: "100%" }}
+                                            exit={{ width: 0 }}
+                                            className={`h-[3px] w-full absolute -bottom-1 left-0 ${
+                                                cleanPathname[0] === "inicio" &&
+                                                !scrolled
+                                                    ? "bg-white"
+                                                    : "bg-black"
+                                            }`} // Cambiar color de la línea
+                                        ></motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </Link>
+                        ))}
+                    {cleanPathname[0] === "privado" &&
+                        linksPrivado.map((link) => (
+                            <Link
+                                key={link.title}
+                                to={link.href}
+                                className={`text-lg transition-colors relative ${
+                                    scrolled || cleanPathname[0] !== "inicio"
+                                        ? "text-black"
+                                        : "text-white"
+                                }`}
+                                onMouseEnter={() =>
+                                    handleMouseEnter(link.title)
+                                }
+                                onMouseLeave={() =>
+                                    handleMouseLeave(link.title)
+                                }
+                            >
+                                {link.title}
+                                <AnimatePresence>
+                                    {link.line && (
+                                        <motion.div
+                                            initial={{ width: 0 }}
+                                            animate={{ width: "100%" }}
+                                            exit={{ width: 0 }}
+                                            className={`h-[3px] w-full absolute -bottom-1 left-0 ${
+                                                cleanPathname[0] === "inicio" &&
+                                                !scrolled
+                                                    ? "bg-white"
+                                                    : "bg-black"
+                                            }`} // Cambiar color de la línea
+                                        ></motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </Link>
+                        ))}
+                    <div ref={menuRef} className="relative">
                         <button
                             onClick={() => setUserMenu(!userMenu)}
                             className={` h-[41px] w-[154px] border transition-all ${
@@ -163,10 +292,32 @@ export default function NavBar() {
                                     : "text-primary-red border-primary-red hover:text-black hover:bg-primary-red"
                             }`}
                         >
-                            Zona Privada
+                            {userToken ? userInfo?.nomcuit : "Zona privada"}
                         </button>
                         <AnimatePresence>
-                            {userMenu && (
+                            {userMenu && cleanPathname[0] === "privado" && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{
+                                        duration: 0.1,
+                                        ease: "linear",
+                                    }}
+                                    className="absolute flex flex-col gap-2 right-0 top-16 bg-white shadow-md p-5 w-fit h-fit z-20 border"
+                                >
+                                    <button
+                                        type="button"
+                                        onClick={() => setUserToken("")}
+                                        className="bg-primary-red text-white w-[200px] py-1"
+                                    >
+                                        Cerrar sesion
+                                    </button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        <AnimatePresence>
+                            {userMenu && cleanPathname[0] !== "privado" && (
                                 <motion.div
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -241,12 +392,326 @@ export default function NavBar() {
                                     </form>
                                     <div className="flex flex-col items-center">
                                         <p>¿No tenes usuario?</p>
-                                        <Link
+                                        <button
+                                            type="button"
                                             className="text-primary-red"
-                                            to={"/registro"}
+                                            onClick={() => {
+                                                setRegistro(true);
+                                                setUserMenu(false);
+                                            }}
                                         >
                                             REGISTRATE
-                                        </Link>
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        <AnimatePresence>
+                            {registro && cleanPathname[0] !== "privado" && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{
+                                        duration: 0.1,
+                                        ease: "linear",
+                                    }}
+                                    className="absolute right-0 top-16 flex flex-col gap-2 bg-white shadow-md p-5 font-roboto-condensed w-[600px] h-fit z-20"
+                                >
+                                    {errorSignup && (
+                                        <div className="text-red-500">
+                                            {errorSignup}
+                                        </div>
+                                    )}
+                                    <h2 className="font-bold text-[24px] py-5">
+                                        Registrarse
+                                    </h2>
+                                    <form
+                                        onSubmit={onSubmitSignup}
+                                        className="w-fit h-full flex flex-col gap-3"
+                                    >
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="flex flex-col gap-2 col-span-2">
+                                                <label htmlFor="name">
+                                                    Nombre de usuario
+                                                </label>
+                                                <input
+                                                    value={
+                                                        userSubmitInfo.nomcuit
+                                                    }
+                                                    onChange={(ev) =>
+                                                        setUserSubmitInfo({
+                                                            ...userSubmitInfo,
+                                                            nomcuit:
+                                                                ev.target.value,
+                                                        })
+                                                    }
+                                                    className="w-full h-[45px] border pl-2"
+                                                    type="text"
+                                                    name="name"
+                                                    id="name"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <label htmlFor="password">
+                                                    Contraseña
+                                                </label>
+                                                <input
+                                                    value={
+                                                        userSubmitInfo.password
+                                                    }
+                                                    onChange={(ev) =>
+                                                        setUserSubmitInfo({
+                                                            ...userSubmitInfo,
+                                                            password:
+                                                                ev.target.value,
+                                                        })
+                                                    }
+                                                    className="w-full h-[45px] border pl-2"
+                                                    type="password"
+                                                    name="password"
+                                                    id="password"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <label htmlFor="password_confirmation">
+                                                    Confirmar contraseña
+                                                </label>
+                                                <input
+                                                    value={
+                                                        userSubmitInfo.password_confirmation
+                                                    }
+                                                    onChange={(ev) =>
+                                                        setUserSubmitInfo({
+                                                            ...userSubmitInfo,
+                                                            password_confirmation:
+                                                                ev.target.value,
+                                                        })
+                                                    }
+                                                    className="w-full h-[45px] border pl-2"
+                                                    type="password"
+                                                    name="password_confirmation"
+                                                    id="password_confirmation"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-2">
+                                                <label htmlFor="email">
+                                                    Email
+                                                </label>
+                                                <input
+                                                    value={userSubmitInfo.email}
+                                                    onChange={(ev) =>
+                                                        setUserSubmitInfo({
+                                                            ...userSubmitInfo,
+                                                            email: ev.target
+                                                                .value,
+                                                        })
+                                                    }
+                                                    className="w-full h-[45px] border pl-2"
+                                                    type="email"
+                                                    name="email"
+                                                    id="email"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col gap-2">
+                                                <label htmlFor="dni">
+                                                    Cuit
+                                                </label>
+                                                <input
+                                                    value={userSubmitInfo?.cuit}
+                                                    onChange={(ev) =>
+                                                        setUserSubmitInfo({
+                                                            ...userSubmitInfo,
+                                                            cuit: ev.target
+                                                                .value,
+                                                        })
+                                                    }
+                                                    className="w-full h-[45px] border pl-2"
+                                                    type="text"
+                                                    name="dni"
+                                                    id="dni"
+                                                    required
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col gap-2 col-span-2">
+                                                <label htmlFor="direccion">
+                                                    Dirección
+                                                </label>
+                                                <input
+                                                    value={
+                                                        userSubmitInfo.direccion
+                                                    }
+                                                    onChange={(ev) =>
+                                                        setUserSubmitInfo({
+                                                            ...userSubmitInfo,
+                                                            direccion:
+                                                                ev.target.value,
+                                                        })
+                                                    }
+                                                    className="w-full h-[45px] border pl-2"
+                                                    type="text"
+                                                    name="direccion"
+                                                    id="direccion"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-3 col-span-2 gap-5">
+                                                <div className="flex flex-col gap-2">
+                                                    <label htmlFor="provincia">
+                                                        Provincia
+                                                    </label>
+                                                    <select
+                                                        required
+                                                        value={
+                                                            userSubmitInfo.provincia
+                                                        }
+                                                        onChange={(ev) =>
+                                                            setUserSubmitInfo({
+                                                                ...userSubmitInfo,
+                                                                provincia:
+                                                                    ev.target
+                                                                        .value,
+                                                                localidad: "",
+                                                            })
+                                                        }
+                                                        className="py-2 border h-[45px]"
+                                                        name="provincia"
+                                                        id="provincia"
+                                                    >
+                                                        <option value="">
+                                                            Selecciona una
+                                                            provincia
+                                                        </option>
+                                                        <option value="test">
+                                                            test
+                                                        </option>
+                                                        {/* {provincias.map((pr) => (
+                                                     <option key={pr.id} value={pr.name}>
+                                                         {pr.name}
+                                                     </option>
+                                                 ))} */}
+                                                    </select>
+                                                </div>
+                                                <div className="flex flex-col gap-2">
+                                                    <label htmlFor="localidad">
+                                                        Localidad
+                                                    </label>
+                                                    <select
+                                                        required
+                                                        value={
+                                                            userSubmitInfo.localidad
+                                                        }
+                                                        onChange={(ev) =>
+                                                            setUserSubmitInfo({
+                                                                ...userSubmitInfo,
+                                                                localidad:
+                                                                    ev.target
+                                                                        .value,
+                                                            })
+                                                        }
+                                                        className="py-2 border h-[45px]"
+                                                        name="localidad"
+                                                        id="localidad"
+                                                    >
+                                                        <option value="">
+                                                            Selecciona una
+                                                            localidad
+                                                        </option>
+                                                        <option value="test">
+                                                            test
+                                                        </option>
+                                                        {/* {provincias
+                                                     .find(
+                                                         (pr) =>
+                                                             pr.name ===
+                                                             userSubmitInfo.provincia
+                                                     )
+                                                     ?.localidades.map((loc, index) => (
+                                                         <option
+                                                             key={index}
+                                                             value={loc.name}
+                                                         >
+                                                             {loc.name}
+                                                         </option>
+                                                     ))} */}
+                                                    </select>
+                                                </div>
+                                                <div className="flex flex-col gap-4">
+                                                    <h2 className="text-base font-normal m-0">
+                                                        Tipo de cliente
+                                                    </h2>
+                                                    <div className="flex flex-row gap-2">
+                                                        <label className="flex items-center gap-1 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="tipo_usuario"
+                                                                value="1"
+                                                                onChange={
+                                                                    handleChange
+                                                                }
+                                                                className="form-radio text-blue-600"
+                                                                checked={
+                                                                    userSubmitInfo?.lista ===
+                                                                    "1"
+                                                                }
+                                                            />
+                                                            <span>
+                                                                Bombista
+                                                            </span>
+                                                        </label>
+                                                        <label className="flex items-center gap-1 cursor-pointer">
+                                                            <input
+                                                                type="radio"
+                                                                name="tipo_usuario"
+                                                                value="2"
+                                                                onChange={
+                                                                    handleChange
+                                                                }
+                                                                checked={
+                                                                    userSubmitInfo?.lista ===
+                                                                    "2"
+                                                                }
+                                                                className="form-radio text-blue-600"
+                                                            />
+                                                            <span>
+                                                                Mayorista
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            className={`w-[325px] h-[47px] bg-primary-red text-white self-center my-5 ${
+                                                submitingSignup
+                                                    ? "bg-gray-400"
+                                                    : ""
+                                            }`}
+                                            type="submit"
+                                        >
+                                            {submitingSignup
+                                                ? "Cargando..."
+                                                : "REGISTRARSE"}
+                                        </button>
+                                    </form>
+                                    <div className="flex flex-col items-center">
+                                        <p>¿Ya tienes una cuenta?</p>
+                                        <button
+                                            type="button"
+                                            className="text-primary-red"
+                                            onClick={() => {
+                                                setRegistro(false);
+                                                setUserMenu(true);
+                                            }}
+                                        >
+                                            INICIAR SESIÓN
+                                        </button>
                                     </div>
                                 </motion.div>
                             )}

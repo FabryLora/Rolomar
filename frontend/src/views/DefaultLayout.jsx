@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function DefaultLayout() {
     const location = useLocation();
+
+    const { userToken } = useStateContext();
 
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
@@ -19,6 +22,10 @@ export default function DefaultLayout() {
             location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
         );
     }, [location]);
+
+    if (userToken) {
+        return <Navigate to={"/privado"} />;
+    }
 
     return (
         <div>

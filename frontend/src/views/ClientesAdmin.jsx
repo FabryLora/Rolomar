@@ -54,6 +54,20 @@ export default function ClientesAdmin() {
                 toast.error(error);
             });
     };
+
+    const [search, setSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    const filteredUsers = allUsers.filter((user) =>
+        user.nomcuit.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+    const paginatedUsers = filteredUsers.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
     return (
         <div className="h-screen">
             <ToastContainer />
@@ -276,8 +290,15 @@ export default function ClientesAdmin() {
                     </button>
                 </form>
             </div>
-            <div>
+            <div className="">
                 <h2 className="text-2xl font-bold px-4">Clientes:</h2>
+                <input
+                    type="text"
+                    placeholder="Buscar cliente por nombre..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="mb-4 mx-4 p-2 border rounded w-1/2"
+                />
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr className="text-center">
@@ -308,11 +329,36 @@ export default function ClientesAdmin() {
                         </tr>
                     </thead>
                     <tbody>
-                        {allUsers.map((user, index) => (
+                        {paginatedUsers.map((user, index) => (
                             <UserAdmin key={index} user={user} />
                         ))}
                     </tbody>
                 </table>
+                <div className="flex justify-center bg-gray-800 py-4 text-white">
+                    <button
+                        className="px-3 py-1 mx-1 border rounded disabled:opacity-50"
+                        onClick={() =>
+                            setCurrentPage((prev) => Math.max(prev - 1, 1))
+                        }
+                        disabled={currentPage === 1}
+                    >
+                        Anterior
+                    </button>
+                    <span className="px-3 py-1">
+                        Página {currentPage} de {totalPages}
+                    </span>
+                    <button
+                        className="px-3 py-1 mx-1 border rounded disabled:opacity-50"
+                        onClick={() =>
+                            setCurrentPage((prev) =>
+                                Math.min(prev + 1, totalPages)
+                            )
+                        }
+                        disabled={currentPage === totalPages}
+                    >
+                        Siguiente
+                    </button>
+                </div>
             </div>
         </div>
     );

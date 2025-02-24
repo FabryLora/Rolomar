@@ -18,11 +18,14 @@ import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
+import PrivateProducts from "./views/PrivateProducts";
+import PrivateZone from "./views/PrivateZone";
 import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
 import SubirProductos from "./views/SubirProductos";
+import SubirUsuarios from "./views/SubirUsuarios";
 
 const router = createBrowserRouter([
     {
@@ -108,6 +111,10 @@ const router = createBrowserRouter([
                 element: <SubirProductos />,
             },
             {
+                path: "/dashboard/subir-usuarios",
+                element: <SubirUsuarios />,
+            },
+            {
                 path: "/dashboard/categorias",
                 element: <CategoriasAdmin />,
             },
@@ -127,6 +134,28 @@ const router = createBrowserRouter([
                 path: "/dashboard/administradores",
                 element: <Administradores />,
             },
+        ],
+    },
+    {
+        path: "/privado",
+        element: <PrivateZone />,
+        children: [
+            {
+                path: "/privado",
+                element: <Navigate to={"/privado/productos"} />,
+            },
+            {
+                path: "/privado/productos",
+                element: <PrivateProducts />,
+            },
+            /* {
+                path: "/privado/pedido",
+                element: <Pedidos />,
+            },
+            {
+                path: "/privado/lista-de-precios",
+                element: <ListaDePrecios />,
+            }, */
         ],
     },
 ]);

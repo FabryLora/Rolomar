@@ -33,6 +33,10 @@ const StateContext = createContext({
     fetchProductos: () => {},
     fetchGrupoDeProductos: () => {},
     fetchCategorias: () => {},
+    cart: [],
+    addToCart: () => {},
+    removeFromCart: () => {},
+    clearCart: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -51,6 +55,54 @@ export const ContextProvider = ({ children }) => {
     const [productos, setProductos] = useState([]);
     const [grupoDeProductos, setGrupoDeProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
+    const [cart, setCart] = useState(() => {
+        const savedCart = localStorage.getItem("cart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
+
+    const addToCart = (product, additionalInfo) => {
+        const exists = cart.find((item) => item.id === product.id);
+
+        let updatedCart;
+
+        if (exists) {
+            updatedCart = cart.map((item) =>
+                item.id === product.id
+                    ? {
+                          ...item,
+                          quantity: item.quantity + 1,
+                          additionalInfo: {
+                              ...item.additionalInfo,
+                              ...additionalInfo,
+                          },
+                      }
+                    : item
+            );
+        } else {
+            updatedCart = [
+                ...cart,
+                { ...product, quantity: 1, additionalInfo },
+            ];
+        }
+
+        setCart(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+    };
+
+    const removeFromCart = (productId) => {
+        const updatedCart = cart.filter((item) => item.id !== productId);
+
+        setCart(updatedCart);
+    };
+
+    const clearCart = () => {
+        setCart([]); // Vaciar el estado del carrito
+        localStorage.removeItem("cart"); // Eliminar el carrito del localStorage
+    };
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart]);
 
     const [userToken, _setUserToken] = useState(
         localStorage.getItem("TOKEN") || ""
@@ -192,6 +244,10 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                cart,
+                addToCart,
+                removeFromCart,
+                clearCart,
                 productos,
                 fetchProductos,
                 grupoDeProductos,

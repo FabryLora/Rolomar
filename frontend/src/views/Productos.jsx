@@ -43,7 +43,7 @@ export default function Productos() {
                     </button>
                 </div>
             </div>
-            <div className="flex flex-row gap-5">
+            <div className="flex flex-row gap-5 flex-wrap">
                 {categorias?.map((category, index) => (
                     <CategoryCard key={index} categoryObject={category} />
                 ))}

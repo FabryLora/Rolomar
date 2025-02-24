@@ -92,7 +92,7 @@ export default function UserAdmin({ user }) {
     };
 
     return (
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px] text-center text-lg">
+        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px] text-center text-base">
             <td>{user?.nomcuit}</td>
             <td>{user?.email}</td>
             <td>{user?.cuit}</td>
@@ -119,7 +119,7 @@ export default function UserAdmin({ user }) {
                 )}
             </td>
             <td>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 px-5">
                     <button
                         onClick={() => setUpdateView(true)}
                         className="bg-blue-500 text-white px-2 rounded-md"

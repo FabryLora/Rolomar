@@ -12,4 +12,9 @@ class Productos extends Model
     {
         return $this->belongsTo(GrupoDeProductos::class);
     }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class);
+    }
 }

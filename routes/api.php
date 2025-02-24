@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\GrupoDeProductosController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ImportUsuarioController;
 use App\Http\Controllers\LogosController;
 use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NosotrosInicioController;
@@ -46,6 +47,7 @@ Route::apiResource('/contact-info', ContactInfoController::class);
 
 //Importar excels
 Route::post('/importar-excel', [ImportController::class, 'importar']);
+Route::post('/importar-usuarios', [ImportUsuarioController::class, 'importar']);
 
 //Productos
 Route::apiResource('/productos', ProductosController::class);

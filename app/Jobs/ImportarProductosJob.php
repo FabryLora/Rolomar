@@ -36,34 +36,41 @@ class ImportarProductosJob implements ShouldQueue
 
             $codigo = $row['A'];
             $nombreProducto = $row['B'];
-            $medida = $row['C'];
-            $imagen = $row['D'];
-            $categoriaNombre = $row['E'];
-            $precioMayorista = $row['F'];
-            $precioMinorista = $row['G'];
+            $imagen = $row['C'];
+            $categoriaNombre = $row['D'];
+            $precioMayorista = $row['E'];
+            $precioMinorista = $row['F'];
+
+            // Si el código es null o está vacío, pasar a la siguiente fila
+            if (empty($codigo)) {
+                continue;
+            }
+
+            // Verificar si el producto ya existe
+            $productoExistente = Productos::where('codigo', $codigo)->first();
+            if ($productoExistente) {
+                continue; // Si existe, no lo volvemos a crear
+            }
 
             // Buscar o crear la categoría
-            $categoria = Categoria::firstOrCreate(['nombre' => $categoriaNombre], [
-                'imagen' => $imagen,
-                'orden' => null
-            ]);
+            $categoria = Categoria::firstOrCreate(
+                ['nombre' => $categoriaNombre ?: "Categoria"],
+                ['imagen' => $imagen, 'orden' => null]
+            );
 
             // Buscar o crear el grupo de productos dentro de la categoría
-            $grupoDeProductos = GrupoDeProductos::firstOrCreate([
-                'nombre' => $nombreProducto,
-                'categoria_id' => $categoria->id,
-                'orden' => null,
-                'destacado' => null
-            ], [
-                'imagen' => $imagen
-            ]);
+            $grupoDeProductos = GrupoDeProductos::firstOrCreate(
+                ['nombre' => $nombreProducto ?: 'Producto', 'categoria_id' => $categoria->id],
+                ['imagen' => $imagen, 'orden' => null, 'destacado' => null]
+            );
 
-            // Crear el producto asociado al grupo de productos
-            Productos::create([
+            // Crear el producto si no existe
+            Productos::firstOrCreate([
                 'codigo' => $codigo,
-                'nombre' => $nombreProducto,
-                'medida' => $medida,
+                'nombre' => $nombreProducto ?: 'Producto',
+                'medida' => 'Unidad',
                 'imagen' => $imagen,
+                'categoria_id' => $categoria->id,
                 'precio_mayorista' => $precioMayorista,
                 'precio_minorista' => $precioMinorista,
                 'grupo_de_productos_id' => $grupoDeProductos->id

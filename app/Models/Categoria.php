@@ -12,4 +12,9 @@ class Categoria extends Model
     {
         return $this->hasMany(GrupoDeProductos::class);
     }
+
+    public function productos()
+    {
+        return $this->hasMany(Productos::class);
+    }
 }

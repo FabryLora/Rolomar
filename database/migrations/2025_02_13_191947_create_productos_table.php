@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Categoria;
 use App\Models\GrupoDeProductos;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->decimal('precio_mayorista', 10, 2);
             $table->decimal('precio_minorista', 10, 2);
             $table->foreignIdFor(GrupoDeProductos::class, 'grupo_de_productos_id')->constrained();
+            $table->foreignIdFor(Categoria::class, 'categoria_id')->constrained();
             $table->timestamps();
         });
     }

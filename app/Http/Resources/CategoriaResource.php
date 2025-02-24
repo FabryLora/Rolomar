@@ -20,6 +20,7 @@ class CategoriaResource extends JsonResource
             'imagen_url' => $this->imagen ? url('storage/' . $this->imagen) : null,
             'orden' => $this->orden,
             'grupos' => GrupoDeProductosResource::collection($this->whenLoaded('grupos')),
+            'productos' => ProductosResource::collection($this->whenLoaded('productos')),
         ];
     }
 }

@@ -31,6 +31,8 @@ export default function GeneralView() {
         );
     }, [location]);
 
+    console.log(cleanPathname);
+
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-row justify-between gap-10">
             <div className="w-[20%] max-sm:w-full flex flex-col">
@@ -41,18 +43,21 @@ export default function GeneralView() {
                                 ?.split(" ")
                                 ?.join("-")
                                 ?.toLowerCase()
+                                ?.replace(/-+$/g, "")
                         )}`}
                         key={index}
                         className={`text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left ${
-                            cleanPathname[1] ===
+                            cleanPathname[1].split(" ").join("-") ===
                             quitarTildes(
                                 categoria?.nombre?.split(" ")?.join("-")
-                            )?.toLowerCase()
+                            )
+                                ?.toLowerCase()
+                                .replace(/-+$/g, "")
                                 ? "font-bold"
                                 : ""
                         }`}
                     >
-                        {categoria?.nombre?.toUpperCase()}
+                        {categoria?.nombre?.toUpperCase().replace(/-+$/g, "")}
                     </Link>
                 ))}
             </div>
@@ -65,7 +70,8 @@ export default function GeneralView() {
                                     ?.split(" ")
                                     ?.join("-")
                                     .toLowerCase()
-                            ) === cleanPathname[1]
+                                    .replace(/-+$/g, "")
+                            ) === cleanPathname[1].split(" ").join("-")
                     )
                     ?.grupos?.map((grupo, index) => (
                         <Link
@@ -74,6 +80,7 @@ export default function GeneralView() {
                                     ?.split(" ")
                                     .join("-")
                                     .toLowerCase()
+                                    .replace(/-+$/g, "")
                             )}`}
                             key={index}
                             className="flex flex-col w-[288px] h-fit border"
