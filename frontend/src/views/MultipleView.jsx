@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import defaultPhoto from "../assets/default-photo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function MultipleView() {
@@ -77,8 +78,15 @@ export default function MultipleView() {
 
             <div className="w-full flex flex-col">
                 <div className="flex flex-row h-[496px]  mb-32">
-                    <div className="w-full relative border">
-                        <button className="absolute border -bottom-24 w-[80px] h-[80px]"></button>
+                    <div className="w-full relative ">
+                        <img
+                            className="w-full h-full object-contain"
+                            src={defaultPhoto}
+                            alt=""
+                        />
+                        <button className="absolute border -bottom-24 w-[80px] h-[80px]">
+                            <img src={defaultPhoto} alt="" />
+                        </button>
                     </div>
                     <div className="w-full flex flex-col justify-between">
                         <h2 className="text-2xl font-bold p-5">
@@ -104,7 +112,9 @@ export default function MultipleView() {
                         {grupoObjeto?.productos?.map((producto, index) => (
                             <tr key={index} className="border-b">
                                 <td className="py-2">
-                                    <div className="w-[61px] h-[61px] border"></div>
+                                    <div className="w-[61px] h-[61px] border">
+                                        <img src={defaultPhoto} alt="" />
+                                    </div>
                                 </td>
                                 <td>{producto?.codigo}</td>
                                 <td>{producto?.nombre}</td>
@@ -148,7 +158,11 @@ export default function MultipleView() {
                                     <div className="h-[85%] w-full">
                                         <img
                                             className="w-full h-full object-contain"
-                                            src={grupo?.imagen_url}
+                                            src={
+                                                grupo?.imagen_url
+                                                    ? grupo?.imagen_url
+                                                    : defaultPhoto
+                                            }
                                             alt=""
                                         />
                                     </div>

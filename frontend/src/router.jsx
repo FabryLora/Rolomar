@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Administradores from "./views/Administradores";
 import Administrator from "./views/Administrator";
 import AdminLogin from "./views/AdminLogin";
+import Carrito from "./views/Carrito";
 import CategoriasAdmin from "./views/CategoriasAdmin";
 import ClientesAdmin from "./views/ClientesAdmin";
 import Contacto from "./views/Contacto";
@@ -10,8 +11,11 @@ import DefaultLayout from "./views/DefaultLayout";
 import GeneralView from "./views/GeneralView";
 import GruposDeProductos from "./views/GruposDeProductos";
 import Home from "./views/Home";
+import ListaDePrecios from "./views/ListaDePrecios";
+import ListaDePreciosAdmin from "./views/ListaDePreciosAdmin";
 import Login from "./views/Login";
 import LogosAdmin from "./views/LogosAdmin";
+import Mispedidos from "./views/MisPedidos";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
 import NosotrosAdmin from "./views/NosotrosAdmin";
@@ -134,6 +138,10 @@ const router = createBrowserRouter([
                 path: "/dashboard/administradores",
                 element: <Administradores />,
             },
+            {
+                path: "/dashboard/lista-de-precios",
+                element: <ListaDePreciosAdmin />,
+            },
         ],
     },
     {
@@ -148,14 +156,18 @@ const router = createBrowserRouter([
                 path: "/privado/productos",
                 element: <PrivateProducts />,
             },
-            /* {
-                path: "/privado/pedido",
-                element: <Pedidos />,
+            {
+                path: "/privado/carrito",
+                element: <Carrito />,
+            },
+            {
+                path: "/privado/mis-pedidos",
+                element: <Mispedidos />,
             },
             {
                 path: "/privado/lista-de-precios",
                 element: <ListaDePrecios />,
-            }, */
+            },
         ],
     },
 ]);

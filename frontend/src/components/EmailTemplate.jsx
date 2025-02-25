@@ -1,4 +1,4 @@
-export default function EmailTemplate({ info }) {
+export default function EmailTemplate({ pedido }) {
     return (
         <div
             style={{

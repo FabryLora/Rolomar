@@ -5,14 +5,20 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import defaultPhoto from "../assets/default-photo.png";
 import addCartButton from "../assets/iconos/add-cart-button.svg";
+import trashButton from "../assets/iconos/trash-icon.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 
-export default function ProductRow({ product, currency }) {
+export default function ProductRow({ product }) {
     const { addToCart, removeFromCart, userInfo, cart } = useStateContext();
 
-    const [subtotal, setSubtotal] = useState(0);
+    const [subtotal, setSubtotal] = useState(
+        product?.additionalInfo?.subtotal || 0
+    );
     const [unidadDeVenta, setUnidadDeVenta] = useState(10);
-    const [cantidad, setCantidad] = useState(1);
+    const [cantidad, setCantidad] = useState(
+        cart?.find((prod) => prod?.id == product?.id)?.additionalInfo
+            ?.cantidad || 1
+    );
     const [extraInfo, setExtraInfo] = useState({
         cantidad: 0,
         subtotal: subtotal,
@@ -25,11 +31,22 @@ export default function ProductRow({ product, currency }) {
 
     const location = useLocation();
 
+    const [cleanPathname, setCleanPathname] = useState(
+        location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+    );
+
     useEffect(() => {
-        setExtraInfo({
-            cantidad,
-            subtotal,
-        });
+        setCleanPathname(
+            location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
+        );
+    }, [location]);
+
+    useEffect(() => {
+        const existsInCart = cart.find((item) => item.id === product.id);
+
+        if (existsInCart) {
+            addToCart(product, { cantidad, subtotal });
+        }
     }, [cantidad, subtotal]);
 
     useEffect(() => {
@@ -39,8 +56,6 @@ export default function ProductRow({ product, currency }) {
                 : Number(product?.precio_minorista) * cantidad * unidadDeVenta
         );
     }, [cantidad, product, userInfo]);
-
-    console.log(cart);
 
     return (
         <div className="grid grid-cols-9 items-center justify-center py-2 border-b text-[#515A53]">
@@ -114,20 +129,18 @@ export default function ProductRow({ product, currency }) {
                 })}
             </p>
             <div className="flex justify-center">
-                {location.pathname === "/privado/pedido" ? (
+                {cleanPathname[1] === "carrito" ? (
                     <button
+                        className="hover:scale-95 transition-transform"
                         onMouseEnter={() => setTrash(true)}
                         onMouseLeave={() => setTrash(false)}
                         onClick={() => removeFromCart(product.id)}
                     >
-                        {/* {trash ? (
-                            <img src={trashHover} alt="" />
-                        ) : (
-                            <img src={removeFromCartIcon} alt="" />
-                        )} */}
+                        <img src={trashButton} alt="" />
                     </button>
                 ) : (
                     <button
+                        className="hover:scale-95 transition-transform"
                         onClick={() => {
                             if (cantidad === 0) {
                                 toast.error(
@@ -141,10 +154,6 @@ export default function ProductRow({ product, currency }) {
                                 addToCart(product, {
                                     cantidad,
                                     subtotal,
-                                }); // Asegura que se pasa bien
-                                toast.success("Producto agregado al carrito", {
-                                    position: "top-center",
-                                    autoClose: 2200,
                                 });
                             }
                         }}

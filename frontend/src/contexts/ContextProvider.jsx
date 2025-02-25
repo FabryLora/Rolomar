@@ -37,6 +37,12 @@ const StateContext = createContext({
     addToCart: () => {},
     removeFromCart: () => {},
     clearCart: () => {},
+    pedidos: [],
+    fetchPedidos: () => {},
+    pedidoProductos: [],
+    fetchPedidoProductos: () => {},
+    listadeprecios: [],
+    fetchListadeprecios: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -55,6 +61,10 @@ export const ContextProvider = ({ children }) => {
     const [productos, setProductos] = useState([]);
     const [grupoDeProductos, setGrupoDeProductos] = useState([]);
     const [categorias, setCategorias] = useState([]);
+    const [pedidos, setPedidos] = useState([]);
+    const [pedidoProductos, setPedidoProductos] = useState([]);
+    const [listadeprecios, setListadeprecios] = useState([]);
+
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -70,19 +80,15 @@ export const ContextProvider = ({ children }) => {
                 item.id === product.id
                     ? {
                           ...item,
-                          quantity: item.quantity + 1,
                           additionalInfo: {
-                              ...item.additionalInfo,
-                              ...additionalInfo,
+                              cantidad: additionalInfo.cantidad,
+                              subtotal: additionalInfo.subtotal,
                           },
                       }
                     : item
             );
         } else {
-            updatedCart = [
-                ...cart,
-                { ...product, quantity: 1, additionalInfo },
-            ];
+            updatedCart = [...cart, { ...product, additionalInfo }];
         }
 
         setCart(updatedCart);
@@ -214,6 +220,24 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchPedidos = () => {
+        axiosClient.get("/pedidos").then(({ data }) => {
+            setPedidos(data.data);
+        });
+    };
+
+    const fetchPedidoProductos = () => {
+        axiosClient.get("/pedido-productos").then(({ data }) => {
+            setPedidoProductos(data.data);
+        });
+    };
+
+    const fetchListadeprecios = () => {
+        axiosClient.get("/listadeprecios").then(({ data }) => {
+            setListadeprecios(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
@@ -227,6 +251,9 @@ export const ContextProvider = ({ children }) => {
         fetchProductos();
         fetchGrupoDeProductos();
         fetchCategorias();
+        fetchPedidos();
+        fetchPedidoProductos();
+        fetchListadeprecios();
     }, []);
 
     useEffect(() => {
@@ -244,6 +271,12 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                listadeprecios,
+                fetchListadeprecios,
+                pedidoProductos,
+                fetchPedidoProductos,
+                pedidos,
+                fetchPedidos,
                 cart,
                 addToCart,
                 removeFromCart,

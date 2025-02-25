@@ -7,12 +7,16 @@ use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\GrupoDeProductosController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportUsuarioController;
+use App\Http\Controllers\ListaDePreciosController;
 use App\Http\Controllers\LogosController;
 use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NosotrosInicioController;
 use App\Http\Controllers\NovedadesController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\PedidoProductoController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\SendContactInfoController;
+use App\Http\Controllers\SendPedidoController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SliderImageController;
 use Illuminate\Support\Facades\Route;
@@ -56,3 +60,12 @@ Route::apiResource('/grupo-de-productos', GrupoDeProductosController::class);
 
 //Emails
 Route::post('/sendcontact', [SendContactInfoController::class, 'sendReactEmail']);
+Route::post('/sendpedido', [SendPedidoController::class, 'sendReactEmail']);
+
+//Pedidos
+Route::apiResource('/pedidos', PedidoController::class);
+Route::apiResource('/pedido-productos', PedidoProductoController::class);
+
+//Lista de precios
+Route::apiResource("/listadeprecios", ListaDePreciosController::class);
+Route::get('/downloadarchivo/{filename}', [ListaDePreciosController::class, 'downloadPDF']);

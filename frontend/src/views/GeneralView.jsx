@@ -2,6 +2,7 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import defaultPhoto from "../assets/default-photo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function GeneralView() {
@@ -30,8 +31,6 @@ export default function GeneralView() {
             location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
         );
     }, [location]);
-
-    console.log(cleanPathname);
 
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-row justify-between gap-10">
@@ -86,19 +85,15 @@ export default function GeneralView() {
                             className="flex flex-col w-[288px] h-fit border"
                         >
                             <div className="w-full h-[270px] flex justify-center items-center">
-                                {grupo?.imagen_url ? (
-                                    <img
-                                        className="w-full h-full object-cover"
-                                        src={grupo?.imagen_url}
-                                        alt=""
-                                    />
-                                ) : (
-                                    <FontAwesomeIcon
-                                        icon={faImage}
-                                        size="2xl"
-                                        color="gray"
-                                    />
-                                )}
+                                <img
+                                    className="w-full h-full object-cover"
+                                    src={
+                                        grupo?.imagen_url
+                                            ? grupo?.imagen_url
+                                            : defaultPhoto
+                                    }
+                                    alt=""
+                                />
                             </div>
                             <div className="flex items-center h-fit border-t pl-4 py-2">
                                 <h2>{grupo?.nombre}</h2>
