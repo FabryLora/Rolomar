@@ -1,8 +1,4 @@
-import { useStateContext } from "../contexts/ContextProvider";
-
-export default function PedidoTemplate({ pedido, user }) {
-    const { productos } = useStateContext();
-
+export default function PedidoTemplate({ pedido, user, productos }) {
     return (
         <div
             style={{
@@ -123,94 +119,115 @@ export default function PedidoTemplate({ pedido, user }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {pedido.productos.map((item, index) => (
-                            <tr
-                                key={index}
-                                style={{
-                                    backgroundColor:
-                                        index % 2 === 0 ? "#fff" : "#f2f2f2",
-                                }}
-                            >
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    {
-                                        productos.find(
-                                            (prod) => prod?.id === item?.id
-                                        )?.codigo
-                                    }
-                                </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    {
-                                        productos.find(
-                                            (prod) => prod.id === item.id
-                                        )?.categoria?.nombre
-                                    }
-                                </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    {
-                                        productos.find(
-                                            (prod) => prod?.id === item?.id
-                                        )?.nombre
-                                    }
-                                </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    $
-                                    {user?.lista == "1"
-                                        ? productos?.find(
-                                              (prod) =>
-                                                  prod?.id == item?.producto_id
-                                          )?.precio_minorista
-                                        : productos.find(
-                                              (prod) =>
-                                                  prod?.id == item?.producto_id
-                                          )?.precio_mayorista}
-                                </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    unidad de venta
-                                </td>
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    {item?.cantidad}
-                                </td>
+                        {pedido.productos.map(
+                            (item, index) => (
+                                console.log(productos[0]),
+                                (
+                                    <tr
+                                        key={index}
+                                        style={{
+                                            backgroundColor:
+                                                index % 2 === 0
+                                                    ? "#fff"
+                                                    : "#f2f2f2",
+                                        }}
+                                    >
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            {
+                                                productos.find(
+                                                    (prod) =>
+                                                        prod?.id ===
+                                                        item?.producto_id
+                                                )?.codigo
+                                            }
+                                        </td>
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            {
+                                                productos.find(
+                                                    (prod) =>
+                                                        prod.id ===
+                                                        item.producto_id
+                                                )?.categoria?.nombre
+                                            }
+                                        </td>
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            {
+                                                productos.find(
+                                                    (prod) =>
+                                                        prod?.id ===
+                                                        item?.producto_id
+                                                )?.nombre
+                                            }
+                                        </td>
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            $
+                                            {user?.lista == "1"
+                                                ? productos?.find(
+                                                      (prod) =>
+                                                          prod?.id ==
+                                                          item?.producto_id
+                                                  )?.precio_minorista
+                                                : productos.find(
+                                                      (prod) =>
+                                                          prod?.id ==
+                                                          item?.producto_id
+                                                  )?.precio_mayorista}
+                                        </td>
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            {
+                                                productos.find(
+                                                    (prod) =>
+                                                        prod?.id ===
+                                                        item?.producto_id
+                                                )?.unidad_venta
+                                            }
+                                        </td>
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            {item?.cantidad}
+                                        </td>
 
-                                <td
-                                    style={{
-                                        padding: "10px",
-                                        border: "1px solid #ddd",
-                                    }}
-                                >
-                                    {item?.subtotal_prod}
-                                </td>
-                            </tr>
-                        ))}
+                                        <td
+                                            style={{
+                                                padding: "10px",
+                                                border: "1px solid #ddd",
+                                            }}
+                                        >
+                                            ${item?.subtotal_prod}
+                                        </td>
+                                    </tr>
+                                )
+                            )
+                        )}
                     </tbody>
                 </table>
                 <p>

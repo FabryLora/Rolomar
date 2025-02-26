@@ -3,10 +3,11 @@ import MiPedidoRow from "../components/MiPedidoRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Mispedidos() {
-    const { pedidos, userInfo } = useStateContext();
+    const { pedidos, userInfo, fetchPedidos } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        fetchPedidos();
     }, []);
 
     return (
@@ -19,7 +20,7 @@ export default function Mispedidos() {
                         <td>Fecha de compra</td>
                         <td>Detalle</td>
                         <td>Fecha de entrega</td>
-                        <td>Entregado</td>
+                        <td className="text-center">Entregado</td>
                         <td></td>
                     </tr>
                 </thead>
@@ -27,7 +28,11 @@ export default function Mispedidos() {
                     {pedidos
                         .filter((pedido) => pedido?.user_id === userInfo?.id)
                         .map((pedido, index) => (
-                            <MiPedidoRow key={index} pedido={pedido} />
+                            <MiPedidoRow
+                                key={index}
+                                pedido={pedido}
+                                productosPed={pedido.productos}
+                            />
                         ))}
                 </tbody>
             </table>

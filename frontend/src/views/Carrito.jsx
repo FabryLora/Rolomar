@@ -9,7 +9,8 @@ import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Carrito() {
-    const { cart, clearCart, userInfo, pedidos, userId } = useStateContext();
+    const { cart, clearCart, userInfo, pedidos, userId, productos } =
+        useStateContext();
 
     const [selected, setSelected] = useState("retiro");
     const [fileName, setFileName] = useState("Seleccionar archivo");
@@ -72,6 +73,7 @@ export default function Carrito() {
         formData.append("tipo_entrega", tipo_entrega);
         formData.append("subtotal", subtotal ? subtotal : 0);
         formData.append("iva", iva ? iva : 0);
+        formData.append("entregado", 0);
         formData.append("user_id", userId);
         if (totalFinal !== "0.00") {
             formData.append("total", totalFinal);
@@ -110,7 +112,11 @@ export default function Carrito() {
             console.log(pedidoObject);
 
             const htmlContent = ReactDOMServer.renderToString(
-                <PedidoTemplate pedido={pedidoObject} user={userInfo} />
+                <PedidoTemplate
+                    pedido={pedidoObject}
+                    user={userInfo}
+                    productos={productos}
+                />
             );
 
             // Enviar email con archivos adjuntos

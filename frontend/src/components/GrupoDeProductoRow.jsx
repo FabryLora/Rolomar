@@ -72,7 +72,7 @@ export default function GrupoDeProductoRow({ grupoObject }) {
             <td className="text-center h-[100px]">
                 {grupoObject?.imagen_url ? (
                     <img
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain px-4 py-2"
                         src={grupoObject?.imagen_url}
                         alt=""
                     />

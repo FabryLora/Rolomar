@@ -22,6 +22,7 @@ import NosotrosAdmin from "./views/NosotrosAdmin";
 import NosotrosInicioAdmin from "./views/NosotrosInicioAdmin";
 import Novedades from "./views/Novedades";
 import NovedadesAdmin from "./views/NovedadesAdmin";
+import PedidosAdmin from "./views/PedidosAdmin";
 import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
 import Productos from "./views/Productos";
@@ -141,6 +142,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/lista-de-precios",
                 element: <ListaDePreciosAdmin />,
+            },
+            {
+                path: "/dashboard/pedidos-privada",
+                element: <PedidosAdmin />,
             },
         ],
     },

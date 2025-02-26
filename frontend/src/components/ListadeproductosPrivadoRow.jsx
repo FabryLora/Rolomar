@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import fileRed from "../assets/iconos/pedido-icon.svg";
 import axiosClient from "../axios";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function ListadeproductosPrivadoRow({ archivoObject }) {
+    const { fetchListadeprecios } = useStateContext();
+
+    useEffect(() => {
+        fetchListadeprecios();
+    }, []);
+
     const [showViewer, setShowViewer] = useState(false);
-    const downloadPDF = async () => {
+    const downloadFile = async () => {
         try {
-            const filename = archivoObject?.archivo_url.split("/").pop(); // Extraer solo el nombre del archivo
+            const filename = archivoObject?.archivo_url.split("/").pop(); // Extraer el nombre del archivo
 
             const response = await axiosClient.get(
                 `/downloadarchivo/${filename}`,
@@ -16,18 +23,22 @@ export default function ListadeproductosPrivadoRow({ archivoObject }) {
                 }
             );
 
-            const blob = new Blob([response.data], { type: "application/pdf" });
+            // Obtener el tipo de archivo dinámicamente desde la respuesta
+            const fileType =
+                response.headers["content-type"] || "application/octet-stream";
+            const blob = new Blob([response.data], { type: fileType });
             const url = window.URL.createObjectURL(blob);
 
             const a = document.createElement("a");
             a.href = url;
-            a.download = archivoObject?.nombre;
+            a.download = filename; // Descargar con el nombre original
             document.body.appendChild(a);
             a.click();
 
             window.URL.revokeObjectURL(url);
+            toast.success("Archivo descargado correctamente");
         } catch (error) {
-            console.error("Error al descargar el PDF:", error);
+            console.error("Error al descargar el archivo:", error);
             toast.error("Error al descargar el archivo");
         }
     };
@@ -60,7 +71,8 @@ export default function ListadeproductosPrivadoRow({ archivoObject }) {
                 </button>
 
                 <button
-                    onClick={downloadPDF}
+                    type="button"
+                    onClick={downloadFile}
                     className="bg-primary-red text-white h-[47px] w-[184px] hover:text-primary-red hover:bg-white hover:border-primary-red hover:border"
                 >
                     DESCARGAR

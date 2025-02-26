@@ -40,6 +40,7 @@ class ImportarProductosJob implements ShouldQueue
             $categoriaNombre = $row['D'];
             $precioMayorista = $row['E'];
             $precioMinorista = $row['F'];
+            $unidadVenta = $row['G'];
 
             // Si el código es null o está vacío, pasar a la siguiente fila
             if (empty($codigo)) {
@@ -65,11 +66,12 @@ class ImportarProductosJob implements ShouldQueue
             );
 
             // Crear el producto si no existe
-            Productos::firstOrCreate([
+            Productos::updateOrCreate([
                 'codigo' => $codigo,
                 'nombre' => $nombreProducto ?: 'Producto',
                 'medida' => 'Unidad',
                 'imagen' => $imagen,
+                'unidad_venta' =>  $unidadVenta || 1,
                 'categoria_id' => $categoria->id,
                 'precio_mayorista' => $precioMayorista,
                 'precio_minorista' => $precioMinorista,

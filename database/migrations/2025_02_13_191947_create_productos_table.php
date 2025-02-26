@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('medida');
             $table->string('imagen')->nullable();
+            $table->string('unidad_venta')->default(1);
             $table->decimal('precio_mayorista', 10, 2);
             $table->decimal('precio_minorista', 10, 2);
             $table->foreignIdFor(GrupoDeProductos::class, 'grupo_de_productos_id')->constrained();

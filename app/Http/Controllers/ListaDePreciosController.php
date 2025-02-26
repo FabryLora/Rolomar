@@ -30,7 +30,6 @@ class ListaDePreciosController extends Controller
         $data = $request->validate([
             "archivo" => "required|file",
             "nombre" => "required|string",
-
         ]);
 
         // Guardar la imagen en el sistema de archivos

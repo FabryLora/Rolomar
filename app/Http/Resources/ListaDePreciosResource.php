@@ -14,7 +14,7 @@ class ListaDePreciosResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $path = storage_path("app/public/" . $this->archivo);
+        $path = public_path("storage/" . $this->archivo);
 
         return [
             "id" => $this->id,

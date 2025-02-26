@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PedidoController extends Controller
 {
@@ -15,7 +16,27 @@ class PedidoController extends Controller
 
     public function store(Request $request)
     {
-        $pedido = Pedido::create($request->only(['user_id', 'tipo_entrega', 'mensaje', 'archivo', 'subtotal', 'iva', 'total']));
+
+        $data = $request->validate([
+            'user_id' => 'required | exists:users,id',
+            'tipo_entrega' => 'required | string',
+            'mensaje' => 'sometimes | string',
+            'archivo' => 'sometimes | file ',
+            'subtotal' => 'required | numeric',
+            'iva' => 'required | numeric',
+            'total' => 'required | numeric',
+            'entregado' => 'required | boolean',
+        ]);
+
+        // Guardar la nueva imagen
+        if ($request->hasFile('archivo')) {
+            $archivoPath = $request->file('archivo')->store('files', 'public');
+            $data["archivo"] = $archivoPath;
+        }
+
+        $pedido = Pedido::create($data);
+
+
         return new PedidoResource($pedido);
     }
 
@@ -26,7 +47,34 @@ class PedidoController extends Controller
 
     public function update(Request $request, Pedido $pedido)
     {
-        $pedido->update($request->only(['tipo_entrega', 'mensaje', 'archivo', 'subtotal', 'iva', 'total']));
+        $data = $request->validate([
+            'user_id' => 'required | exists:users,id',
+            'tipo_entrega' => 'required | string',
+            'mensaje' => 'sometimes | string',
+            'archivo' => 'sometimes | file',
+            'subtotal' => 'required | numeric',
+            'iva' => 'required | numeric',
+            'total' => 'required | numeric',
+            'entregado' => 'required | boolean',
+        ]);
+
+        // Guardar la nueva imagen
+        if ($request->hasFile('archivo')) {
+            // Eliminar la imagen existente del sistema de archivos
+            if ($pedido->archivo) {
+                $absolutePath = public_path('storage/' . $pedido->image);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
+            }
+
+            // Guardar la nueva imagen
+            $archivoPath = $request->file('archivo')->store('files', 'public');
+            $data["archivo"] = $archivoPath;
+        }
+
+        $pedido->update($data);
+
         return new PedidoResource($pedido);
     }
 

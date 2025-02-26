@@ -17,12 +17,14 @@ class PedidoResource extends JsonResource
             'user_id' => $this->user_id,
             'tipo_entrega' => $this->tipo_entrega,
             'mensaje' => $this->mensaje,
-            'archivo' => $this->archivo,
+            'archivo_url' => $this->archivo ? url("storage/" . $this->archivo) : null,
             'subtotal' => $this->subtotal,
             'iva' => $this->iva,
             'total' => $this->total,
+            'entregado' => $this->entregado,
             'productos' => PedidoProductoResource::collection($this->productos),
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

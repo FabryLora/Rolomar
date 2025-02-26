@@ -14,7 +14,11 @@ export default function ProductRow({ product }) {
     const [subtotal, setSubtotal] = useState(
         product?.additionalInfo?.subtotal || 0
     );
-    const [unidadDeVenta, setUnidadDeVenta] = useState(10);
+    const [unidadDeVenta, setUnidadDeVenta] = useState();
+
+    useEffect(() => {
+        setUnidadDeVenta(product?.unidad_venta);
+    }, [product]);
     const [cantidad, setCantidad] = useState(
         cart?.find((prod) => prod?.id == product?.id)?.additionalInfo
             ?.cantidad || 1
@@ -55,7 +59,7 @@ export default function ProductRow({ product }) {
                 ? Number(product?.precio_mayorista) * cantidad * unidadDeVenta
                 : Number(product?.precio_minorista) * cantidad * unidadDeVenta
         );
-    }, [cantidad, product, userInfo]);
+    }, [cantidad, product, userInfo, unidadDeVenta]);
 
     return (
         <div className="grid grid-cols-9 items-center justify-center py-2 border-b text-[#515A53]">
@@ -77,7 +81,7 @@ export default function ProductRow({ product }) {
                           "es-AR"
                       )}
             </p>
-            <p className="text-center">{unidadDeVenta}</p>
+            <p className="text-center">{product?.unidad_venta}</p>
 
             <div className="flex justify-center">
                 {location.pathname === "/privado/pedido" ? (

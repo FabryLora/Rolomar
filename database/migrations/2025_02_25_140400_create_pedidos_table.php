@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("tipo_entrega");
             $table->string("mensaje")->nullable();
             $table->string("archivo")->nullable();
+            $table->boolean("entregado")->default(false);
             $table->decimal("subtotal", 10, 2)->default(0);
             $table->decimal("iva", 10, 2)->default(0);
             $table->decimal("total", 10, 2)->default(0);
