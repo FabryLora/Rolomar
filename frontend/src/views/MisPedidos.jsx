@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import MiPedidoRow from "../components/MiPedidoRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -12,6 +13,7 @@ export default function Mispedidos() {
 
     return (
         <div className="w-full py-20 min-h-[500px]">
+            <Toaster />
             <table className=" w-full">
                 <thead>
                     <tr className="bg-[#F5F5F5] font-bold">

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import checkIcon from "../assets/iconos/check-icon.svg";
 import pedidoIcon from "../assets/iconos/pedido-icon.svg";
 import axiosClient from "../axios";
@@ -9,7 +9,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function MiPedidoRow({ pedido, productosPed }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { userInfo, productos, addToCart, pedidoProductos } =
+    const { userInfo, productos, addToCart, pedidoProductos, cart } =
         useStateContext();
 
     const menuRef = useRef(null);
@@ -57,22 +57,18 @@ export default function MiPedidoRow({ pedido, productosPed }) {
             toast.error("Error al descargar el archivo");
         }
     };
-    ///////askdbajshbdjhasbdjhbasjhdbasjhdbjhsabdjhsabdjhsavdasyhgvdashjdvahsjvdhjasvdhjasvdhjsvbajdhasvbjdh
+    ///////asd
+
     const addSeveralProductsToCart = () => {
-        console.log(productosPed);
-
         productosPed.forEach((producto) => {
-            console.log(
-                productos?.find((prod) => prod?.id == producto?.producto_id)?.id
+            let prod = productos?.find(
+                (prod) => prod?.id == producto?.producto_id
             );
 
-            addToCart(
-                productos?.find((prod) => prod?.id == producto?.producto_id),
-                {
-                    cantidad: producto?.cantidad,
-                    subtotal: producto?.subtotal_prod,
-                }
-            );
+            addToCart(prod, {
+                cantidad: producto?.cantidad,
+                subtotal: producto?.subtotal_prod,
+            });
         });
     };
 
@@ -120,7 +116,13 @@ export default function MiPedidoRow({ pedido, productosPed }) {
                     </button>
                     <button
                         type="button"
-                        onClick={addSeveralProductsToCart}
+                        onClick={() => {
+                            addSeveralProductsToCart();
+                            toast.success("Productos agregados al carrito", {
+                                autoClose: 2000,
+                                position: "top-right",
+                            });
+                        }}
                         className="w-[137px] h-[41px] flex justify-center items-center bg-primary-red text-white hover:scale-95 transition-transform"
                     >
                         Recomprar

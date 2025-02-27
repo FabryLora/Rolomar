@@ -71,28 +71,30 @@ export const ContextProvider = ({ children }) => {
     });
 
     const addToCart = (product, additionalInfo) => {
-        const exists = cart.find((item) => item.id === product.id);
+        setCart((prevCart) => {
+            const exists = prevCart.find((item) => item.id === product.id);
 
-        let updatedCart;
+            let updatedCart;
 
-        if (exists) {
-            updatedCart = cart.map((item) =>
-                item.id === product.id
-                    ? {
-                          ...item,
-                          additionalInfo: {
-                              cantidad: additionalInfo.cantidad,
-                              subtotal: additionalInfo.subtotal,
-                          },
-                      }
-                    : item
-            );
-        } else {
-            updatedCart = [...cart, { ...product, additionalInfo }];
-        }
+            if (exists) {
+                updatedCart = prevCart.map((item) =>
+                    item.id === product.id
+                        ? {
+                              ...item,
+                              additionalInfo: {
+                                  cantidad: additionalInfo.cantidad,
+                                  subtotal: additionalInfo.subtotal,
+                              },
+                          }
+                        : item
+                );
+            } else {
+                updatedCart = [...prevCart, { ...product, additionalInfo }];
+            }
 
-        setCart(updatedCart);
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            return updatedCart;
+        });
     };
 
     const removeFromCart = (productId) => {

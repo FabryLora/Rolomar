@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import soloCart from "../assets/iconos/solo-cart.svg";
 import ProductCard from "../components/ProductCard";
 import ProductRow from "../components/ProductRow";
@@ -81,7 +80,7 @@ export default function PrivateProducts() {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <ToastContainer />
+
             <div className="h-[134px] w-full bg-primary-blue text-black max-sm:h-fit">
                 <div className="flex flex-col gap-2 justify-center h-full max-sm:px-6 max-sm:w-full">
                     <h2>Buscar por:</h2>
