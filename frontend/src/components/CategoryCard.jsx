@@ -15,7 +15,7 @@ export default function CategoryCard({ categoryObject }) {
                     ?.toLowerCase()
                     .replace(/-+$/g, "")
             )}`}
-            className="w-[288px] h-[288px] relative border flex justify-center items-center text-white"
+            className="w-[288px] h-[288px] relative border flex justify-center items-center text-white max-sm:w-full max-sm:px-6"
         >
             <img
                 className="w-full h-full object-cover bg-gradient-to-t from-black to-white"

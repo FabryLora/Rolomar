@@ -48,14 +48,14 @@ class PedidoController extends Controller
     public function update(Request $request, Pedido $pedido)
     {
         $data = $request->validate([
-            'user_id' => 'required | exists:users,id',
-            'tipo_entrega' => 'required | string',
+            'user_id' => 'nullable | exists:users,id',
+            'tipo_entrega' => 'nullable | string',
             'mensaje' => 'sometimes | string',
             'archivo' => 'sometimes | file',
-            'subtotal' => 'required | numeric',
-            'iva' => 'required | numeric',
-            'total' => 'required | numeric',
-            'entregado' => 'required | boolean',
+            'subtotal' => 'nullable | numeric',
+            'iva' => 'nullable | numeric',
+            'total' => 'nullable | numeric',
+            'entregado' => 'nullable | boolean',
         ]);
 
         // Guardar la nueva imagen

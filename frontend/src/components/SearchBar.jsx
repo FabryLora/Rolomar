@@ -1,9 +1,9 @@
 export default function SearchBar() {
     return (
-        <div className="h-[147px] bg-primary-red flex items-center">
-            <div className="flex flex-row max-w-[1240px] mx-auto justify-between w-full h-[55px]">
+        <div className="h-[147px] bg-primary-red flex items-center py-4 md:py-0 max-md:h-fit">
+            <div className="flex max-w-[1240px] mx-auto justify-between w-full px-6 md:px-0 flex-wrap md:flex-nowrap gap-4 md:gap-2 max-md:gap-5">
                 <select
-                    className="w-[190px] text-primary-red pl-2"
+                    className="w-full md:w-[190px] text-primary-red pl-2 py-2"
                     name=""
                     id=""
                 >
@@ -12,7 +12,7 @@ export default function SearchBar() {
                     </option>
                 </select>
                 <select
-                    className="w-[190px] text-primary-red pl-2"
+                    className="w-full md:w-[190px] text-primary-red pl-2 py-2"
                     name=""
                     id=""
                 >
@@ -22,12 +22,12 @@ export default function SearchBar() {
                 </select>
                 <input
                     placeholder="Descripcion"
-                    className="pl-4 w-[615px] outline-none"
+                    className="pl-4 w-full md:w-[615px] outline-none py-2"
                     type="text"
                     name=""
                     id=""
                 />
-                <button className="bg-black text-white w-[184px]">
+                <button className="bg-black text-white w-full md:w-[184px] py-2">
                     Buscar
                 </button>
             </div>
