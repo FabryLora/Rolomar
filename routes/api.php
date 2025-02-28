@@ -19,6 +19,8 @@ use App\Http\Controllers\SendContactInfoController;
 use App\Http\Controllers\SendPedidoController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SliderImageController;
+use App\Models\SliderImage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -43,6 +45,17 @@ Route::get('/alladmins', [AdminController::class, 'index']);
 //DefaultLayout
 Route::apiResource('/slider', SliderController::class);
 Route::apiResource('/sliderimage', SliderImageController::class);
+Route::post('/slider-images/reorder', function (Request $request) {
+    $orderData = $request->input('order');
+
+    foreach ($orderData as $index => $id) {
+        SliderImage::where('id', $id)->update(['order' => $index]);
+    }
+
+    return response()->json(['message' => 'Orden actualizado']);
+});
+
+
 Route::apiResource("/logos", LogosController::class);
 Route::apiResource('/nosotrosinicio', NosotrosInicioController::class);
 Route::apiResource('/novedades', NovedadesController::class);

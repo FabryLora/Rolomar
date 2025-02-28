@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -20,25 +20,29 @@ export default function LogosAdmin() {
             formData.append("secundario", secundario);
         }
 
-        try {
-            await axiosClient.post(`/logos/1?_method=PUT`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+        const updateLogos = axiosClient.post(`/logos/1?_method=PUT`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
 
+        toast.promise(updateLogos, {
+            loading: "Actualizando logos...",
+            success: "Logos actualizados correctamente",
+            error: "Error al actualizar los logos",
+        });
+
+        try {
+            await updateLogos;
             fetchLogos();
-            toast.success("Logos actualizados correctamente", {
-                position: "top-center",
-            });
         } catch (err) {
-            toast.error("Error al actualizar", { position: "top-center" });
+            console.error("Error en la actualización:", err);
         }
     };
 
     return (
         <div className="">
-            <ToastContainer />
+            <Toaster />
             <form
                 onSubmit={update}
                 className="p-5 flex flex-col justify-between h-screen"

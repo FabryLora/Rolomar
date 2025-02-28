@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('image');
             $table->foreignIdFor(Slider::class, "slider_id")->constrained()->cascadeOnDelete();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

@@ -18,6 +18,7 @@ class SliderImageResource extends JsonResource
             "id" => $this->id,
             "image_url" => $this->image ? url("storage/" . $this->image) : null,
             "slider_id" => $this->slider_id,
+            "order" => $this->order,
         ];
     }
 }

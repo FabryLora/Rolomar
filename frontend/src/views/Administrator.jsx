@@ -172,7 +172,7 @@ export default function Administrator() {
                         animate={{ x: 0 }}
                         exit={{ x: -300 }}
                         transition={{ ease: "linear", duration: 0.2 }}
-                        className="flex flex-col h-screen w-[300px] bg-primary-red text-white overflow-y-auto"
+                        className="flex flex-col h-screen w-[300px] bg-primary-red text-white overflow-y-auto scrollbar-hide"
                     >
                         <Link to={"/"} className="w-full p-6">
                             <img

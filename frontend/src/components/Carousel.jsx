@@ -33,17 +33,19 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             {/* Contenedor de imágenes con transición */}
             <div className="absolute inset-0">
                 {sliderInfo?.images &&
-                    sliderInfo?.images.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image.image_url}
-                            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
-                                index === currentIndex
-                                    ? "opacity-100 z-10"
-                                    : "opacity-0 z-0"
-                            }`}
-                        />
-                    ))}
+                    [...sliderInfo.images]
+                        .sort((a, b) => a.order - b.order) // Ordena por el campo "order"
+                        .map((image, index) => (
+                            <img
+                                key={image.id} // Usa "id" en lugar del índice
+                                src={image.image_url}
+                                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
+                                    index === currentIndex
+                                        ? "opacity-100 z-10"
+                                        : "opacity-0 z-0"
+                                }`}
+                            />
+                        ))}
             </div>
 
             {/* Contenido estático */}
@@ -56,7 +58,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
 
             {/* Indicadores */}
             {sliderInfo?.images?.length > 1 && (
-                <div className="absolute bottom-16 left-20 max-sm:left-6 flex space-x-2 z-30">
+                <div className="absolute bottom-16 left-52 max-sm:left-6 flex space-x-2 z-30">
                     {sliderInfo?.images &&
                         sliderInfo?.images?.map((_, index) => (
                             <button
