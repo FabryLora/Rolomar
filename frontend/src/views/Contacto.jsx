@@ -11,7 +11,7 @@ import EmailTemplate from "../components/EmailTemplate";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
-    const { contactInfo } = useStateContext();
+    const { contactInfo, metadatos } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -73,6 +73,22 @@ export default function Contacto() {
 
     return (
         <div className="flex  max-w-[1240px] mx-auto">
+            <meta
+                name="description"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "contacto"
+                    )?.descripcion
+                }
+            />
+            <meta
+                name="keywords"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "contacto"
+                    )?.keywords
+                }
+            />
             <ToastContainer />
 
             <div className=" text-[#515A53] py-20 flex flex-col gap-20 w-full">

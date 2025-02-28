@@ -137,7 +137,7 @@ export default function NosotrosInicioAdmin() {
                                 >
                                     Imagen
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 w-1/2">
                                     <div className=" w-1/2 h-[300px]">
                                         <img
                                             className="w-full h-full object-contain"
@@ -153,6 +153,7 @@ export default function NosotrosInicioAdmin() {
                                                     className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                                                 >
                                                     <span>Cambiar Imagen</span>
+                                                    <p>{image?.name}</p>
                                                     <input
                                                         id="file-upload"
                                                         name="file-upload"

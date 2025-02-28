@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -11,7 +11,7 @@ export default function NovedadesRow({ novedadesObject }) {
     const [image, setImage] = useState();
     const [title, setTitle] = useState(novedadesObject?.title);
     const [text, setText] = useState(novedadesObject?.text);
-    const [featured, setFeatured] = useState(novedadesObject?.featured ? 1 : 0);
+    const [featured, setFeatured] = useState(novedadesObject?.featured);
     const [type, setType] = useState(novedadesObject?.type);
 
     const handleFileChange = (e) => {
@@ -147,8 +147,26 @@ export default function NovedadesRow({ novedadesObject }) {
             <td className="px-6 py-4 text-center">
                 <input
                     type="checkbox"
-                    checked={featured}
-                    onChange={(e) => setFeatured(e.target.checked)}
+                    checked={featured == 1}
+                    onChange={async (e) => {
+                        const newValue = e.target.checked ? 1 : 0;
+                        setFeatured(newValue);
+                        try {
+                            await axiosClient.put(
+                                `/novedades/${novedadesObject.id}`,
+                                {
+                                    featured: newValue,
+                                }
+                            );
+                            toast.success("Estado actualizado correctamente");
+                        } catch (error) {
+                            toast.error("Error al actualizar el estado");
+                            console.error(
+                                "Error al actualizar el featured:",
+                                error
+                            );
+                        }
+                    }}
                 />
             </td>
 

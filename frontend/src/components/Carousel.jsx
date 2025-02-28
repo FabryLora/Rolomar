@@ -10,18 +10,15 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
     // Cambiar imagen automáticamente después de un intervalo
     useEffect(() => {
         const interval = setInterval(() => {
-            nextSlide();
-        }, autoScrollInterval);
-        return () => clearInterval(interval);
-    }, [currentIndex, autoScrollInterval]);
-
-    const nextSlide = () => {
-        if (sliderInfo.images) {
-            setCurrentIndex(
-                (prevIndex) => (prevIndex + 1) % sliderInfo?.images?.length
+            setCurrentIndex((prevIndex) =>
+                sliderInfo?.images
+                    ? (prevIndex + 1) % sliderInfo.images.length
+                    : 0
             );
-        }
-    };
+        }, autoScrollInterval);
+
+        return () => clearInterval(interval);
+    }, [sliderInfo?.images, autoScrollInterval]);
 
     const goToSlide = (index) => {
         setCurrentIndex(index);
@@ -57,7 +54,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
             </div>
 
             {/* Indicadores */}
-            {sliderInfo?.images?.length > 1 && (
+            {/* {sliderInfo?.images?.length > 1 && (
                 <div className="absolute bottom-16 left-52 max-sm:left-6 flex space-x-2 z-30">
                     {sliderInfo?.images &&
                         sliderInfo?.images?.map((_, index) => (
@@ -72,7 +69,7 @@ const Carousel = ({ autoScrollInterval = 5000 }) => {
                             ></button>
                         ))}
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

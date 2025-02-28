@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandImagesController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\GrupoDeProductosController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportUsuarioController;
 use App\Http\Controllers\ListaDePreciosController;
 use App\Http\Controllers\LogosController;
+use App\Http\Controllers\MetadatosController;
 use App\Http\Controllers\NosotrosController;
 use App\Http\Controllers\NosotrosInicioController;
 use App\Http\Controllers\NovedadesController;
@@ -82,3 +84,9 @@ Route::apiResource('/pedido-productos', PedidoProductoController::class);
 //Lista de precios
 Route::apiResource("/listadeprecios", ListaDePreciosController::class);
 Route::get('/downloadarchivo/{filename}', [ListaDePreciosController::class, 'downloadPDF']);
+
+//metadatos
+Route::apiResource('/metadatos', MetadatosController::class);
+
+//
+Route::apiResource('/brandimages', BrandImagesController::class);

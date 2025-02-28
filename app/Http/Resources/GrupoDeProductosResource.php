@@ -16,7 +16,7 @@ class GrupoDeProductosResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'imagen_url' => $this->imagen ? url('storage/' . $this->imagen) : null,
+            'imagen_url' => $this->imagen ? url('storage/images/' . $this->imagen) : null,
             "nombre" => $this->nombre,
             'destacado' => $this->destacado,
             'orden' => $this->orden,

@@ -43,6 +43,10 @@ const StateContext = createContext({
     fetchPedidoProductos: () => {},
     listadeprecios: [],
     fetchListadeprecios: () => {},
+    metadatos: [],
+    fetchMetadatos: () => {},
+    brandImages: [],
+    fetchBrandImages: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -64,6 +68,8 @@ export const ContextProvider = ({ children }) => {
     const [pedidos, setPedidos] = useState([]);
     const [pedidoProductos, setPedidoProductos] = useState([]);
     const [listadeprecios, setListadeprecios] = useState([]);
+    const [metadatos, setMetadatos] = useState([]);
+    const [brandImages, setBrandImages] = useState([]);
 
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
@@ -240,6 +246,18 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchMetadatos = () => {
+        axiosClient.get("/metadatos").then(({ data }) => {
+            setMetadatos(data.data);
+        });
+    };
+
+    const fetchBrandImages = () => {
+        axiosClient.get("/brandimages").then(({ data }) => {
+            setBrandImages(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
@@ -256,6 +274,8 @@ export const ContextProvider = ({ children }) => {
         fetchPedidos();
         fetchPedidoProductos();
         fetchListadeprecios();
+        fetchMetadatos();
+        fetchBrandImages();
     }, []);
 
     useEffect(() => {
@@ -273,6 +293,10 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                brandImages,
+                fetchBrandImages,
+                metadatos,
+                fetchMetadatos,
                 listadeprecios,
                 fetchListadeprecios,
                 pedidoProductos,

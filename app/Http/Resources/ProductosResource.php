@@ -19,11 +19,12 @@ class ProductosResource extends JsonResource
             'codigo' => $this->codigo,
             'nombre' => $this->nombre,
             'medida' => $this->medida,
-            'imagen' => $this->imagen,
+            'imagen_url' => $this->imagen ? url('storage/images/' . $this->imagen) : null,
             'unidad_venta' => $this->unidad_venta,
             'precio_mayorista' => $this->precio_mayorista,
             'precio_minorista' => $this->precio_minorista,
             "categoria" => new CategoriaResource($this->categoria),
+            "grupo" => $this->grupo_de_productos_id
         ];
     }
 }

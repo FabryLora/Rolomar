@@ -15,6 +15,8 @@ import ListaDePrecios from "./views/ListaDePrecios";
 import ListaDePreciosAdmin from "./views/ListaDePreciosAdmin";
 import Login from "./views/Login";
 import LogosAdmin from "./views/LogosAdmin";
+import MarcasAdmin from "./views/MarcasAdmin";
+import Metadatos from "./views/Metadatos";
 import Mispedidos from "./views/MisPedidos";
 import MultipleView from "./views/MultipleView";
 import Nosotros from "./views/Nosotros";
@@ -28,6 +30,7 @@ import PrivateProducts from "./views/PrivateProducts";
 import PrivateZone from "./views/PrivateZone";
 import Productos from "./views/Productos";
 import ProductosAdmin from "./views/ProductosAdmin";
+import RealProducts from "./views/RealProducts";
 import Signup from "./views/Signup";
 import SliderAdmin from "./views/SliderAdmin";
 import SubirProductos from "./views/SubirProductos";
@@ -133,10 +136,7 @@ const router = createBrowserRouter([
                 path: "/dashboard/grupo-de-productos",
                 element: <GruposDeProductos />,
             },
-            {
-                path: "/dashboard/productos",
-                element: <ProductosAdmin />,
-            },
+
             {
                 path: "/dashboard/clientes",
                 element: <ClientesAdmin />,
@@ -152,6 +152,18 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/pedidos-privada",
                 element: <PedidosAdmin />,
+            },
+            {
+                path: "/dashboard/productos",
+                element: <RealProducts />,
+            },
+            {
+                path: "/dashboard/metadatos",
+                element: <Metadatos />,
+            },
+            {
+                path: "/dashboard/marcas",
+                element: <MarcasAdmin />,
             },
         ],
     },

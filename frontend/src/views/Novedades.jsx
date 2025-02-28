@@ -3,7 +3,7 @@ import NovedadesCard from "../components/NovedadesCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Novedades() {
-    const { novedades } = useStateContext();
+    const { novedades, metadatos } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -11,6 +11,22 @@ export default function Novedades() {
 
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-row gap-y-10 justify-between flex-wrap">
+            <meta
+                name="description"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "novedades"
+                    )?.descripcion
+                }
+            />
+            <meta
+                name="keywords"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "novedades"
+                    )?.keywords
+                }
+            />
             {novedades?.map((novedad, index) => (
                 <NovedadesCard key={index} novedadObject={novedad} />
             ))}

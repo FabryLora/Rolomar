@@ -62,11 +62,11 @@ class NovedadesController extends Controller
         }
 
         $data = $request->validate([
-            'type' => 'required | string',
-            'title' => 'required | string',
-            'text' => 'required | string',
+            'type' => 'sometimes | string',
+            'title' => 'sometimes | string',
+            'text' => 'sometimes | string',
             'image' => 'sometimes | file',
-            'featured' => 'required',
+            'featured' => 'sometimes',
         ]);
 
         if ($request->hasFile('image')) {

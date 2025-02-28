@@ -33,6 +33,22 @@ export default function Nosotros() {
 
     return (
         <div>
+            <meta
+                name="description"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "nosotros"
+                    )?.descripcion
+                }
+            />
+            <meta
+                name="keywords"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "nosotros"
+                    )?.keywords
+                }
+            />
             <div className="flex flex-col lg:flex-row items-center my-10 mx-auto font-roboto-condensed justify-between max-w-[1240px] h-full">
                 {/* Imagen - 50% */}
                 <motion.div

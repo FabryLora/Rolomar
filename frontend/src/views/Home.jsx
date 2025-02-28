@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import defaultPhoto from "../assets/default-photo.png";
 import BrandSlider from "../components/BrandSlider";
 import Carousel from "../components/Carousel";
 import NovedadesCard from "../components/NovedadesCard";
@@ -8,8 +9,13 @@ import SearchBar from "../components/SearchBar";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Home() {
-    const { nosotrosInicio, novedades, grupoDeProductos, categorias } =
-        useStateContext();
+    const {
+        nosotrosInicio,
+        novedades,
+        grupoDeProductos,
+        categorias,
+        metadatos,
+    } = useStateContext();
 
     const encontrarCategoria = (id) => {
         return categorias.find((categoria) => categoria.id === id)?.nombre;
@@ -28,6 +34,22 @@ export default function Home() {
 
     return (
         <div className="overflow-hidden">
+            <meta
+                name="description"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "inicio"
+                    )?.descripcion
+                }
+            />
+            <meta
+                name="keywords"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "inicio"
+                    )?.keywords
+                }
+            />
             <Carousel />
             <SearchBar />
             <div className="max-w-[1240px] mx-auto py-10">
@@ -54,7 +76,14 @@ export default function Home() {
                                     <div className="h-[85%] w-full">
                                         <img
                                             className="w-full h-full object-contain"
-                                            src={grupo?.imagen_url}
+                                            src={
+                                                grupo?.imagen_url ||
+                                                defaultPhoto
+                                            }
+                                            onError={(e) =>
+                                                (e.currentTarget.src =
+                                                    defaultPhoto)
+                                            }
                                             alt=""
                                         />
                                     </div>
@@ -106,9 +135,12 @@ export default function Home() {
                         }}
                         className="custom-container w-full h-full  prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-white px-20 pt-20 max-md:p-6"
                     ></div>
-                    <button className="h-[41px] w-[181px] bg-white text-primary-red mx-20 mb-10">
+                    <Link
+                        to={"/nosotros"}
+                        className="h-[41px] w-[181px] bg-white text-primary-red mx-20 mb-10 flex justify-center items-center"
+                    >
                         Más información
-                    </button>
+                    </Link>
                 </motion.div>
             </div>
             <BrandSlider />

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProductosResource;
 use App\Models\Productos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProductosController extends Controller
 {
@@ -13,7 +14,7 @@ class ProductosController extends Controller
      */
     public function index()
     {
-        return ProductosResource::collection(Productos::all());
+        return ProductosResource::collection(Productos::with(['grupo', 'categoria'])->get());
     }
 
 
@@ -25,14 +26,19 @@ class ProductosController extends Controller
         $data = $request->validate([
             'codigo' => 'required',
             'nombre' => 'required',
-            'medida' => 'required',
-            'imagen' => 'required',
+            'medida' => 'sometimes',
+            'imagen' => 'sometimes | file',
             'unidad_venta' => 'nullable',
             'precio_minorista' => 'required',
             'precio_mayorista' => 'required',
             'grupo_de_productos_id' => 'nullable|exists:grupo_de_productos,id',
             'categoria_id' => 'nullable|exists:categorias,id',
         ]);
+
+        if ($request->hasFile('imagen')) {
+            $imagePath = $request->file('imagen')->store('images', 'public');
+            $data["imagen"] = $imagePath;
+        }
 
         $producto = Productos::create($data);
 
@@ -60,13 +66,28 @@ class ProductosController extends Controller
             'codigo' => 'required',
             'nombre' => 'required',
             'medida' => 'required',
-            'imagen' => 'required',
+            'imagen' => 'sometimes | file',
             'unidad_venta' => 'nullable',
             'grupo_de_productos_id' => 'nullable|exists:grupo_de_productos,id',
             'categoria_id' => 'nullable|exists:categorias,id',
             'precio_minorista' => 'required',
             'precio_mayorista' => 'required',
         ]);
+
+        if ($request->hasFile('imagen')) {
+            // Eliminar la imagen existente del sistema de archivos
+            if ($productos->imagen) {
+                $absolutePath = public_path('storage/' . $productos->imagen);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
+            }
+
+            // Guardar la nueva imagen
+            $imagePath = $request->file('imagen')->store('images', 'public');
+            $data["imagen"] = $imagePath;
+        }
+
 
         $productos->update($data);
 

@@ -1,11 +1,32 @@
+import { useEffect } from "react";
 import CategoryCard from "../components/CategoryCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Productos() {
-    const { categorias } = useStateContext();
+    const { categorias, metadatos } = useStateContext();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-col gap-y-10 justify-between flex-wrap">
+            <meta
+                name="description"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "productos"
+                    )?.descripcion
+                }
+            />
+            <meta
+                name="keywords"
+                content={
+                    metadatos?.find(
+                        (datos) => datos?.seccion?.toLowerCase() == "productos"
+                    )?.keywords
+                }
+            />
             <div className="h-[147px] flex items-center w-full">
                 <div className="flex flex-row justify-between w-full h-[55px] max-sm:flex-col max-sm:h-auto max-sm:gap-2 max-sm:px-6">
                     <select className="w-[184px] text-primary-red pl-2 border max-sm:w-full max-sm:h-[55px]">

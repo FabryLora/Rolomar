@@ -39,10 +39,10 @@ export default function Footer() {
     ];
 
     const Links = [
-        { name: "Nosotros", path: "/inicio/nosotros" },
-        { name: "Calidad", path: "/inicio/calidad" },
-        { name: "Novedades", path: "/inicio/novedades" },
-        { name: "Contacto", path: "/inicio/contacto" },
+        { name: "Nosotros", path: "/nosotros" },
+        { name: "Calidad", path: "/calidad" },
+        { name: "Novedades", path: "/novedades" },
+        { name: "Contacto", path: "/contacto" },
     ];
 
     return (
@@ -62,20 +62,20 @@ export default function Footer() {
                     }`}
                 >
                     <h2 className="text-xl font-semibold">Secciones</h2>
-                    <div className="grid grid-cols-2 grid-rows-4 gap-4 gap-x-10">
+                    <div className="grid grid-cols-2 grid-rows-4 gap-4 gap-x-32">
                         <Link className="text-base" to={"/inicio"}>
                             Inicio
                         </Link>
-                        <Link className="text-base" to={"/inicio/nosotros"}>
+                        <Link className="text-base" to={"/nosotros"}>
                             Nosotros
                         </Link>
-                        <Link className="text-base" to={"/inicio/calidad"}>
-                            Calidad
+                        <Link className="text-base" to={"/productos"}>
+                            Productos
                         </Link>
-                        <Link className="text-base" to={"/inicio/novedades"}>
+                        <Link className="text-base" to={"/novedades"}>
                             Novedades
                         </Link>
-                        <Link className="text-base" to={"/inicio/contacto"}>
+                        <Link className="text-base" to={"/contacto"}>
                             Contacto
                         </Link>
                     </div>

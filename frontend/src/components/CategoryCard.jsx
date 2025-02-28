@@ -18,7 +18,7 @@ export default function CategoryCard({ categoryObject }) {
             className="w-[288px] h-[288px] relative border flex justify-center items-center text-white max-sm:w-full max-sm:px-6"
         >
             <img
-                className="w-full h-full object-cover bg-gradient-to-t from-black to-white"
+                className="w-full h-full object-contain bg-gradient-to-t from-black to-white"
                 src={categoryObject?.image || testphoto}
                 alt=""
             />

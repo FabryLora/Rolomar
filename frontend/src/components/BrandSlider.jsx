@@ -2,42 +2,33 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import banner from "../assets/logos/logo-principal.png";
-
-const brands = [
-    { name: "Mefin", img: banner },
-    { name: "Spaco", img: banner },
-    { name: "Bosch", img: banner },
-    { name: "Firad", img: banner },
-    { name: "Special Diesel", img: banner },
-    { name: "Zexel", img: banner },
-    { name: "Zexel", img: banner },
-    { name: "Zexel", img: banner },
-];
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function BrandSlider() {
+    const { brandImages } = useStateContext();
+
     return (
         <div className="w-full max-w-[1240px] mx-auto py-10 px-4">
             <Swiper
                 modules={[Pagination, Autoplay]}
-                spaceBetween={20}
+                spaceBetween={0}
                 slidesPerView={3} // Predeterminado para pantallas pequeñas
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 breakpoints={{
-                    480: { slidesPerView: 2 },
-                    768: { slidesPerView: 2 },
-                    1024: { slidesPerView: 4 },
+                    480: { slidesPerView: 3 },
+                    768: { slidesPerView: 4 },
+                    1024: { slidesPerView: 6 },
                     1280: { slidesPerView: 6 },
                 }}
                 className="h-[180px]"
             >
-                {brands.map((brand, index) => (
+                {brandImages.map((brand, index) => (
                     <SwiperSlide key={index} className="flex justify-center">
                         <div className="w-[120px] h-[100px] md:w-[184px] md:h-[141px] flex items-center justify-center">
                             <img
-                                src={brand.img}
-                                alt={brand.name}
+                                src={brand.image_url}
+                                alt={brand?.name}
                                 className="w-full h-full object-contain border grayscale hover:grayscale-0 transition"
                             />
                         </div>

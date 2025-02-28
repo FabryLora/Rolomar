@@ -44,6 +44,10 @@ export default function Administrator() {
                     title: "Nosotros Inicio",
                     href: "/dashboard/nosotros-inicio",
                 },
+                {
+                    title: "Marcas slider",
+                    href: "/dashboard/marcas",
+                },
             ],
         },
         {
@@ -123,7 +127,7 @@ export default function Administrator() {
                     href: "/dashboard/lista-de-precios",
                 },
                 {
-                    title: "Informacion y Descuento",
+                    title: "Informacion carrito",
                     href: "/dashboard/informacion",
                 },
             ],
@@ -250,7 +254,7 @@ export default function Administrator() {
                 )}
             </AnimatePresence>
             <div className="w-full flex flex-col overflow-y-auto h-screen">
-                <div className="shadow-md py-3 flex flex-row justify-between items-center px-4">
+                <div className="sticky top-0 bg-white shadow-md py-3 flex flex-row justify-between items-center px-4">
                     <div className="flex flex-row gap-3">
                         <button onClick={() => setSidebar(!sidebar)}>
                             <FontAwesomeIcon
@@ -265,7 +269,10 @@ export default function Administrator() {
                         </h1>
                     </div>
 
-                    <div>
+                    <div className="flex flex-row gap-3">
+                        <div className="">
+                            <h2>{adminInfo[0]?.name.toUpperCase()}</h2>
+                        </div>
                         <button
                             className="relative "
                             onClick={() => setUserMenu(!userMenu)}
@@ -284,14 +291,6 @@ export default function Administrator() {
                                     }}
                                     className="flex flex-col items-start absolute border-2 shadow- w-[300px] h-fit right-2 top-10 p-4 bg-white gap-4"
                                 >
-                                    <div className="">
-                                        <h2>
-                                            <span className="text-gray-500 pr-2">
-                                                Usuario:
-                                            </span>
-                                            {adminInfo[0]?.name.toUpperCase()}
-                                        </h2>
-                                    </div>
                                     <button
                                         onClick={logout}
                                         className="bg-primary-red text-white w-full h-[40px]"
