@@ -17,22 +17,24 @@ const brands = [
 
 export default function BrandSlider() {
     return (
-        <div className="w-full max-w-[1240px] mx-auto py-10">
+        <div className="w-full max-w-[1240px] mx-auto py-10 px-4">
             <Swiper
                 modules={[Pagination, Autoplay]}
                 spaceBetween={20}
-                slidesPerView={3}
+                slidesPerView={3} // Predeterminado para pantallas pequeñas
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 breakpoints={{
-                    640: { slidesPerView: 2 },
-                    1024: { slidesPerView: 6 },
+                    480: { slidesPerView: 2 },
+                    768: { slidesPerView: 2 },
+                    1024: { slidesPerView: 4 },
+                    1280: { slidesPerView: 6 },
                 }}
-                className="px-4 h-[180px]"
+                className="h-[180px]"
             >
                 {brands.map((brand, index) => (
-                    <SwiperSlide key={index} className="flex">
-                        <div className="w-[184px] h-[141px] flex items-center justify-center">
+                    <SwiperSlide key={index} className="flex justify-center">
+                        <div className="w-[120px] h-[100px] md:w-[184px] md:h-[141px] flex items-center justify-center">
                             <img
                                 src={brand.img}
                                 alt={brand.name}
@@ -50,11 +52,11 @@ export default function BrandSlider() {
                         display: flex;
                         justify-content: center;
                         bottom: 0px !important;
-                        padding-right: 40px
+                        padding-right: 20px;
                     }
                     .swiper-pagination-bullet {
-                        width: 43px;
-                        height: 7px;
+                        width: 35px;
+                        height: 6px;
                         border-radius: 0;
                         background: #e0e0e0;
                         opacity: 1;

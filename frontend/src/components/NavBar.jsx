@@ -1,3 +1,5 @@
+import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -6,7 +8,8 @@ import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function NavBar() {
-    const { logos, setUserToken, userToken, userInfo } = useStateContext();
+    const { logos, setUserToken, userToken, userInfo, clearCart } =
+        useStateContext();
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const [userMenu, setUserMenu] = useState(false);
@@ -15,8 +18,10 @@ export default function NavBar() {
     const [user, setUser] = useState("");
     const [password, setPassword] = useState("");
     const [registro, setRegistro] = useState(false);
+    const [tinyMenu, setTinyMenu] = useState(false);
 
     const menuRef = useRef(null);
+    const tinyMenuRef = useRef(null);
 
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
@@ -27,6 +32,12 @@ export default function NavBar() {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
                 setUserMenu(false);
                 setRegistro(false); // Cierra el contenedor si se hace clic fuera
+            }
+            if (
+                tinyMenuRef.current &&
+                !tinyMenuRef.current.contains(event.target)
+            ) {
+                setTinyMenu(false);
             }
         }
 
@@ -196,7 +207,62 @@ export default function NavBar() {
             } ${cleanPathname[0] === "inicio" ? "fixed" : "sticky"}`}
         >
             <ToastContainer />
-            <div className="flex flex-row items-center justify-between mx-auto max-w-[1240px] h-full">
+            <div className="relative flex flex-row items-center justify-between max-md:justify-center mx-auto max-w-[1240px] h-full">
+                <button
+                    onClick={() => setTinyMenu(true)}
+                    className="absolute left-6 md:hidden"
+                >
+                    <FontAwesomeIcon
+                        icon={faBars}
+                        color={` ${
+                            scrolled || cleanPathname[0] !== "inicio"
+                                ? "#000"
+                                : "#fff"
+                        }`}
+                        size="xl"
+                    />
+                </button>
+                <AnimatePresence>
+                    {tinyMenu && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex flex-col justify-start"
+                        >
+                            <motion.div
+                                ref={tinyMenuRef}
+                                initial={{ x: -100, opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                exit={{ x: -100, opacity: 0 }}
+                                transition={{ duration: 0.2, ease: "linear" }}
+                                className="relative h-screen bg-primary-red w-[70%]"
+                            >
+                                <button
+                                    onClick={() => setTinyMenu(false)}
+                                    className="absolute right-3 top-2"
+                                >
+                                    <FontAwesomeIcon icon={faX} color="#fff" />
+                                </button>
+                                <div className="flex flex-col p-4 pt-8 gap-4">
+                                    {cleanPathname[0] !== "privado" &&
+                                        links.map((link) => (
+                                            <Link
+                                                onClick={() =>
+                                                    setTinyMenu(false)
+                                                }
+                                                key={link.title}
+                                                to={link.href}
+                                                className={`text-lg transition-colors relative hover:text-gray-400 text-white`}
+                                            >
+                                                {link.title}
+                                            </Link>
+                                        ))}
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
                 <Link to="/" className="h-[77px] w-[125px]">
                     <img
                         className="w-full h-full object-cover"
@@ -208,7 +274,7 @@ export default function NavBar() {
                         alt="Logo"
                     />
                 </Link>
-                <div className="flex flex-row gap-10 text-base items-center">
+                <div className="flex flex-row gap-10 text-base items-center max-md:hidden">
                     {cleanPathname[0] !== "privado" &&
                         links.map((link) => (
                             <Link
@@ -308,7 +374,10 @@ export default function NavBar() {
                                 >
                                     <button
                                         type="button"
-                                        onClick={() => setUserToken("")}
+                                        onClick={() => {
+                                            clearCart();
+                                            setUserToken("");
+                                        }}
                                         className="bg-primary-red text-white w-[200px] py-1"
                                     >
                                         Cerrar sesion

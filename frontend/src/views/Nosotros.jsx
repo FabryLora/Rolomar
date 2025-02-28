@@ -39,7 +39,7 @@ export default function Nosotros() {
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="w-[600px] h-[511px] flex justify-center items-center mb-6 lg:mb-0"
+                    className="max-md:max-w-[600px] h-[511px] flex justify-center items-center mb-6 lg:mb-0 w-full"
                 >
                     <img
                         className="w-full h-full object-cover"
@@ -64,7 +64,7 @@ export default function Nosotros() {
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="flex flex-col h-full w-[600px] md:max-w-full lg:max-w-none items-center"
+                    className="flex flex-col h-full max-md:max-w-[600px] w-full lg:max-w-none items-center"
                 >
                     <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[678px] w-full">
                         <div
@@ -79,10 +79,10 @@ export default function Nosotros() {
 
             <div className="h-fit w-full bg-special-white flex justify-center pb-20 bg-[#F5F5F5]">
                 <div className="mx-auto max-w-[1240px]">
-                    <h2 className="font-bold text-[40px] py-20">
+                    <h2 className="font-bold text-[40px] py-20 max-md:text-center">
                         ¿Por que elegirnos?
                     </h2>
-                    <div className="flex flex-row flex-wrap gap-y-20 justify-between gap-5">
+                    <div className="flex flex-row flex-wrap gap-y-20 justify-between gap-5 max-md:justify-center">
                         {nosotrosInfo.map((info, index) => (
                             <NosotrosCard
                                 key={index}

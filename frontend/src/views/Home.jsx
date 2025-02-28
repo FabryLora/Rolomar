@@ -32,8 +32,10 @@ export default function Home() {
             <SearchBar />
             <div className="max-w-[1240px] mx-auto py-10">
                 <div>
-                    <h1 className="text-4xl font-bold">Productos destacados</h1>
-                    <div className="flex flex-row flex-wrap justify-between gap-y-10">
+                    <h1 className="text-4xl font-bold max-md:px-6">
+                        Productos destacados
+                    </h1>
+                    <div className="flex flex-row flex-wrap justify-between gap-y-10 max-sm:flex-col max-sm:items-center">
                         {grupoDeProductos
                             ?.filter((grup) => grup?.destacado == "1")
                             ?.map((grupo, index) => (
@@ -66,7 +68,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row h-[700px] my-10 bg-primary-red">
+            <div className="flex flex-row h-[700px] max-md:h-[900px] my-10 bg-primary-red max-md:flex-col">
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
@@ -96,13 +98,13 @@ export default function Home() {
                     initial={{ x: 20, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
                     transition={{ duration: 1 }}
-                    className="flex flex-col w-full"
+                    className="flex flex-col w-full max-md:items-center max-md:justify-center"
                 >
                     <div
                         dangerouslySetInnerHTML={{
                             __html: nosotrosInicio?.text,
                         }}
-                        className="custom-container w-full h-full  prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-white px-20 pt-20"
+                        className="custom-container w-full h-full  prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-white px-20 pt-20 max-md:p-6"
                     ></div>
                     <button className="h-[41px] w-[181px] bg-white text-primary-red mx-20 mb-10">
                         Más información
@@ -114,7 +116,7 @@ export default function Home() {
                 initial={{ x: 100, opacity: 0 }}
                 whileInView={{ x: 0, opacity: 1 }}
                 transition={{ duration: 1 }}
-                className="flex flex-row flex-wrap justify-between max-w-[1240px] mx-auto  py-10"
+                className="flex flex-row flex-wrap justify-between max-w-[1240px] mx-auto py-10 max-md:justify-center max-md:p-5 max-md:gap-y-10"
             >
                 {novedades
                     .filter((novedad) => Number(novedad?.featured) === 1)

@@ -31,7 +31,7 @@ export default function DefaultLayout() {
         <div>
             <NavBar />
             {cleanPathname[0] !== "inicio" && cleanPathname?.length < 2 && (
-                <div className="flex flex-row gap-1 max-w-[1240px] mx-auto py-10">
+                <div className="flex flex-row gap-1 max-w-[1240px] mx-auto py-10 max-md:pl-6">
                     <Link to={"/"}>Inicio</Link>
                     <p>{"/"}</p>
                     <Link className="font-bold" to={`/${cleanPathname[0]}`}>
@@ -40,7 +40,7 @@ export default function DefaultLayout() {
                 </div>
             )}
             {cleanPathname?.length > 1 && cleanPathname?.length < 3 && (
-                <div className="flex flex-row gap-1 max-w-[1240px] mx-auto py-10">
+                <div className="flex flex-row gap-1 max-w-[1240px] mx-auto py-10 max-md:pl-6">
                     <Link to={"/"}>Inicio</Link>
                     <p>{"/"}</p>
                     <Link to={`/${cleanPathname[0]}`}>
