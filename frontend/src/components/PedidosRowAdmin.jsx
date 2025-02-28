@@ -132,7 +132,7 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                             ref={menuRef}
                             style={{
                                 fontFamily: "Arial, sans-serif",
-                                maxWidth: "800px",
+                                maxWidth: "1000px",
                                 margin: "auto",
                                 padding: "20px",
                                 border: "1px solid #ddd",

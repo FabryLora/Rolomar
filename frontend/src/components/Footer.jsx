@@ -47,7 +47,7 @@ export default function Footer() {
 
     return (
         <footer className="bg-black h-[402px] max-sm:h-fit font-roboto-condensed text-white flex flex-col justify-between">
-            <div className="flex flex-row flex-wrap justify-between max-sm:justify-start items-center h-full order-1 w-[1240px] mx-auto">
+            <div className="flex flex-row flex-wrap justify-between max-sm:justify-start items-center h-full order-1 max-w-[1240px] md:w-[1240px] mx-auto max-md:flex-col max-md:w-full max-md:mx-0 max-md:items-start">
                 {/* logos y redes */}
                 <div className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto">
                     <div className="flex flex-col max-sm:py-5">
@@ -105,7 +105,7 @@ export default function Footer() {
             </div>
 
             {/* copy y derechos */}
-            <div className="h-[60px] flex flex-row justify-between items-center text-[14px] bg-primary-blue-dark order-2 w-[1240px] mx-auto">
+            <div className="h-[60px] flex flex-row justify-between items-center text-[14px] bg-primary-blue-dark order-2 md:w-[1240px] max-w-[1240px] mx-auto max-md:px-6">
                 <p>
                     © Copyright 2025{" "}
                     <span className="font-semibold">Rolomar Diesel</span>. Todos
