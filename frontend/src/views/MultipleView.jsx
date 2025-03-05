@@ -133,7 +133,7 @@ export default function MultipleView() {
                 </table>
 
                 <div className="py-10 flex flex-col gap-5">
-                    <h2 className="font-bold text-2xl text-center">
+                    <h2 className="font-bold text-2xl text-left">
                         Productos relacionados
                     </h2>
                     <div className="flex flex-row flex-wrap justify-between gap-y-10 max-sm:justify-center">
@@ -168,6 +168,9 @@ export default function MultipleView() {
                                                     : defaultPhoto
                                             }
                                             alt=""
+                                            onError={(e) => {
+                                                e.target.src = defaultPhoto;
+                                            }}
                                         />
                                     </div>
                                     <div className="h-[15%] w-full border-t">

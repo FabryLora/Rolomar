@@ -138,6 +138,10 @@ export default function GeneralView() {
                                             : defaultPhoto
                                     }
                                     alt=""
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = defaultPhoto;
+                                    }}
                                 />
                             </div>
                             <div className="flex items-center h-fit border-t pl-4 py-2">

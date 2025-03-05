@@ -34,49 +34,50 @@ class ImportarProductosJob implements ShouldQueue
         foreach ($rows as $index => $row) {
             if ($index === 1) continue; // Saltar encabezado
 
-            $codigo = $row['A'];
-            $nombreProducto = $row['B'];
-            $imagen = $row['C'];
-            $categoriaNombre = $row['D'];
-            $precioMayorista = $row['E'];
-            $precioMinorista = $row['F'];
-            $unidadVenta = $row['G'];
+            $codigo = isset($row['A']) ? mb_convert_encoding($row['A'], 'UTF-8', 'auto') : null;
+            $nombreProductoCompleto = isset($row['B']) ? mb_convert_encoding($row['B'], 'UTF-8', 'auto') : null;
+            $imagen = isset($row['C']) ? mb_convert_encoding($row['C'], 'UTF-8', 'auto') . '.png' : null;
+            $categoriaNombre = isset($row['D']) ? mb_convert_encoding($row['D'], 'UTF-8', 'auto') : null;
+            $precioMayorista = isset($row['E']) ? mb_convert_encoding($row['E'], 'UTF-8', 'auto') : null;
+            $precioMinorista = isset($row['F']) ? mb_convert_encoding($row['F'], 'UTF-8', 'auto') : null;
+            $unidadVenta = isset($row['G']) ? mb_convert_encoding($row['G'], 'UTF-8', 'auto') : null;
 
-            // Si el código es null o está vacío, pasar a la siguiente fila
-            if (empty($codigo)) {
+
+            if (empty($codigo) || empty($nombreProductoCompleto)) {
                 continue;
             }
 
-            // Verificar si el producto ya existe
-            $productoExistente = Productos::where('codigo', $codigo)->first();
-            if ($productoExistente) {
-                continue; // Si existe, no lo volvemos a crear
-            }
+            // Separar el nombre base y la variante al encontrar el primer número
+            preg_match('/^(.*?)(\d.*)$/', $nombreProductoCompleto, $matches);
+            $nombreBase = trim($matches[1] ?? $nombreProductoCompleto);
+            $variante = trim($matches[2] ?? '');
 
             // Buscar o crear la categoría
-            $categoria = Categoria::firstOrCreate(
+            $categoria = Categoria::updateOrCreate(
                 ['nombre' => $categoriaNombre ?: "Categoria"],
                 ['imagen' => $imagen, 'orden' => null]
             );
 
-            // Buscar o crear el grupo de productos dentro de la categoría
+            // Buscar o crear el grupo de productos con el nombre base
             $grupoDeProductos = GrupoDeProductos::firstOrCreate(
-                ['nombre' => $nombreProducto ?: 'Producto', 'categoria_id' => $categoria->id],
+                ['nombre' => $nombreBase, 'categoria_id' => $categoria->id],
                 ['imagen' => $imagen, 'orden' => null, 'destacado' => null]
             );
 
-            // Crear el producto si no existe
-            Productos::updateOrCreate([
-                'codigo' => $codigo,
-                'nombre' => $nombreProducto ?: 'Producto',
-                'medida' => 'Unidad',
-                'imagen' => $imagen,
-                'unidad_venta' =>  $unidadVenta || 1,
-                'categoria_id' => $categoria->id,
-                'precio_mayorista' => $precioMayorista,
-                'precio_minorista' => $precioMinorista,
-                'grupo_de_productos_id' => $grupoDeProductos->id
-            ]);
+            // Crear o actualizar el producto dentro del grupo
+            Productos::updateOrCreate(
+                ['codigo' => $codigo],
+                [
+                    'nombre' => $nombreProductoCompleto,
+                    'medida' => 'Unidad',
+                    'imagen' => $imagen,
+                    'unidad_venta' => $unidadVenta ?: 1,
+                    'categoria_id' => $categoria->id,
+                    'precio_mayorista' => $precioMayorista,
+                    'precio_minorista' => $precioMinorista,
+                    'grupo_de_productos_id' => $grupoDeProductos->id
+                ]
+            );
         }
     }
 }
