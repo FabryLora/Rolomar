@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string("localidad")->nullable();
             $table->string("lista");
             $table->boolean('autorizado')->default(false);
+            $table->unsignedInteger('descuento')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

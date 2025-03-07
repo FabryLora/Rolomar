@@ -15,12 +15,16 @@ export default function CategoryCard({ categoryObject }) {
                     ?.toLowerCase()
                     .replace(/-+$/g, "")
             )}`}
-            className="w-[288px] h-[288px] relative border flex justify-center items-center text-white max-sm:w-full max-sm:px-6"
+            className="w-[288px] h-[288px] relative border flex justify-center items-center text-white max-sm:w-full max-sm:px-6 "
         >
+            <div className="absolute w-full h-full [background:linear-gradient(180deg,rgba(0,0,0,0.13)_0%,rgba(0,0,0,0.67)_100%)]"></div>
             <img
-                className="w-full h-full object-contain bg-gradient-to-t from-black to-white"
-                src={categoryObject?.image || testphoto}
+                className="w-full h-full object-contain"
+                src={categoryObject?.imagen_url || testphoto}
                 alt=""
+                onError={(e) => {
+                    e.target.src = testphoto;
+                }}
             />
             <h2 className="absolute bottom-5 font-bold">
                 {categoryObject?.nombre}

@@ -65,9 +65,12 @@ export default function ProductRow({ product }) {
         <div className="grid grid-cols-9 items-center justify-center py-2 border-b text-[#515A53]">
             <div className="flex justify-center w-[85px] h-[85px] border max-sm:hidden">
                 <img
-                    src={product?.image_url ? product?.image_url : defaultPhoto}
+                    src={product?.imagen_url || defaultPhoto}
                     alt={product?.name}
                     className="object-cover h-full w-full"
+                    onError={(e) => {
+                        e.target.src = defaultPhoto;
+                    }}
                 />
             </div>
             <p className="text-left">{product?.codigo}</p>

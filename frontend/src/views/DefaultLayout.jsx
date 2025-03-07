@@ -63,8 +63,14 @@ export default function DefaultLayout() {
                         {capitalizeFirstLetter(cleanPathname[0])}
                     </Link>
                     <p>{"/"}</p>
-                    <Link to={`/${cleanPathname[0]}/${cleanPathname[1]}`}>
-                        {capitalizeFirstLetter(cleanPathname[1])}
+                    <Link
+                        to={`/${cleanPathname[0]}/${cleanPathname[1]
+                            .split("%20")
+                            .join("-")}`}
+                    >
+                        {capitalizeFirstLetter(
+                            cleanPathname[1].split("%20").join(" ")
+                        )}
                     </Link>
                     <p>{"/"}</p>
                     <Link

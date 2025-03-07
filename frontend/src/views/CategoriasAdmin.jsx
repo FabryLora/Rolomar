@@ -69,19 +69,21 @@ export default function CategoriasAdmin() {
                 <div className="flex justify-center w-full">
                     <table className="w-full shadow-md">
                         <thead className="bg-gray-400">
-                            <tr className="text-center">
-                                <td className="min-w-[200px] py-2">Imagen</td>
-                                <td>Nombre</td>
-                                <td>Orden</td>
-                                <td>Editar</td>
+                            <tr className="text-left">
+                                <td className="min-w-[200px] py-2 pl-3">
+                                    IMAGEN
+                                </td>
+                                <td>NOMBRE</td>
+                                <td>ORDEN</td>
+                                <td>EDITAR</td>
                             </tr>
                         </thead>
-                        <tbody className="text-center">
+                        <tbody className="text-left">
                             <tr className="h-[80px]">
                                 <td>
                                     <label
                                         htmlFor="imagen"
-                                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                                        className="bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer text-center"
                                     >
                                         Seleccionar Imagen
                                     </label>
@@ -94,6 +96,7 @@ export default function CategoriasAdmin() {
                                 </td>
                                 <td className="table-cell">
                                     <input
+                                        className="border border-gray-300 rounded-md px-3 py-2 ml-3"
                                         value={nombre}
                                         onChange={(e) =>
                                             setNombre(e.target.value)
@@ -104,6 +107,7 @@ export default function CategoriasAdmin() {
                                 </td>
                                 <td className="table-cell">
                                     <input
+                                        className="border border-gray-300 rounded-md px-3 py-2"
                                         value={orden}
                                         onChange={(e) =>
                                             setOrden(e.target.value)

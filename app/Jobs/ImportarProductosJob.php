@@ -34,18 +34,32 @@ class ImportarProductosJob implements ShouldQueue
         foreach ($rows as $index => $row) {
             if ($index === 1) continue; // Saltar encabezado
 
-            $codigo = isset($row['A']) ? mb_convert_encoding($row['A'], 'UTF-8', 'auto') : null;
-            $nombreProductoCompleto = isset($row['B']) ? mb_convert_encoding($row['B'], 'UTF-8', 'auto') : null;
-            $imagen = isset($row['C']) ? mb_convert_encoding($row['C'], 'UTF-8', 'auto') . '.png' : null;
-            $categoriaNombre = isset($row['D']) ? mb_convert_encoding($row['D'], 'UTF-8', 'auto') : null;
-            $precioMayorista = isset($row['E']) ? mb_convert_encoding($row['E'], 'UTF-8', 'auto') : null;
-            $precioMinorista = isset($row['F']) ? mb_convert_encoding($row['F'], 'UTF-8', 'auto') : null;
-            $unidadVenta = isset($row['G']) ? mb_convert_encoding($row['G'], 'UTF-8', 'auto') : null;
+            $codigo = isset($row['A']) ? mb_convert_encoding(trim($row['A']), 'UTF-8', 'auto') : null;
+            $nombreProductoCompleto = isset($row['B']) ? mb_convert_encoding(trim($row['B']), 'UTF-8', 'auto') : null;
+            $imagenBase = isset($row['C']) ? str_pad(trim($row['C']), 3, '0', STR_PAD_LEFT) : null;
+            $categoriaNombre = isset($row['D']) ? mb_convert_encoding(trim($row['D']), 'UTF-8', 'auto') : null;
+            $precioMayorista = isset($row['E']) ? mb_convert_encoding(trim($row['E']), 'UTF-8', 'auto') : null;
+            $precioMinorista = isset($row['F']) ? mb_convert_encoding(trim($row['F']), 'UTF-8', 'auto') : null;
+            $unidadVenta = isset($row['G']) ? mb_convert_encoding(trim($row['G']), 'UTF-8', 'auto') : null;
 
 
             if (empty($codigo) || empty($nombreProductoCompleto)) {
                 continue;
             }
+
+            // Buscar la imagen con la extensión correcta
+            $extensiones = ['jpg', 'jpeg', 'png', 'JPG', 'jfif'];
+            $imagen = null;
+
+            foreach ($extensiones as $ext) {
+
+
+                if (Storage::disk('public')->exists("images/{$imagenBase}.{$ext}")) {
+                    $imagen = "{$imagenBase}.{$ext}";
+                }
+            }
+
+            // Si no se encuentra la imagen, dejarla como null o asignar una por defecto
 
             // Separar el nombre base y la variante al encontrar el primer número
             preg_match('/^(.*?)(\d.*)$/', $nombreProductoCompleto, $matches);
@@ -59,7 +73,7 @@ class ImportarProductosJob implements ShouldQueue
             );
 
             // Buscar o crear el grupo de productos con el nombre base
-            $grupoDeProductos = GrupoDeProductos::firstOrCreate(
+            $grupoDeProductos = GrupoDeProductos::updateOrCreate(
                 ['nombre' => $nombreBase, 'categoria_id' => $categoria->id],
                 ['imagen' => $imagen, 'orden' => null, 'destacado' => null]
             );

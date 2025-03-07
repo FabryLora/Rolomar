@@ -86,11 +86,14 @@ export default function MultipleView() {
                     <div className="w-full relative max-sm:px-6">
                         <img
                             className="w-full h-full object-contain"
-                            src={defaultPhoto}
+                            src={grupoObjeto?.imagen_url || defaultPhoto}
                             alt=""
                         />
                         <button className="absolute border -bottom-24 w-[80px] h-[80px]">
-                            <img src={defaultPhoto} alt="" />
+                            <img
+                                src={grupoObjeto?.imagen_url || defaultPhoto}
+                                alt=""
+                            />
                         </button>
                     </div>
                     <div className="w-full flex flex-col justify-between ">
@@ -117,7 +120,13 @@ export default function MultipleView() {
                             <tr key={index} className="border-b">
                                 <td className="py-2">
                                     <div className="w-[61px] h-[61px] border">
-                                        <img src={defaultPhoto} alt="" />
+                                        <img
+                                            src={
+                                                grupoObjeto?.imagen_url ||
+                                                defaultPhoto
+                                            }
+                                            alt=""
+                                        />
                                     </div>
                                 </td>
                                 <td>{producto?.codigo}</td>

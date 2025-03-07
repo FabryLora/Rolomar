@@ -38,6 +38,7 @@ export default function CategoryAdminCard({ category }) {
 
             console.log(response);
             fetchCategorias();
+            setEdit(false);
             toast.success("Guardado correctamente");
         } catch (error) {
             toast.error("Error al guardar");
@@ -66,7 +67,7 @@ export default function CategoryAdminCard({ category }) {
                     alt=""
                 />
             </td>
-            <td className=" align-middle">{nombre}</td>
+            <td className=" align-middle pl-3">{nombre}</td>
 
             <td className=" align-middle">{orden}</td>
             <td className=" align-middle">
