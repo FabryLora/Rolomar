@@ -83,86 +83,92 @@ export default function RealProductRowAdmin({ productObject }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed w-screen h-screen bg-black bg-opacity-50 top-0 left-0 flex justify-center items-center"
+                        className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50 text-left"
                     >
-                        <form action="">
-                            <div className="bg-white p-8 rounded-lg">
-                                <div className="flex justify-between items-center">
-                                    <h1 className="text-2xl font-bold">
-                                        Editar producto
-                                    </h1>
-                                    <button
-                                        type="button"
-                                        onClick={() => setEditable(false)}
-                                        className="text-red-500"
-                                    >
-                                        X
-                                    </button>
-                                </div>
-                                <div className="mt-4">
-                                    <label htmlFor="nombre">Nombre</label>
+                        <form onSubmit={update} className="text-black">
+                            <div className="bg-white p-4 w-[500px] rounded-md">
+                                <h2 className="text-2xl font-semibold mb-4">
+                                    Editar producto
+                                </h2>
+
+                                <div className="flex flex-col gap-4">
+                                    <label htmlFor="imagen">Imagen</label>
+                                    <div className="flex flex-row">
+                                        <input
+                                            type="file"
+                                            name="imagen"
+                                            id="imagen"
+                                            onChange={handleFileChange}
+                                            className="hidden"
+                                        />
+                                        <label
+                                            className="cursor-pointer bg-indigo-500 rounded-md text-white py-1 px-2"
+                                            htmlFor="imagen"
+                                        >
+                                            Elegir imagen
+                                        </label>
+                                        <p>{image?.name}</p>
+                                    </div>
+                                    <label htmlFor="nombre">Nombre </label>
                                     <input
+                                        className="border border-gray-300 p-2 rounded-md"
                                         type="text"
+                                        name="nombre"
                                         id="nombre"
                                         value={nombre}
                                         onChange={(e) =>
                                             setNombre(e.target.value)
                                         }
-                                        className="w-full border border-gray-300 rounded-md p-2"
                                     />
-                                </div>
-                                <div className="mt-4">
-                                    <label htmlFor="codigo">Código</label>
+                                    <label htmlFor="codigo">Codigo </label>
                                     <input
+                                        className="border border-gray-300 p-2 rounded-md"
                                         type="text"
+                                        name="codigo"
                                         id="codigo"
                                         value={codigo}
                                         onChange={(e) =>
                                             setCodigo(e.target.value)
                                         }
-                                        className="w-full border border-gray-300 rounded-md p-2"
                                     />
-                                </div>
-                                <div className="mt-4">
-                                    <label htmlFor="precioMayorista">
-                                        Precio mayorista
+                                    <label htmlFor="precio_mayorista">
+                                        Precio mayorista{" "}
                                     </label>
                                     <input
-                                        type="number"
-                                        id="precioMayorista"
+                                        className="border border-gray-300 p-2 rounded-md"
+                                        type="text"
+                                        name="precio_mayorista"
+                                        id="precio_mayorista"
                                         value={precioMayorista}
                                         onChange={(e) =>
                                             setPrecioMayorista(e.target.value)
                                         }
-                                        className="w-full border border-gray-300 rounded-md p-2"
                                     />
-                                </div>
-                                <div className="mt-4">
-                                    <label htmlFor="precioMinorista">
-                                        Precio minorista
+                                    <label htmlFor="precio_minorista">
+                                        Precio minorista{" "}
                                     </label>
                                     <input
-                                        type="number"
-                                        id="precioMinorista"
+                                        className="border border-gray-300 p-2 rounded-md"
+                                        type="text"
+                                        name="precio_minorista"
+                                        id="precio_minorista"
                                         value={precioMinorista}
                                         onChange={(e) =>
                                             setPrecioMinorista(e.target.value)
                                         }
-                                        className="w-full border border-gray-300 rounded-md p-2"
                                     />
-                                </div>
-                                <div className="mt-4">
-                                    <label htmlFor="grupoId">
+
+                                    <label htmlFor="grupoDeProducto">
                                         Grupo de productos
                                     </label>
                                     <select
-                                        name="grupoId"
-                                        id="grupoId"
+                                        name="grupoDeProducto"
+                                        id="grupoDeProducto"
                                         value={grupoId}
                                         onChange={(e) =>
                                             setGrupoId(e.target.value)
                                         }
-                                        className="w-full border border-gray-300 rounded-md p-2"
+                                        className="border border-gray-300 p-2 rounded-md"
                                     >
                                         {grupoDeProductos.map((grupo) => (
                                             <option
@@ -173,32 +179,22 @@ export default function RealProductRowAdmin({ productObject }) {
                                             </option>
                                         ))}
                                     </select>
-                                </div>
 
-                                <div className="mt-4">
-                                    <label htmlFor="image">Imagen</label>
-                                    <input
-                                        type="file"
-                                        id="image"
-                                        onChange={handleFileChange}
-                                        className="w-full border border-gray-300 rounded-md p-2"
-                                    />
-                                </div>
-                                <div className="mt-4 flex justify-end">
-                                    <button
-                                        type="button"
-                                        onClick={deleteProduct}
-                                        className="bg-red-500 text-white px-4 py-2 rounded-md mr-4"
-                                    >
-                                        Eliminar
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        onClick={update}
-                                        className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                                    >
-                                        Guardar
-                                    </button>
+                                    <div className="flex justify-end gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setEditable(false)}
+                                            className="bg-primary-red py-1 px-2 text-white rounded-md"
+                                        >
+                                            Cancelar
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="bg-blue-500 py-1 px-2 text-white rounded-md"
+                                        >
+                                            Guardar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -208,7 +204,9 @@ export default function RealProductRowAdmin({ productObject }) {
             <form
                 method="POST"
                 onSubmit={update}
-                className="table-row bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]"
+                className={`table-row h-[134px] border-b ${
+                    productObject?.id % 2 === 0 ? "bg-gray-100" : "bg-white"
+                }`}
             >
                 <div className="table-cell px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white align-middle">
                     <div className="flex flex-row overflow-x-auto scrollbar-hide gap-2">
@@ -238,16 +236,31 @@ export default function RealProductRowAdmin({ productObject }) {
                     <p>${precioMinorista}</p>
                 </div>
 
-                <div className="table-cell px-6 py-4 align-middle">asd</div>
+                <div className="table-cell px-6 py-4 align-middle">
+                    {
+                        grupoDeProductos?.find(
+                            (grupos) => grupos?.id == productObject?.grupo
+                        )?.nombre
+                    }
+                </div>
 
-                <div className="table-cell align-middle text-white w-[150px]">
-                    <button
-                        type="button"
-                        onClick={() => setEditable(true)}
-                        className="bg-blue-500 rounded-md px-4 py-2"
-                    >
-                        Editar
-                    </button>
+                <div className="table-cell align-middle text-center w-[140px] ">
+                    <div className="flex flex-col gap-3 px-2 ">
+                        <button
+                            type="button"
+                            onClick={() => setEditable(true)}
+                            className="bg-blue-500 py-1 px-2 text-white rounded-md"
+                        >
+                            Editar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={deleteProduct}
+                            className="bg-primary-red py-1 px-2 text-white rounded-md"
+                        >
+                            Eliminar
+                        </button>
+                    </div>
                 </div>
             </form>
         </>

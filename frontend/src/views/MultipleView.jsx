@@ -6,7 +6,7 @@ import defaultPhoto from "../assets/default-photo.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function MultipleView() {
-    const { categorias, grupoDeProductos } = useStateContext();
+    const { categorias, grupoDeProductos, setConsultaProd } = useStateContext();
     const { id } = useParams();
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
@@ -28,6 +28,10 @@ export default function MultipleView() {
                     .toLowerCase()
                     .replace(/-+$/g, "")
             ) === id
+    );
+
+    const [currentImage, setCurrentImage] = useState(
+        grupoObjeto?.images[0]?.image_url
     );
 
     function quitarTildes(texto) {
@@ -85,24 +89,45 @@ export default function MultipleView() {
                 <div className="flex flex-row h-[496px] mb-32 max-sm:flex-col max-sm:gap-24">
                     <div className="w-full relative max-sm:px-6">
                         <img
-                            className="w-full h-full object-contain"
-                            src={grupoObjeto?.imagen_url || defaultPhoto}
+                            className="w-full h-full object-contain border"
+                            src={currentImage || defaultPhoto}
                             alt=""
                         />
-                        <button className="absolute border -bottom-24 w-[80px] h-[80px]">
-                            <img
-                                src={grupoObjeto?.imagen_url || defaultPhoto}
-                                alt=""
-                            />
-                        </button>
+                        <div className="absolute -bottom-24 flex flex-row gap-2 overflow-y-auto scrollbar-hide">
+                            {grupoObjeto?.images?.map((image) => (
+                                <button
+                                    onClick={() =>
+                                        setCurrentImage(image?.image_url)
+                                    }
+                                    key={image?.id}
+                                    className={`w-[80px] h-[80px] border ${
+                                        currentImage == image?.image_url
+                                            ? "border-primary-red"
+                                            : "border-[#EDEDED]"
+                                    }`}
+                                >
+                                    <img
+                                        className="w-full h-full object-contain"
+                                        src={image?.image_url || defaultPhoto}
+                                        alt=""
+                                    />
+                                </button>
+                            ))}
+                        </div>
                     </div>
                     <div className="w-full flex flex-col justify-between ">
                         <h2 className="text-2xl font-bold p-5">
                             {grupoObjeto?.nombre}
                         </h2>
-                        <button className="border h-[41px] text-white bg-primary-red font-bold mx-5">
+                        <Link
+                            onClick={() =>
+                                setConsultaProd(grupoObjeto?.nombre?.trim())
+                            }
+                            to={"/contacto"}
+                            className="flex items-center justify-center border h-[41px] text-white bg-primary-red font-bold mx-5 hover:scale-95 transition-transform"
+                        >
                             Consultar
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
@@ -121,20 +146,32 @@ export default function MultipleView() {
                                 <td className="py-2">
                                     <div className="w-[61px] h-[61px] border">
                                         <img
+                                            className="object-contain w-full h-full"
                                             src={
-                                                grupoObjeto?.imagen_url ||
+                                                producto?.imagen_url ||
                                                 defaultPhoto
                                             }
                                             alt=""
+                                            onError={(e) => {
+                                                e.target.src = defaultPhoto;
+                                            }}
                                         />
                                     </div>
                                 </td>
                                 <td>{producto?.codigo}</td>
                                 <td>{producto?.nombre}</td>
                                 <td className="text-center">
-                                    <button className="w-[181px] h-[41px] border border-primary-red text-primary-red hover:bg-primary-red hover:text-white">
+                                    <Link
+                                        onClick={() =>
+                                            setConsultaProd(
+                                                producto?.nombre?.trim()
+                                            )
+                                        }
+                                        to={"/contacto"}
+                                        className="w-[181px] h-[41px] px-3 py-2 border border-primary-red text-primary-red hover:bg-primary-red hover:text-white "
+                                    >
                                         Consultar
-                                    </button>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

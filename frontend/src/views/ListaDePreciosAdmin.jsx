@@ -39,7 +39,7 @@ export default function ListaDePreciosAdmin() {
             <h1 className="text-2xl py-4">Crear nuevo campo de archivo</h1>
             <form
                 onSubmit={handleUpload}
-                className="p-4 flex flex-col w-[400px] border shadow-md gap-3"
+                className="p-4 flex flex-col w-[400px] border shadow-md gap-3 bg-white"
             >
                 <label htmlFor="nombre">Nombre del archivo</label>
                 <input

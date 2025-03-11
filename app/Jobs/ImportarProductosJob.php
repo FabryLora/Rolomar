@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Categoria;
 use App\Models\GrupoDeProductos;
+use App\Models\ImageGrupo;
 use App\Models\Productos;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Bus\Queueable;
@@ -77,6 +78,14 @@ class ImportarProductosJob implements ShouldQueue
                 ['nombre' => $nombreBase, 'categoria_id' => $categoria->id],
                 ['imagen' => $imagen, 'orden' => null, 'destacado' => null]
             );
+
+            // Crear la imagen del grupo solo si la imagen no es null
+            if ($imagen !== null) {
+                ImageGrupo::firstOrCreate(
+                    ['grupo_de_productos_id' => $grupoDeProductos->id, 'image' => $imagen]
+                );
+            }
+
 
             // Crear o actualizar el producto dentro del grupo
             Productos::updateOrCreate(

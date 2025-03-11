@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -26,16 +26,20 @@ export default function PedidosRowAdmin({ pedidoObject }) {
     }, []);
 
     const downloadFile = async () => {
+        const filename = pedidoObject?.archivo_url.split("/").pop(); // Extraer el nombre del archivo
+
+        const response = axiosClient.get(`/downloadarchivo/${filename}`, {
+            responseType: "blob",
+        });
+
+        toast.promise(response, {
+            loading: "Descargando...",
+            success: "Descargado correctamente",
+            error: "Error al descargar",
+        });
+
         try {
-            const filename = pedidoObject?.archivo_url.split("/").pop(); // Extraer el nombre del archivo
-
-            const response = await axiosClient.get(
-                `/downloadarchivo/${filename}`,
-                {
-                    responseType: "blob",
-                }
-            );
-
+            await response;
             // Obtener el tipo de archivo dinámicamente desde la respuesta
             const fileType =
                 response.headers["content-type"] || "application/octet-stream";
@@ -49,26 +53,28 @@ export default function PedidosRowAdmin({ pedidoObject }) {
             a.click();
 
             window.URL.revokeObjectURL(url);
-            toast.success("Archivo descargado correctamente");
         } catch (error) {
             console.error("Error al descargar el archivo:", error);
-            toast.error("Error al descargar el archivo");
         }
     };
 
     const user = allUsers?.find((user) => pedidoObject?.user_id == user?.id);
 
     const entregarPedido = async () => {
-        try {
-            const response = await axiosClient.put(
-                `/pedidos/${pedidoObject?.id}`,
-                {
-                    entregado: "1",
-                }
-            );
+        const response = axiosClient.put(`/pedidos/${pedidoObject?.id}`, {
+            entregado: "1",
+        });
 
+        toast.promise(response, {
+            loading: "Entregando...",
+            success: "Entregado correctamente",
+            error: "Error al entregar",
+        });
+
+        try {
+            await response;
             console.log(response);
-            toast.success("Pedido entregado correctamente");
+
             fetchPedidos();
         } catch (error) {
             console.error("Error al entregar el pedido:", error);
@@ -76,16 +82,20 @@ export default function PedidosRowAdmin({ pedidoObject }) {
     };
 
     const cancelarPedido = async () => {
-        try {
-            const response = await axiosClient.put(
-                `/pedidos/${pedidoObject?.id}`,
-                {
-                    entregado: "0",
-                }
-            );
+        const response = axiosClient.put(`/pedidos/${pedidoObject?.id}`, {
+            entregado: "0",
+        });
 
+        toast.promise(response, {
+            loading: "Cancelando...",
+            success: "Cancelado correctamente",
+            error: "Error al cancelar",
+        });
+
+        try {
+            await response;
             console.log(response);
-            toast.success("Pedido cancelado correctamente");
+
             fetchPedidos();
         } catch (error) {
             console.error("Error al cancelar el pedido:", error);
@@ -126,7 +136,7 @@ export default function PedidosRowAdmin({ pedidoObject }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center"
+                        className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
                     >
                         <div
                             ref={menuRef}

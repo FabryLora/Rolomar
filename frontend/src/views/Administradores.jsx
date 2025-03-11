@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import AdministradorRow from "../components/AdministradorRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -25,8 +25,8 @@ export default function Administradores() {
     };
 
     return (
-        <div className="flex flex-col items-center h-screen justify-between">
-            <ToastContainer />
+        <div className="flex flex-col items-center h-screen justify-between px-6">
+            <Toaster />
             <div className="flex flex-col gap-2 top-10 right-10 mb-20 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit border">
                 <h2 className="font-bold text-[24px] py-5">
                     Crear Administrador
@@ -103,7 +103,7 @@ export default function Administradores() {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="border">
                     {allAdmins.map((info, index) => (
                         <AdministradorRow key={index} adminObject={info} />
                     ))}

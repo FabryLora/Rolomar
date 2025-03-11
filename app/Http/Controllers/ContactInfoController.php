@@ -27,6 +27,7 @@ class ContactInfoController extends Controller
 
         $data = $request->validate([
             'mail' => ['nullable', 'email'],
+            'mail_dos' => ['nullable', 'email'],
             'phone' => ['nullable', 'string'],
             'wp' => ['nullable', 'string'],
             'location' => ['nullable', 'string'],

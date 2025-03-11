@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import GrupoDeProductoRow from "../components/GrupoDeProductoRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -21,11 +21,18 @@ export default function GruposDeProductos() {
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
 
-    // Calcular el total de páginas
-    const totalPages = Math.ceil(grupoDeProductos?.length / itemsPerPage);
+    const [searchTerm, setSearchTerm] = useState("");
 
-    // Obtener los productos de la página actual
-    const currentItems = grupoDeProductos?.slice(
+    // Filtrar antes de paginar
+    const filteredGrupos = grupoDeProductos?.filter((grupo) =>
+        grupo.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Calcular el total de páginas
+    const totalPages = Math.ceil(filteredGrupos?.length / itemsPerPage);
+
+    // Obtener los elementos de la página actual después del filtro
+    const currentItems = filteredGrupos?.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
     );
@@ -47,9 +54,7 @@ export default function GruposDeProductos() {
             const grupoData = new FormData();
 
             grupoData.append("nombre", nombre);
-            if (imagen) {
-                grupoData.append("imagen", imagen);
-            }
+
             if (orden) {
                 grupoData.append("orden", orden);
             }
@@ -69,23 +74,40 @@ export default function GruposDeProductos() {
                 }
             );
 
-            console.log(grupoResponse);
+            const grupoId = grupoResponse.data.data.id;
 
-            toast.success("Guardado correctamente");
+            // 2. Subir la imagen
+            if (imagen) {
+                const imagenData = new FormData();
+                imagenData.append("image", imagen);
+                imagenData.append("grupo_de_productos_id", grupoId);
+
+                const imagenResponse = await axiosClient.post(
+                    `/grupo-images`,
+                    imagenData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
+            }
+
+            console.log(grupoResponse);
+            toast.success("Grupo de productos guardado correctamente");
             fetchGrupoDeProductos();
         } catch (err) {
-            toast.error("Error al guardar");
+            console.error("Error al guardar:", err);
+            toast.error("Error al guardar el grupo de productos");
         }
     };
 
-    console.log(categoriaId);
-
     return (
-        <div className="relative overflow-x-auto">
-            <ToastContainer />
+        <div className="relative overflow-x-auto px-6">
+            <Toaster />
             <form
                 onSubmit={handleSubmit}
-                className="p-5 flex flex-col justify-between h-fit"
+                className=" flex flex-col justify-between h-fit"
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
@@ -229,9 +251,21 @@ export default function GruposDeProductos() {
                 </div>
             </form>
             <div>
-                <h2 className="text-2xl font-bold p-4">Grupos de productos</h2>
+                <h2 className="text-2xl font-bold py-2">Grupos de productos</h2>
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Buscar grupo por nombre..."
+                        value={searchTerm}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setCurrentPage(1); // Resetear a la primera página al buscar
+                        }}
+                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
+                    />
+                </div>
             </div>
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" className="px-6 py-3 text-center">
@@ -255,12 +289,15 @@ export default function GruposDeProductos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentItems?.map((grupo, index) => (
-                        <GrupoDeProductoRow key={index} grupoObject={grupo} />
+                    {currentItems?.map((grupo) => (
+                        <GrupoDeProductoRow
+                            key={grupo.id}
+                            grupoObject={grupo}
+                        />
                     ))}
                 </tbody>
             </table>
-            <div className="flex justify-center items-center py-4 gap-3 bg-gray-800 text-gray-400">
+            <div className="flex justify-center items-center py-4 gap-3 border bg-gray-200">
                 <button
                     className="px-3 py-2 bg-gray-200 rounded disabled:opacity-50 text-black"
                     onClick={() => handlePageChange(currentPage - 1)}

@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import RealProductRowAdmin from "../components/RealProductRowAdmin";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function RealProducts() {
-    const { productos, grupoDeProductos, categorias, fetchProductos } =
-        useStateContext();
+    const { productos, grupoDeProductos, fetchProductos } = useStateContext();
 
     const [nombre, setNombre] = useState("");
     const [codigo, setCodigo] = useState("");
@@ -38,16 +37,23 @@ export default function RealProducts() {
         formData.append("grupo_de_productos_id", grupoId);
         formData.append("medida", "a");
 
+        const response = axiosClient.post("/productos", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        toast.promise(response, {
+            loading: "Guardando...",
+            success: "Guardado correctamente",
+            error: "Error al guardar",
+        });
+
         try {
-            const response = await axiosClient.post("/productos", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            await response;
             fetchProductos();
-            toast.success("Guardado correctamente");
         } catch (err) {
-            toast.error("Error al guardar");
+            console.error("Error al guardar:", err);
         }
     };
 
@@ -78,7 +84,7 @@ export default function RealProducts() {
 
     return (
         <div className="overflow-x-auto">
-            <ToastContainer />
+            <Toaster />
             <form
                 onSubmit={onSubmit}
                 className="p-5 flex flex-col justify-between h-fit"
@@ -264,7 +270,7 @@ export default function RealProducts() {
                 />
             </div>
 
-            <div className="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <div className="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 px-6 ">
                 <div className="table-header-group text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <div className="table-row">
                         <div className="table-cell px-6 py-3">Imagen</div>
@@ -282,7 +288,7 @@ export default function RealProducts() {
                         <div className="table-cell py-3">Operaciones</div>
                     </div>
                 </div>
-                <div className="table-row-group">
+                <div className="table-row-group text-black border border-black">
                     {currentItems &&
                         currentItems.map((info, index) => (
                             <RealProductRowAdmin
@@ -292,7 +298,7 @@ export default function RealProducts() {
                         ))}
                 </div>
             </div>
-            <div className="flex justify-center py-4 space-x-4 bg-gray-800 text-white">
+            <div className="flex justify-center py-4 space-x-4  text-white bg-gray-100">
                 <button
                     onClick={prevPage}
                     disabled={currentPage === 1}

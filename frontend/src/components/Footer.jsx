@@ -49,11 +49,14 @@ export default function Footer() {
         <footer className="bg-black h-[402px] max-sm:h-fit font-roboto-condensed text-white flex flex-col justify-between">
             <div className="flex flex-row flex-wrap justify-between max-sm:justify-start items-center h-full order-1 max-w-[1240px] md:w-[1240px] mx-auto max-md:flex-col max-md:w-full max-md:mx-0 max-md:items-start">
                 {/* logos y redes */}
-                <div className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto">
+                <Link
+                    to={"/"}
+                    className="flex flex-col justify-center items-center gap-8 order-1 max-sm:mx-auto"
+                >
                     <div className="flex flex-col max-sm:py-5">
                         <img src={logos?.secundario_url} alt="" />
                     </div>
-                </div>
+                </Link>
 
                 {/* footer nav */}
                 <div

@@ -253,8 +253,8 @@ export default function Administrator() {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="w-full flex flex-col overflow-y-auto h-screen">
-                <div className="sticky top-0 bg-white shadow-md py-3 flex flex-row justify-between items-center px-4">
+            <div className="w-full flex flex-col overflow-y-auto h-screen bg-[#f5f5f5]">
+                <div className="sticky top-0 bg-white shadow-md py-3 flex flex-row justify-between items-center px-6 z-50">
                     <div className="flex flex-row gap-3">
                         <button onClick={() => setSidebar(!sidebar)}>
                             <FontAwesomeIcon
@@ -289,7 +289,7 @@ export default function Administrator() {
                                         duration: 0.1,
                                         ease: "linear",
                                     }}
-                                    className="flex flex-col items-start absolute border-2 shadow- w-[300px] h-fit right-2 top-10 p-4 bg-white gap-4"
+                                    className="flex flex-col items-start absolute border-2 shadow- w-[300px] h-fit right-2 top-10 p-4 bg-white gap-4 "
                                 >
                                     <button
                                         onClick={logout}

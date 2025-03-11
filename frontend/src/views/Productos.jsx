@@ -1,12 +1,48 @@
-import { useEffect } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import defaultPhoto from "../assets/default-photo.png";
 import CategoryCard from "../components/CategoryCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Productos() {
-    const { categorias, metadatos } = useStateContext();
+    const { categorias, metadatos, productos, grupoDeProductos } =
+        useStateContext();
+    const [currentCategory, setCurrentCategory] = useState("");
+    const [search, setSearch] = useState(false);
+    const [descripcion, setDescripcion] = useState("");
 
     useEffect(() => {
         window.scrollTo(0, 0);
+    }, []);
+
+    const encontrarCategoria = (id) => {
+        return categorias.find((categoria) => categoria.id === id)?.nombre;
+    };
+
+    const quitarTildes = (cadena) => {
+        return cadena
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    };
+
+    const searchBarRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                searchBarRef.current &&
+                !searchBarRef.current.contains(event.target)
+            ) {
+                setSearch(false); // Cierra el contenedor si se hace clic fuera
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
     }, []);
 
     return (
@@ -27,35 +63,108 @@ export default function Productos() {
                     )?.keywords
                 }
             />
-            <div className="h-[147px] flex items-center w-full">
-                <div className="flex flex-row justify-between w-full h-[55px] max-sm:flex-col max-sm:h-auto max-sm:gap-2 max-sm:px-6">
-                    <select className="w-[184px] text-primary-red pl-2 border max-sm:w-full max-sm:h-[55px]">
+            <div className="h-[147px] flex items-center w-full ">
+                <div
+                    ref={searchBarRef}
+                    className="flex flex-row relative justify-between w-full h-[55px] max-sm:flex-col max-sm:h-auto max-sm:gap-2 max-sm:px-6 gap-5"
+                >
+                    <select
+                        onChange={(e) => setCurrentCategory(e.target.value)}
+                        className="w-full text-primary-red pl-2 border max-sm:w-full max-sm:h-[55px]"
+                    >
                         <option
                             className="text-black"
                             disabled
                             selected
                             value=""
                         >
-                            Marca
+                            Categorias
                         </option>
+                        {categorias?.map((category, index) => (
+                            <option key={index} value={category?.id}>
+                                {category?.nombre}
+                            </option>
+                        ))}
                     </select>
-                    <select className="w-[184px] text-primary-red pl-2 border max-sm:w-full max-sm:h-[55px]">
-                        <option disabled selected value="">
-                            Codigo
-                        </option>
-                    </select>
+
                     <input
                         placeholder="Descripcion"
-                        className="pl-4 w-[600px] outline-none border max-sm:w-full max-sm:h-[55px]"
+                        onChange={(e) => setDescripcion(e.target.value)}
+                        className="pl-4 w-full outline-none border max-sm:w-full max-sm:h-[55px]"
                         type="text"
                     />
-                    <button className="bg-primary-red text-white w-[184px] max-sm:w-full max-sm:h-[55px]">
+                    <button
+                        onClick={() => {
+                            if (currentCategory !== "") {
+                                setSearch(true);
+                            }
+                        }}
+                        className="bg-primary-red text-white min-w-[184px] h-[55px]"
+                    >
                         Buscar
                     </button>
+                    <AnimatePresence>
+                        {search && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ ease: "linear" }}
+                                className="absolute grid grid-cols-4 gap-4 p-4 bg-white border rounded-md h-[400px] w-full top-24 z-50 overflow-y-auto scrollbar-hide"
+                            >
+                                {grupoDeProductos
+                                    ?.filter(
+                                        (grupo) =>
+                                            grupo?.categoria_id ==
+                                                currentCategory &&
+                                            grupo?.nombre
+                                                ?.toLowerCase()
+                                                .includes(
+                                                    descripcion.toLowerCase()
+                                                )
+                                    )
+                                    ?.map((grupo, index) => (
+                                        <Link
+                                            to={`/productos/${encontrarCategoria(
+                                                grupo?.categoria_id
+                                            )?.toLowerCase()}/${quitarTildes(
+                                                grupo?.nombre
+                                                    ?.split(" ")
+                                                    .join("-")
+                                                    .toLowerCase()
+                                            )}`}
+                                            key={index}
+                                            className="flex flex-row items-center gap-2 hover:bg-gray-200 p-2"
+                                        >
+                                            <div className="w-full h-[100px] border">
+                                                <img
+                                                    className="w-full h-full object-cover"
+                                                    src={
+                                                        grupo?.images[0]
+                                                            ?.image_url ||
+                                                        defaultPhoto
+                                                    }
+                                                    onError={(e) => {
+                                                        e.currentTarget.src =
+                                                            defaultPhoto;
+                                                    }}
+                                                    alt=""
+                                                />
+                                            </div>
+
+                                            <div className="flex flex-col w-full">
+                                                <h2>{grupo?.nombre}</h2>
+                                                <p>{grupo?.descripcion}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             </div>
 
-            <div className="flex flex-row gap-5 flex-wrap max-sm:flex-col max-sm:items-center max-sm:mt-20 ">
+            <div className="flex flex-row gap-y-7 flex-wrap gap-7 max-sm:flex-col max-sm:items-center max-sm:mt-20 ">
                 {categorias?.map((category, index) => (
                     <CategoryCard key={index} categoryObject={category} />
                 ))}

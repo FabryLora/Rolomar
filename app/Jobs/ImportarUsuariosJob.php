@@ -69,6 +69,7 @@ class ImportarUsuariosJob implements ShouldQueue
                     'lista' => $lista,
                     'password' => Hash::make($cuit),
                     'autorizado' => true,
+                    'descuento' => 0,
                 ]);
             }
         }

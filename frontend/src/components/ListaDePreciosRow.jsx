@@ -84,7 +84,7 @@ export default function ListaDePreciosRow({ listaObject }) {
     return (
         <form
             onSubmit={update}
-            className="p-4 flex flex-col w-[500px] border shadow-md gap-3"
+            className="p-4 flex flex-col w-[500px] border shadow-md gap-3 bg-white"
         >
             <label htmlFor="nombre">Nombre del archivo</label>
             <input

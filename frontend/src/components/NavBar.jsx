@@ -370,8 +370,18 @@ export default function NavBar() {
                                         duration: 0.1,
                                         ease: "linear",
                                     }}
-                                    className="absolute flex flex-col gap-2 right-0 top-16 bg-white shadow-md p-5 w-fit h-fit z-20 border"
+                                    className="absolute flex flex-col gap-2 right-0 top-14 bg-white shadow-md p-5 w-fit h-fit z-20 border"
                                 >
+                                    <div>
+                                        <p className="text-lg">
+                                            <span className="font-bold">
+                                                {userInfo?.nomcuit}
+                                            </span>
+                                        </p>
+                                        <p className="text-sm">
+                                            {userInfo?.email}
+                                        </p>
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -485,7 +495,7 @@ export default function NavBar() {
                                         duration: 0.1,
                                         ease: "linear",
                                     }}
-                                    className="absolute right-0 top-16 flex flex-col gap-2 bg-white shadow-md p-5 font-roboto-condensed w-[600px] h-fit z-20"
+                                    className="absolute right-0 top-16 flex flex-col gap-2 bg-white shadow-md p-5 font-roboto-condensed w-[600px] h-fit z-20 border"
                                 >
                                     {errorSignup && (
                                         <div className="text-red-500">

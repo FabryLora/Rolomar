@@ -69,11 +69,20 @@ export default function NosotrosInicioAdmin() {
                                 </label>
                                 <style>
                                     {`
-                                    .custom-container ul, ol, li, h1, h2, h3,h4,h5,h6 {
-                                        all: revert;
-                                    }
-                                    `}
+    .custom-container ul, 
+    .custom-container ol, 
+    .custom-container li, 
+    .custom-container h1, 
+    .custom-container h2, 
+    .custom-container h3, 
+    .custom-container h4, 
+    .custom-container h5, 
+    .custom-container h6 {
+        all: revert;
+    }
+    `}
                                 </style>
+
                                 <div className="custom-container mt-2 min-w-[900px] prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
                                     <ReactSummernoteLite
                                         className="w-full"
@@ -137,7 +146,7 @@ export default function NosotrosInicioAdmin() {
                                 >
                                     Imagen
                                 </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 w-1/2">
+                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25">
                                     <div className=" w-1/2 h-[300px]">
                                         <img
                                             className="w-full h-full object-contain"

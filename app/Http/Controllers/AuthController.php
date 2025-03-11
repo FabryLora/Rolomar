@@ -26,7 +26,8 @@ class AuthController extends Controller
             "provincia" => "nullable|string|max:100",
             "localidad" => "nullable|string|max:100",
             "lista" => "nullable|string|max:100",
-            "autorizado" => "nullable|boolean"
+            "autorizado" => "nullable|boolean",
+            "descuento" => "nullable|integer"
 
         ]);
 
@@ -40,6 +41,7 @@ class AuthController extends Controller
             'localidad' => $data['localidad'],
             'lista' => $data['lista'],
             'autorizado' => $data['autorizado'] ?? false,
+            'descuento' => $data['descuento'] ?? 0,
             'password' => bcrypt($data['password'])
         ]);
         $token = $user->createToken('main')->plainTextToken;
@@ -125,7 +127,8 @@ class AuthController extends Controller
             'localidad' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:6|confirmed',
             'lista' => 'nullable|string|max:255',
-            'autorizado' => 'nullable|boolean'
+            'autorizado' => 'nullable|boolean',
+            'descuento' => 'nullable|integer'
         ]);
 
         // Solo actualiza la contraseña si se proporciona

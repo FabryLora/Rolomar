@@ -9,8 +9,15 @@ import ProductRow from "../components/ProductRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Carrito() {
-    const { cart, clearCart, userInfo, pedidos, userId, productos } =
-        useStateContext();
+    const {
+        cart,
+        clearCart,
+        userInfo,
+        pedidos,
+        userId,
+        productos,
+        informacionCarrito,
+    } = useStateContext();
 
     const [selected, setSelected] = useState("retiro");
     const [fileName, setFileName] = useState("Seleccionar archivo");
@@ -44,12 +51,17 @@ export default function Carrito() {
         let subtotal = 0;
         let iva = 0;
         let total = 0;
+        let descuento = userInfo?.descuento > 0 ? userInfo.descuento : 0; // Verificamos si hay descuento válido
+
         cart.forEach((prod) => {
             subtotal += parseFloat(prod.additionalInfo.subtotal);
         });
-        total = subtotal * 1.21;
-        iva = total - subtotal;
-        setSubtotal(subtotal.toFixed(2));
+
+        let subtotalConDescuento = subtotal * (1 - descuento / 100); // Aplicamos el descuento si existe
+        total = subtotalConDescuento * 1.21;
+        iva = total - subtotalConDescuento;
+
+        setSubtotal(subtotalConDescuento.toFixed(2));
         setIva(iva.toFixed(2));
         setTotalFinal(total.toFixed(2));
     }, [cart, userInfo, tipo_entrega]);
@@ -228,7 +240,7 @@ export default function Carrito() {
                 <div className="">
                     <Link
                         to={"/privado/productos"}
-                        className="h-[47px] border border-primary-red text-primary-red font-semibold py-2 px-5"
+                        className="h-[47px] border border-primary-red text-primary-red font-semibold py-2 px-5 hover:scale-95 transition-transform"
                     >
                         SEGUIR COMPRANDO
                     </Link>
@@ -242,7 +254,7 @@ export default function Carrito() {
                     </h2>
                 </div>
                 <p className="p-5 break-words whitespace-pre-line">
-                    {/* {pedidosInfo?.informacion} */}
+                    {informacionCarrito?.informacion}
                 </p>
             </div>
             <div className="w-full border bg-gray-50 h-[206px] max-sm:col-span-2 max-sm:order-3">
@@ -330,12 +342,37 @@ export default function Carrito() {
                 <div className="flex flex-col justify-between px-4 text-xl gap-6 py-6 border-b">
                     <div className="flex flex-row justify-between w-full">
                         <p>Subtotal</p>
-                        <p>${subtotal}</p>
+                        <p>
+                            $
+                            {Number(subtotal)?.toLocaleString("es-AR", {
+                                minimumFractionDigits: 2,
+                            })}
+                        </p>
                     </div>
+
+                    {userInfo?.descuento > 0 && (
+                        <div className="flex flex-row justify-between w-full text-green-500">
+                            <p>Descuento %{userInfo?.descuento}</p>
+                            <p>
+                                -$
+                                {(
+                                    parseFloat(subtotal) *
+                                    (userInfo.descuento / 100)
+                                )?.toLocaleString("es-AR", {
+                                    minimumFractionDigits: 2,
+                                })}
+                            </p>
+                        </div>
+                    )}
 
                     <div className="flex flex-row justify-between w-full">
                         <p>IVA 21%</p>
-                        <p>${iva}</p>
+                        <p>
+                            $
+                            {Number(iva)?.toLocaleString("es-AR", {
+                                minimumFractionDigits: 2,
+                            })}
+                        </p>
                     </div>
                 </div>
                 <div className="flex flex-row justify-between p-3">
@@ -347,7 +384,12 @@ export default function Carrito() {
                             </span>
                         )}
                     </p>
-                    <p className="text-2xl">${totalFinal}</p>
+                    <p className="text-2xl">
+                        $
+                        {Number(totalFinal)?.toLocaleString("es-AR", {
+                            minimumFractionDigits: 2,
+                        })}
+                    </p>
                 </div>
             </div>
 
@@ -374,13 +416,13 @@ export default function Carrito() {
                 <Link
                     to={"/privado/productos"}
                     onClick={clearCart}
-                    className="h-[47px] w-full border flex items-center justify-center border-primary-red text-primary-red"
+                    className="h-[47px] w-full border flex items-center justify-center border-primary-red text-primary-red hover:scale-95 transition-transform"
                 >
                     CANCELAR PEDIDO
                 </Link>
                 <button
                     onClick={handleSubmit}
-                    className={`w-full h-[47px] text-white ${
+                    className={`w-full h-[47px] text-white hover:scale-95 transition-transform ${
                         isSubmitting ? "bg-gray-400" : "bg-primary-red"
                     }`}
                 >

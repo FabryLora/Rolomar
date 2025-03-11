@@ -17,4 +17,9 @@ class GrupoDeProductos extends Model
     {
         return $this->hasMany(Productos::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(ImageGrupo::class);
+    }
 }

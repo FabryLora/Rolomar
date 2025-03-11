@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 import PedidosRowAdmin from "../components/PedidosRowAdmin";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -22,7 +22,7 @@ export default function PedidosAdmin() {
 
     return (
         <div>
-            <ToastContainer />
+            <Toaster />
 
             <div className="grid w-full px-20 py-20">
                 <div className="flex flex-row gap-5 py-2">

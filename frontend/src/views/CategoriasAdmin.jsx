@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import CategoryAdminCard from "../components/CategoryAdminCard";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -27,16 +27,23 @@ export default function CategoriasAdmin() {
         formData.append("nombre", nombre);
         formData.append("orden", orden);
 
+        const reposnse = axiosClient.post("/categorias", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        toast.promise(reposnse, {
+            loading: "Guardando...",
+            success: "Guardado correctamente",
+            error: "Error al guardar",
+        });
+
         try {
-            await axiosClient.post("/categorias", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            await reposnse;
             fetchCategorias();
-            toast.success("Guardado correctamente");
         } catch (error) {
-            toast.error("Error al guardar");
+            console.error("Error al guardar:", error);
         }
     };
 
@@ -56,8 +63,8 @@ export default function CategoriasAdmin() {
 
     return (
         <div className="flex flex-col w-full">
-            <ToastContainer />
-            <div className="flex flex-col w-[90%] mx-auto py-10 gap-3">
+            <Toaster />
+            <div className="flex flex-col w-full px-6 mx-auto py-10 gap-3">
                 <h1 className="text-2xl">Categorias</h1>
                 <input
                     type="text"
@@ -67,19 +74,19 @@ export default function CategoriasAdmin() {
                     className="px-3 py-2 border border-gray-300 rounded-md w-full"
                 />
                 <div className="flex justify-center w-full">
-                    <table className="w-full shadow-md">
-                        <thead className="bg-gray-400">
-                            <tr className="text-left">
-                                <td className="min-w-[200px] py-2 pl-3">
+                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
+                        <thead className="text-xs text-gray-600 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <td className="min-w-[200px] py-2 pl-3 text-center">
                                     IMAGEN
                                 </td>
-                                <td>NOMBRE</td>
-                                <td>ORDEN</td>
-                                <td>EDITAR</td>
+                                <td className="text-center">NOMBRE</td>
+                                <td className="text-center">ORDEN</td>
+                                <td className="text-center">EDITAR</td>
                             </tr>
                         </thead>
-                        <tbody className="text-left">
-                            <tr className="h-[80px]">
+                        <tbody className="text-center">
+                            <tr className="h-[80px] bg-white">
                                 <td>
                                     <label
                                         htmlFor="imagen"

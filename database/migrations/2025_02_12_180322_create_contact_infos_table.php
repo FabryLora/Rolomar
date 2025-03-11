@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("location")->nullable();
             $table->string("ig")->nullable();
             $table->string("fb")->nullable();
+            $table->string("mail_dos")->nullable();
             $table->timestamps();
         });
     }

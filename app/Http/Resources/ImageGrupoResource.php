@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactInfoResource extends JsonResource
+class ImageGrupoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,9 @@ class ContactInfoResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "mail" => $this->mail,
-            "mail_dos" => $this->mail_dos,
-            "phone" => $this->phone,
-            "wp" => $this->wp,
-            "location" => $this->location,
-            "ig" => $this->ig,
-            "fb" => $this->fb,
+            "image_url" => $this->image ? url("storage/" . $this->image) : null,
+            'orden' => $this->orden,
+
         ];
     }
 }

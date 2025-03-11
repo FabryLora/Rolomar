@@ -11,6 +11,7 @@ import DefaultLayout from "./views/DefaultLayout";
 import GeneralView from "./views/GeneralView";
 import GruposDeProductos from "./views/GruposDeProductos";
 import Home from "./views/Home";
+import InformacionCarrito from "./views/InformacionCarrito";
 import ListaDePrecios from "./views/ListaDePrecios";
 import ListaDePreciosAdmin from "./views/ListaDePreciosAdmin";
 import Login from "./views/Login";
@@ -164,6 +165,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/marcas",
                 element: <MarcasAdmin />,
+            },
+            {
+                path: "/dashboard/informacion",
+                element: <InformacionCarrito />,
             },
         ],
     },

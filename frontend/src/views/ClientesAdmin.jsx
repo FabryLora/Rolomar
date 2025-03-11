@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import UserAdmin from "../components/UserAdmin";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -21,6 +21,7 @@ export default function ClientesAdmin() {
         localidad: "",
         lista: "1",
         autorizado: "1",
+        descuento: "0",
     });
 
     const handleChange = (event) => {
@@ -69,13 +70,15 @@ export default function ClientesAdmin() {
         currentPage * itemsPerPage
     );
     return (
-        <div className="h-screen">
-            <ToastContainer />
+        <div className="h-screen px-6">
+            <Toaster />
             <div className="w-full flex flex-col items-center py-10">
-                <h1 className="text-2xl font-bold">Registrar un cliente:</h1>
+                <h1 className="text-2xl font-bold pb-3">
+                    Registrar un cliente:
+                </h1>
                 <form
                     onSubmit={onSubmit}
-                    className="w-fit h-full flex flex-col gap-3 shadow-md p-5"
+                    className="w-fit h-full flex flex-col gap-3 shadow-md p-5 bg-white"
                 >
                     <div className="grid grid-cols-2 gap-3">
                         <div className="flex flex-col gap-2 col-span-2">
@@ -167,7 +170,7 @@ export default function ClientesAdmin() {
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2 col-span-2">
+                        <div className="flex flex-col gap-2">
                             <label htmlFor="direccion">Dirección</label>
                             <input
                                 value={userSubmitInfo.direccion}
@@ -181,6 +184,23 @@ export default function ClientesAdmin() {
                                 type="text"
                                 name="direccion"
                                 id="direccion"
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="descuento">Descuento</label>
+                            <input
+                                value={userSubmitInfo.descuento}
+                                onChange={(ev) =>
+                                    setUserSubmitInfo({
+                                        ...userSubmitInfo,
+                                        descuento: ev.target.value,
+                                    })
+                                }
+                                className="w-full h-[45px] border pl-2"
+                                type="text"
+                                name="descuento"
+                                id="descuento"
                                 required
                             />
                         </div>
@@ -291,15 +311,19 @@ export default function ClientesAdmin() {
                 </form>
             </div>
             <div className="">
-                <h2 className="text-2xl font-bold px-4">Clientes:</h2>
+                <h2 className="text-2xl font-bold ">Clientes:</h2>
                 <input
                     type="text"
                     placeholder="Buscar cliente por nombre..."
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="mb-4 mx-4 p-2 border rounded w-1/2"
+                    onChange={(e) => {
+                        setSearch(e.target.value);
+                        setCurrentPage(1); // Resetear la paginación al filtrar
+                    }}
+                    className="mb-4 pl-2 py-2 border rounded w-1/2"
                 />
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr className="text-center">
                             <th scope="col" className="px-6 py-3">
@@ -309,7 +333,7 @@ export default function ClientesAdmin() {
                                 Email
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                CUIT
+                                Descuento
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Provincia
@@ -328,13 +352,18 @@ export default function ClientesAdmin() {
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {paginatedUsers.map((user, index) => (
-                            <UserAdmin key={index} user={user} />
-                        ))}
+                    <tbody className="border">
+                        {filteredUsers
+                            .slice(
+                                (currentPage - 1) * itemsPerPage,
+                                currentPage * itemsPerPage
+                            )
+                            .map((user) => (
+                                <UserAdmin key={user.id} user={user} />
+                            ))}
                     </tbody>
                 </table>
-                <div className="flex justify-center bg-gray-800 py-4 text-white">
+                <div className="flex justify-center bg-white text-black py-4 ">
                     <button
                         className="px-3 py-1 mx-1 border rounded disabled:opacity-50"
                         onClick={() =>

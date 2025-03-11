@@ -1,3 +1,6 @@
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axiosClient from "../axios";
@@ -20,62 +23,125 @@ export default function GrupoDeProductoRow({ grupoObject }) {
     const update = async (e) => {
         e.preventDefault();
 
+        const grupoData = new FormData();
+
+        grupoData.append("nombre", nombre);
+
+        if (orden) {
+            grupoData.append("orden", orden);
+        }
+
+        grupoData.append("destacado", destacado ? 1 : 0);
+
+        grupoData.append("categoria_id", categoriaId);
+
+        // 1. Crear el producto
+        const grupoResponse = axiosClient.post(
+            `/grupo-de-productos/${grupoObject?.id}?_method=PUT`,
+            grupoData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
+
         try {
-            const grupoData = new FormData();
-
-            grupoData.append("nombre", nombre);
             if (imagen) {
-                grupoData.append("imagen", imagen);
+                const imagenData = new FormData();
+                imagenData.append("image", imagen);
+                imagenData.append("grupo_de_productos_id", grupoObject?.id);
+
+                const imagenResponse = axiosClient.post(
+                    `/grupo-images`,
+                    imagenData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
             }
-            if (orden) {
-                grupoData.append("orden", orden);
-            }
-
-            grupoData.append("destacado", destacado ? 1 : 0);
-
-            grupoData.append("categoria_id", categoriaId);
-
-            // 1. Crear el producto
-            const grupoResponse = await axiosClient.post(
-                `/grupo-de-productos/${grupoObject?.id}?_method=PUT`,
-                grupoData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-
-            console.log(grupoResponse);
-
+            await grupoResponse;
             toast.success("Guardado correctamente");
+            console.log(grupoResponse);
+            setEditar(false);
             fetchGrupoDeProductos();
         } catch (err) {
             toast.error("Error al guardar");
+            console.error("Error al guardar:", err);
         }
     };
 
     const deleteGrupo = async () => {
+        const response = axiosClient.post(
+            `/grupo-de-productos/${grupoObject?.id}?_method=DELETE`
+        );
+
+        toast.promise(response, {
+            loading: "Eliminando...",
+            success: "Eliminado correctamente",
+            error: "Error al eliminar",
+        });
+
         try {
-            await axiosClient.post(
-                `/grupo-de-productos/${grupoObject?.id}?_method=DELETE`
-            );
-            toast.success("Eliminado correctamente");
+            await response;
+
             fetchGrupoDeProductos();
         } catch (err) {
-            toast.error("Error al eliminar");
+            console.error("Error al eliminar:", err);
+        }
+    };
+
+    const deleteImage = async (imageId) => {
+        const response = axiosClient.post(
+            `/grupo-images/${imageId}?_method=DELETE`
+        );
+
+        toast.promise(response, {
+            loading: "Eliminando...",
+            success: "Eliminado correctamente",
+            error: "Error al eliminar",
+        });
+
+        try {
+            await response;
+
+            fetchGrupoDeProductos();
+        } catch (err) {
+            console.error("Error al eliminar:", err);
         }
     };
 
     return (
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 h-[134px]">
+        <tr
+            className={`border-gray-300 border-b text-black h-[134px] ${
+                grupoObject?.id % 2 === 0 ? "bg-gray-100" : "bg-white"
+            }`}
+        >
             <td className="text-center h-[100px]">
-                {grupoObject?.imagen_url ? (
-                    <img
-                        className="w-full h-full object-contain px-4 py-2"
-                        src={grupoObject?.imagen_url}
-                        alt=""
-                    />
+                {grupoObject?.images?.length > 0 ? (
+                    <div className="flex flex-row gap-2 justify-center">
+                        {grupoObject?.images?.map((image, index) => (
+                            <div className="relative h-[100px]" key={index}>
+                                <div
+                                    onClick={() => deleteImage(image?.id)}
+                                    className="cursor-pointer flex items-center justify-center bg-black bg-opacity-50 absolute w-full h-full"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faTrash}
+                                        color="#ef4444"
+                                        size="xl"
+                                    />
+                                </div>
+                                <img
+                                    className="w-full h-full object-contain px-4 py-2"
+                                    src={image?.image_url}
+                                    alt=""
+                                />
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <p>Sin imagen</p>
                 )}
@@ -100,7 +166,7 @@ export default function GrupoDeProductoRow({ grupoObject }) {
                 />
             </td>
             <td className="text-center">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 px-2">
                     <button
                         onClick={() => setEditar(true)}
                         className="bg-blue-500 py-1 px-2 text-white rounded-md"
@@ -115,115 +181,129 @@ export default function GrupoDeProductoRow({ grupoObject }) {
                     </button>
                 </div>
             </td>
-            {editar && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
-                    <form
-                        onSubmit={update}
-                        className="text-black"
-                        method="POST"
+            <AnimatePresence>
+                {editar && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50"
                     >
-                        <div className="bg-white p-4 w-[500px]">
-                            <h2 className="text-2xl font-semibold mb-4">
-                                Editar grupo de producto
-                            </h2>
-                            <div className="flex flex-col gap-4">
-                                <label htmlFor="nombre">
-                                    Nombre{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    className="border border-gray-300 p-2 rounded-md"
-                                    type="text"
-                                    name="nombre"
-                                    id="nombre"
-                                    value={nombre}
-                                    onChange={(e) => setNombre(e.target.value)}
-                                />
-                                <label htmlFor="imagen">Imagen</label>
-                                <div className="flex flex-row">
-                                    <input
-                                        type="file"
-                                        name="imagen"
-                                        id="imagen"
-                                        onChange={handleFileChange}
-                                        className="hidden"
-                                    />
-                                    <label
-                                        className="cursor-pointer bg-indigo-500 rounded-md text-white py-1 px-2"
-                                        htmlFor="imagen"
-                                    >
-                                        Elegir imagen
+                        <form
+                            onSubmit={update}
+                            className="text-black "
+                            method="POST"
+                        >
+                            <div className="bg-white p-4 w-[500px] rounded-md">
+                                <h2 className="text-2xl font-semibold mb-4">
+                                    Editar grupo de producto
+                                </h2>
+                                <div className="flex flex-col gap-4">
+                                    <label htmlFor="nombre">
+                                        Nombre{" "}
+                                        <span className="text-red-500">*</span>
                                     </label>
-                                    <p>{imagen?.name}</p>
-                                </div>
-
-                                <label htmlFor="orden">Orden</label>
-                                <input
-                                    className="border border-gray-300 p-2 rounded-md"
-                                    type="text"
-                                    name="orden"
-                                    id="orden"
-                                    value={orden}
-                                    onChange={(e) => setOrden(e.target.value)}
-                                />
-                                <label htmlFor="destacado">Destacado</label>
-                                <div className="flex flex-row gap-2">
                                     <input
-                                        type="checkbox"
-                                        name="destacado"
-                                        id="destacado"
-                                        checked={destacado}
+                                        className="border border-gray-300 p-2 rounded-md"
+                                        type="text"
+                                        name="nombre"
+                                        id="nombre"
+                                        value={nombre}
                                         onChange={(e) =>
-                                            setDestacado(e.target.checked)
+                                            setNombre(e.target.value)
                                         }
                                     />
-                                    <label htmlFor="destacado">
-                                        Selecciona esta casilla si deseas que el
-                                        grupo se muestre en el inicio
-                                    </label>
-                                </div>
-
-                                <label htmlFor="categoria">
-                                    Categoría
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <select
-                                    className="border border-gray-300 p-2 rounded-md"
-                                    name="categoria"
-                                    id="categoria"
-                                    value={categoriaId}
-                                    onChange={(e) =>
-                                        setCategoriaId(e.target.value)
-                                    }
-                                >
-                                    {categorias?.map((categoria) => (
-                                        <option
-                                            key={categoria?.id}
-                                            value={categoria?.id}
+                                    <label htmlFor="imagen">Imagen</label>
+                                    <div className="flex flex-row">
+                                        <input
+                                            type="file"
+                                            name="imagen"
+                                            id="imagen"
+                                            onChange={handleFileChange}
+                                            className="hidden"
+                                        />
+                                        <label
+                                            className="cursor-pointer bg-indigo-500 rounded-md text-white py-1 px-2"
+                                            htmlFor="imagen"
                                         >
-                                            {categoria?.nombre}
-                                        </option>
-                                    ))}
-                                </select>
-                                <div className="flex justify-end gap-4">
-                                    <button
-                                        onClick={() => setEditar(false)}
-                                        className="bg-primary-red py-1 px-2 text-white rounded-md"
+                                            Elegir imagen a agregar
+                                        </label>
+                                        <p>{imagen?.name}</p>
+                                    </div>
+
+                                    <label htmlFor="ordenn">Orden</label>
+                                    <input
+                                        className="border border-gray-300 p-2 rounded-md"
+                                        type="text"
+                                        name="ordenn"
+                                        id="ordenn"
+                                        value={orden}
+                                        onChange={(e) =>
+                                            setOrden(e.target.value)
+                                        }
+                                    />
+                                    <label htmlFor="destacadoo">
+                                        Destacado
+                                    </label>
+                                    <div className="flex flex-row gap-2">
+                                        <input
+                                            type="checkbox"
+                                            name="destacadoo"
+                                            id="destacadoo"
+                                            checked={destacado}
+                                            onChange={(e) =>
+                                                setDestacado(e.target.checked)
+                                            }
+                                        />
+                                        <label htmlFor="destacadoo">
+                                            Selecciona esta casilla si deseas
+                                            que el grupo se muestre en el inicio
+                                        </label>
+                                    </div>
+
+                                    <label htmlFor="categoriaa">
+                                        Categoría
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        className="border border-gray-300 p-2 rounded-md"
+                                        name="categoriaa"
+                                        id="categoriaa"
+                                        value={categoriaId}
+                                        onChange={(e) =>
+                                            setCategoriaId(e.target.value)
+                                        }
                                     >
-                                        Cancelar
-                                    </button>
-                                    <button
-                                        onClick={update}
-                                        className="bg-blue-500 py-1 px-2 text-white rounded-md"
-                                    >
-                                        Guardar
-                                    </button>
+                                        {categorias?.map((categoria) => (
+                                            <option
+                                                key={categoria?.id}
+                                                value={categoria?.id}
+                                            >
+                                                {categoria?.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div className="flex justify-end gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setEditar(false)}
+                                            className="bg-primary-red py-1 px-2 text-white rounded-md"
+                                        >
+                                            Cancelar
+                                        </button>
+                                        <button
+                                            onClick={update}
+                                            className="bg-blue-500 py-1 px-2 text-white rounded-md"
+                                        >
+                                            Guardar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-            )}
+                        </form>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </tr>
     );
 }

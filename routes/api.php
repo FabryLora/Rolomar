@@ -6,8 +6,10 @@ use App\Http\Controllers\BrandImagesController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContactInfoController;
 use App\Http\Controllers\GrupoDeProductosController;
+use App\Http\Controllers\ImageGrupoController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ImportUsuarioController;
+use App\Http\Controllers\InformacionCarritoController;
 use App\Http\Controllers\ListaDePreciosController;
 use App\Http\Controllers\LogosController;
 use App\Http\Controllers\MetadatosController;
@@ -21,6 +23,7 @@ use App\Http\Controllers\SendContactInfoController;
 use App\Http\Controllers\SendPedidoController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\SliderImageController;
+use App\Models\ImageGrupo;
 use App\Models\SliderImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -90,3 +93,9 @@ Route::apiResource('/metadatos', MetadatosController::class);
 
 //
 Route::apiResource('/brandimages', BrandImagesController::class);
+
+//
+Route::apiResource('/informacion-carrito', InformacionCarritoController::class);
+
+
+Route::apiResource('/grupo-images', ImageGrupoController::class);

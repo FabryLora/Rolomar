@@ -47,6 +47,12 @@ const StateContext = createContext({
     fetchMetadatos: () => {},
     brandImages: [],
     fetchBrandImages: () => {},
+    informacionCarrito: {},
+    fetchInformacionCarrito: () => {},
+    consultaProd: "",
+    setConsultaProd: () => {},
+    grupoImages: [],
+    fetchImagesGrupo: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -70,6 +76,9 @@ export const ContextProvider = ({ children }) => {
     const [listadeprecios, setListadeprecios] = useState([]);
     const [metadatos, setMetadatos] = useState([]);
     const [brandImages, setBrandImages] = useState([]);
+    const [informacionCarrito, setInformacionCarrito] = useState({});
+    const [consultaProd, setConsultaProd] = useState("");
+    const [grupoImages, setGrupoImages] = useState([]);
 
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
@@ -258,6 +267,18 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchInformacionCarrito = () => {
+        axiosClient.get("/informacion-carrito").then(({ data }) => {
+            setInformacionCarrito(data.data[0]);
+        });
+    };
+
+    const fetchImagesGrupo = () => {
+        axiosClient.get("/grupo-images").then(({ data }) => {
+            setGrupoImages(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
@@ -276,6 +297,8 @@ export const ContextProvider = ({ children }) => {
         fetchListadeprecios();
         fetchMetadatos();
         fetchBrandImages();
+        fetchInformacionCarrito();
+        fetchImagesGrupo();
     }, []);
 
     useEffect(() => {
@@ -293,6 +316,12 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                grupoImages,
+                fetchImagesGrupo,
+                consultaProd,
+                setConsultaProd,
+                informacionCarrito,
+                fetchInformacionCarrito,
                 brandImages,
                 fetchBrandImages,
                 metadatos,

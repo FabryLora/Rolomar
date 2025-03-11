@@ -1,6 +1,6 @@
 import { ReactSummernoteLite } from "@easylogic/react-summernote-lite";
 import { useEffect, useRef, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -49,26 +49,30 @@ export default function NosotrosAdmin() {
         formData.append("vision", vision);
         formData.append("valores", valores);
 
+        const res = axiosClient.post("/nosotros/1?_method=PUT", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        toast.promise(res, {
+            loading: "Actualizando...",
+            success: "Actualizado correctamente",
+            error: "Error al actualizar",
+        });
+
         try {
-            const res = await axiosClient.post(
-                "/nosotros/1?_method=PUT",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-            toast.success("Información actualizada");
+            await res;
+
             fetchNosotros();
         } catch (error) {
-            toast.error("Error al actualizar la información");
+            console.error("Error al guardar:", error);
         }
     };
 
     return (
         <div>
-            <ToastContainer />
+            <Toaster />
             <form
                 onSubmit={update}
                 className="p-5 flex flex-col justify-between h-screen"
@@ -82,11 +86,20 @@ export default function NosotrosAdmin() {
                                 </label>
                                 <style>
                                     {`
-                                    .custom-container ul, ol, li, h1, h2, h3,h4,h5,h6 {
-                                        all: revert;
-                                    }
-                                    `}
+    .custom-container ul, 
+    .custom-container ol, 
+    .custom-container li, 
+    .custom-container h1, 
+    .custom-container h2, 
+    .custom-container h3, 
+    .custom-container h4, 
+    .custom-container h5, 
+    .custom-container h6 {
+        all: revert;
+    }
+    `}
                                 </style>
+
                                 <div className="custom-container mt-2 min-w-[900px] prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
                                     <ReactSummernoteLite
                                         className="w-full"

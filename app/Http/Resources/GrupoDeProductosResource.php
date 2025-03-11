@@ -22,6 +22,7 @@ class GrupoDeProductosResource extends JsonResource
             'orden' => $this->orden,
             "categoria_id" => $this->categoria_id,
             'productos' => ProductosResource::collection($this->productos),
+            'images' => ImageGrupoResource::collection($this->images),
         ];
     }
 }

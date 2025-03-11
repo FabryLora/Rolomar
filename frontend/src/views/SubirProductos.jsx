@@ -38,7 +38,7 @@ const SubirProductos = () => {
 
     return (
         <div className="p-4 border rounded-md shadow-lg">
-            <h2 className="text-lg font-bold mb-2">Importar Excel</h2>
+            <h2 className="text-lg font-bold mb-2">Importar Productos</h2>
             <input type="file" onChange={handleFileChange} className="mb-2" />
             <button
                 onClick={handleUpload}

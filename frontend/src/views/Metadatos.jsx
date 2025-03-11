@@ -1,4 +1,4 @@
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 import MetadatosRow from "../components/MetadatosRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -7,7 +7,7 @@ export default function Metadatos() {
 
     return (
         <div className="table  w-[90%] mx-auto my-20">
-            <ToastContainer />
+            <Toaster />
             <div className="table-header-group ...">
                 <div className="table-row bg-gray-300 h-[50px]">
                     <div className="table-cell text-left align-middle  pl-2">

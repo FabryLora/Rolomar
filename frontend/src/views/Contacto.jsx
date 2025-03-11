@@ -11,7 +11,7 @@ import EmailTemplate from "../components/EmailTemplate";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Contacto() {
-    const { contactInfo, metadatos } = useStateContext();
+    const { contactInfo, metadatos, consultaProd } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -37,7 +37,7 @@ export default function Contacto() {
         phone: "",
         email: "",
         company: "",
-        message: "",
+        message: consultaProd ? consultaProd : "",
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);

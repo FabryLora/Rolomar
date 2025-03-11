@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import soloCart from "../assets/iconos/solo-cart.svg";
 import ProductCard from "../components/ProductCard";
 import ProductRow from "../components/ProductRow";
@@ -47,12 +48,15 @@ export default function PrivateProducts() {
         window.scrollTo(0, 0);
     }, []);
 
+    const navigate = useNavigate();
+
     return (
         <div className="w-full pb-20 flex flex-col gap-20 max-sm:px-0">
             <AnimatePresence mode="popLayout">
                 {carrito && (
                     <motion.div
-                        key={cart.length} // Esto fuerza la animación cada vez que cambia cart.length
+                        onClick={() => navigate("/privado/carrito")}
+                        key="cart-container" // Mantener un key estable
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
@@ -61,7 +65,7 @@ export default function PrivateProducts() {
                             stiffness: 300,
                             damping: 10,
                         }}
-                        className="fixed flex justify-center items-center w-14 h-14 border border-primary-red rounded-full bottom-5 right-5 bg-white shadow-lg z-50"
+                        className="fixed flex justify-center items-center w-14 h-14 border border-primary-red rounded-full bottom-5 right-5 bg-white shadow-lg z-50 cursor-pointer"
                     >
                         <motion.div
                             key={`badge-${cart.length}`} // Clave diferente para animar el número

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import NovedadesRow from "../components/NovedadesRow";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -20,38 +20,42 @@ export default function NovedadesAdmin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const formData = new FormData();
-            formData.append("type", type);
-            formData.append("image", image);
-            formData.append("title", title);
-            formData.append("text", text);
-            formData.append("featured", featured ? 1 : 0);
+        const formData = new FormData();
+        formData.append("type", type);
+        formData.append("image", image);
+        formData.append("title", title);
+        formData.append("text", text);
+        formData.append("featured", featured ? 1 : 0);
 
-            const novedadesResponse = await axiosClient.post(
-                "/novedades",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+        const novedadesResponse = axiosClient.post("/novedades", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        toast.promise(novedadesResponse, {
+            loading: "Guardando...",
+            success: "Guardado correctamente",
+            error: "Error al guardar",
+        });
+
+        try {
+            await novedadesResponse;
 
             console.log(novedadesResponse);
-            toast.success("Guardado correctamente");
+
             fetchNovedades();
         } catch (err) {
-            toast.error("Error al guardar");
+            console.error("Error al guardar:", err);
         }
     };
 
     return (
-        <div className="relative overflow-x-auto">
-            <ToastContainer />
+        <div className="relative overflow-x-auto px-6">
+            <Toaster />
             <form
                 onSubmit={handleSubmit}
-                className="p-5 flex flex-col justify-between h-fit"
+                className=" flex flex-col justify-between h-fit"
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
@@ -207,7 +211,7 @@ export default function NovedadesAdmin() {
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="border">
                     {novedades.map((novedadesObject, index) => (
                         <NovedadesRow
                             key={index}

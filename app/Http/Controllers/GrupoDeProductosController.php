@@ -14,7 +14,7 @@ class GrupoDeProductosController extends Controller
      */
     public function index()
     {
-        return GrupoDeProductosResource::collection(GrupoDeProductos::with('productos')->get());
+        return GrupoDeProductosResource::collection(GrupoDeProductos::with('productos', 'images')->get());
     }
 
 

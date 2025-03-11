@@ -1,35 +1,137 @@
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import defaultPhoto from "../assets/default-photo.png";
+import { useStateContext } from "../contexts/ContextProvider";
+
 export default function SearchBar() {
+    const { categorias, grupoDeProductos } = useStateContext();
+    const [currentCategory, setCurrentCategory] = useState("");
+    const [search, setSearch] = useState(false);
+    const [descripcion, setDescripcion] = useState("");
+
+    const encontrarCategoria = (id) => {
+        return categorias.find((categoria) => categoria.id === id)?.nombre;
+    };
+
+    const quitarTildes = (cadena) => {
+        return cadena
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase();
+    };
+
+    const searchBarRef = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                searchBarRef.current &&
+                !searchBarRef.current.contains(event.target)
+            ) {
+                setSearch(false); // Cierra el contenedor si se hace clic fuera
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className="h-[147px] bg-primary-red flex items-center py-4 md:py-0 max-md:h-fit">
-            <div className="flex max-w-[1240px] mx-auto justify-between w-full px-6 md:px-0 flex-wrap md:flex-nowrap gap-4 md:gap-2 max-md:gap-5">
+        <div className=" h-[147px] bg-primary-red flex items-center py-4 md:py-0 max-md:h-fit">
+            <div
+                ref={searchBarRef}
+                className="flex flex-row relative justify-between w-[1240px] mx-auto h-[55px] max-sm:flex-col max-sm:h-auto max-sm:gap-2 max-sm:px-6 gap-5"
+            >
                 <select
-                    className="w-full md:w-[190px] text-primary-red pl-2 py-2"
-                    name=""
-                    id=""
+                    onChange={(e) => setCurrentCategory(e.target.value)}
+                    className="w-full text-primary-red pl-2 border max-sm:w-full max-sm:h-[55px]"
                 >
                     <option className="text-black" disabled selected value="">
-                        Marca
+                        Categorias
                     </option>
+                    {categorias?.map((category, index) => (
+                        <option key={index} value={category?.id}>
+                            {category?.nombre}
+                        </option>
+                    ))}
                 </select>
-                <select
-                    className="w-full md:w-[190px] text-primary-red pl-2 py-2"
-                    name=""
-                    id=""
-                >
-                    <option disabled selected value="">
-                        Codigo
-                    </option>
-                </select>
+
                 <input
                     placeholder="Descripcion"
-                    className="pl-4 w-full md:w-[615px] outline-none py-2"
+                    onChange={(e) => setDescripcion(e.target.value)}
+                    className="pl-4 w-full outline-none border max-sm:w-full max-sm:h-[55px]"
                     type="text"
-                    name=""
-                    id=""
                 />
-                <button className="bg-black text-white w-full md:w-[184px] py-2">
+                <button
+                    onClick={() => {
+                        if (currentCategory !== "") {
+                            setSearch(true);
+                        }
+                    }}
+                    className="bg-black text-white min-w-[184px] h-[55px]"
+                >
                     Buscar
                 </button>
+                <AnimatePresence>
+                    {search && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ ease: "linear" }}
+                            className="absolute grid grid-cols-4 gap-4 p-4 bg-white border rounded-md h-[400px] w-full top-24 z-50 overflow-y-auto scrollbar-hide"
+                        >
+                            {grupoDeProductos
+                                ?.filter(
+                                    (grupo) =>
+                                        grupo?.categoria_id ==
+                                            currentCategory &&
+                                        grupo?.nombre
+                                            ?.toLowerCase()
+                                            .includes(descripcion.toLowerCase())
+                                )
+                                ?.map((grupo, index) => (
+                                    <Link
+                                        to={`/productos/${encontrarCategoria(
+                                            grupo?.categoria_id
+                                        )?.toLowerCase()}/${quitarTildes(
+                                            grupo?.nombre
+                                                ?.split(" ")
+                                                .join("-")
+                                                .toLowerCase()
+                                        )}`}
+                                        key={index}
+                                        className="flex flex-row items-center gap-2 hover:bg-gray-200 p-2"
+                                    >
+                                        <div className="w-full h-[100px] border">
+                                            <img
+                                                className="w-full h-full object-cover"
+                                                src={
+                                                    grupo?.images[0]
+                                                        ?.image_url ||
+                                                    defaultPhoto
+                                                }
+                                                onError={(e) => {
+                                                    e.currentTarget.src =
+                                                        defaultPhoto;
+                                                }}
+                                                alt=""
+                                            />
+                                        </div>
+
+                                        <div className="flex flex-col w-full">
+                                            <h2 className="font-normal text-base">
+                                                {grupo?.nombre}
+                                            </h2>
+                                        </div>
+                                    </Link>
+                                ))}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
