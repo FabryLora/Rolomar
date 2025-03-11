@@ -20,14 +20,7 @@ export default function MultipleView() {
     };
 
     const grupoObjeto = grupoDeProductos?.find(
-        (grupo) =>
-            quitarTildes(
-                grupo?.nombre
-                    ?.split(" ")
-                    .join("-")
-                    .toLowerCase()
-                    .replace(/-+$/g, "")
-            ) === id
+        (grupo) => grupo?.id === Number(id)
     );
 
     const [currentImage, setCurrentImage] = useState(
@@ -68,13 +61,7 @@ export default function MultipleView() {
 
                 {categorias?.map((categoria, index) => (
                     <Link
-                        to={`/productos/${quitarTildes(
-                            categoria?.nombre
-                                ?.split(" ")
-                                ?.join("-")
-                                ?.toLowerCase()
-                                .replace(/-+$/g, "")
-                        )}`}
+                        to={`/productos/${categoria?.id}`}
                         key={index}
                         className="text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left"
                         onClick={() => setMenuOpen(false)} // Cierra el menú al hacer clic
@@ -193,15 +180,7 @@ export default function MultipleView() {
                             ?.map((grupo, index) => (
                                 <Link
                                     onClick={() => window.scrollTo(0, 0)}
-                                    to={`/productos/${encontrarCategoria(
-                                        grupo?.categoria_id
-                                    )?.toLowerCase()}/${quitarTildes(
-                                        grupo?.nombre
-                                            ?.split(" ")
-                                            .join("-")
-                                            .toLowerCase()
-                                            .replace(/-+$/g, "")
-                                    )}`}
+                                    to={`/productos/${grupo?.categoria_id}/${grupo?.id}`}
                                     key={index}
                                     className="w-[288px] h-[347px] border"
                                 >

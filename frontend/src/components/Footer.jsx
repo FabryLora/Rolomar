@@ -32,10 +32,38 @@ export default function Footer() {
         {
             icon: locationIcon,
             text: contactInfo?.location,
+            href: contactInfo?.location
+                ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      contactInfo.location
+                  )}`
+                : null,
         },
-        { icon: phoneIcon, text: contactInfo?.phone },
-        { icon: letterIcon, text: contactInfo?.mail },
-        { icon: whatsappIcon, text: contactInfo?.wp },
+        {
+            icon: phoneIcon,
+            text: contactInfo?.phone,
+            href: contactInfo?.phone
+                ? `tel:${soloDejarNumeros(contactInfo.phone)}`
+                : null,
+        },
+        {
+            icon: whatsappIcon,
+            text: contactInfo?.wp,
+            href: contactInfo?.wp
+                ? `https://wa.me/${soloDejarNumeros(contactInfo.wp)}`
+                : null,
+        },
+        {
+            icon: letterIcon,
+            text: contactInfo?.mail,
+            href: contactInfo?.mail ? `mailto:${contactInfo.mail}` : null,
+        },
+        {
+            icon: letterIcon,
+            text: contactInfo?.mail_dos,
+            href: contactInfo?.mail_dos
+                ? `mailto:${contactInfo.mail_dos}`
+                : null,
+        },
     ];
 
     const Links = [
@@ -85,6 +113,7 @@ export default function Footer() {
                 </div>
 
                 {/* contact info */}
+                {/* Datos de contacto */}
                 <div className="flex flex-col gap-3 order-3 max-sm:px-8 max-sm:pb-4">
                     <h2 className="text-xl font-semibold">Datos de Contacto</h2>
                     <div className="flex flex-col gap-3">
@@ -98,9 +127,20 @@ export default function Footer() {
                                     src={item.icon}
                                     alt=""
                                 />
-                                <p className="text-base break-words max-w-[300px]">
-                                    {item.text}
-                                </p>
+                                {item.href ? (
+                                    <a
+                                        href={item.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-base break-words max-w-[300px]"
+                                    >
+                                        {item.text}
+                                    </a>
+                                ) : (
+                                    <p className="text-base break-words max-w-[300px]">
+                                        {item.text}
+                                    </p>
+                                )}
                             </div>
                         ))}
                     </div>

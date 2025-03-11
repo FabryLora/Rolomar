@@ -16,7 +16,7 @@ class ImageGrupoResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "image_url" => $this->image ? url("storage/" . $this->image) : null,
+            "image_url" => $this->image ? url("storage/images/" . $this->image) : null,
             'orden' => $this->orden,
 
         ];

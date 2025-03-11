@@ -19,9 +19,9 @@ class SliderResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "subtitle" => $this->subtitle,
-            "link" => $this->link,
+            "video" => $this->video ? url("storage/" . $this->video) : null,
             "slider_id" => $this->slider_id,
-            "images" => SliderImageResource::collection($this->whenLoaded('images')),
+
 
         ];
     }

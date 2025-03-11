@@ -30,6 +30,8 @@ export default function GeneralView() {
         );
     }, [location]);
 
+    console.log(cleanPathname);
+
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-row justify-between gap-10 max-sm:flex-col">
             {/* Botón para abrir el sidebar en pantallas pequeñas */}
@@ -56,13 +58,7 @@ export default function GeneralView() {
                             </button>
                             {categorias?.map((categoria, index) => (
                                 <Link
-                                    to={`/productos/${quitarTildes(
-                                        categoria?.nombre
-                                            ?.split(" ")
-                                            ?.join("-")
-                                            ?.toLowerCase()
-                                            ?.replace(/-+$/g, "")
-                                    )}`}
+                                    to={`/productos/${categoria?.id}`}
                                     key={index}
                                     className="block text-[16px] border-b border-gray-300 py-2"
                                     onClick={() => setIsSidebarOpen(false)}
@@ -81,21 +77,10 @@ export default function GeneralView() {
             <div className="w-[20%] max-sm:hidden flex flex-col">
                 {categorias?.map((categoria, index) => (
                     <Link
-                        to={`/productos/${quitarTildes(
-                            categoria?.nombre
-                                ?.split(" ")
-                                ?.join("-")
-                                ?.toLowerCase()
-                                ?.replace(/-+$/g, "")
-                        )}`}
+                        to={`/productos/${categoria?.id}`}
                         key={index}
                         className={`text-[16px] border-y border-[#EAEAEA] py-2 w-full text-left ${
-                            cleanPathname[1]?.split(" ")?.join("-") ===
-                            quitarTildes(
-                                categoria?.nombre?.split(" ")?.join("-")
-                            )
-                                ?.toLowerCase()
-                                .replace(/-+$/g, "")
+                            Number(cleanPathname[1]) === categoria?.id
                                 ? "font-bold"
                                 : ""
                         }`}
@@ -108,24 +93,11 @@ export default function GeneralView() {
             <div className="w-full flex flex-row flex-wrap gap-10 h-fit max-sm:flex-col max-sm:items-center">
                 {categorias
                     ?.find(
-                        (category) =>
-                            quitarTildes(
-                                category?.nombre
-                                    ?.split(" ")
-                                    ?.join("-")
-                                    .toLowerCase()
-                                    .replace(/-+$/g, "")
-                            ) === cleanPathname[1]?.split(" ")?.join("-")
+                        (category) => category?.id === Number(cleanPathname[1])
                     )
                     ?.grupos?.map((grupo, index) => (
                         <Link
-                            to={`/productos/${cleanPathname[1]}/${quitarTildes(
-                                grupo?.nombre
-                                    ?.split(" ")
-                                    ?.join("-")
-                                    .toLowerCase()
-                                    .replace(/-+$/g, "")
-                            )}`}
+                            to={`/productos/${cleanPathname[1]}/${grupo?.id}`}
                             key={index}
                             className="flex flex-col w-[288px] h-fit border max-sm:w-full max-sm:px-6"
                         >

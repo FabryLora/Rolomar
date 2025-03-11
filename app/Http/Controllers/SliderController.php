@@ -13,7 +13,7 @@ class SliderController extends Controller
      */
     public function index()
     {
-        return SliderResource::collection(Slider::with('images')->get());
+        return SliderResource::collection(Slider::all());
     }
 
 
@@ -23,7 +23,7 @@ class SliderController extends Controller
      */
     public function show(Slider $slider, Request $request)
     {
-        $slider->load('images');
+
         return new SliderResource($slider);
     }
 
@@ -36,25 +36,14 @@ class SliderController extends Controller
         $data = $request->validate([
             "title" => "required",
             "subtitle" => " required",
-            "link" => " required",
+            "video" => "sometimes|file",
         ]);
-
+        if ($request->has("video")) {
+            $imagePath = $request->file('video')->store('images', 'public');
+            $data["video"] = $imagePath;
+        }
 
         $slider->update($data);
         return new SliderResource($slider);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Slider $slider)
-    {
-        $slider->images->each(function ($image) {
-            $image->delete();
-        });
-        $slider->delete();
-
-
-        return response("", 204);
     }
 }

@@ -1,32 +1,23 @@
-import { DndContext, closestCenter } from "@dnd-kit/core";
-import {
-    SortableContext,
-    arrayMove,
-    horizontalListSortingStrategy,
-    verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
-import SliderImageComponent from "../components/SliderImageComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function SliderAdmin() {
-    const { sliderInfo, fetchSliderImage, fetchSliderInfo } = useStateContext();
+    const { sliderInfo, fetchSliderInfo } = useStateContext();
     const [title, setTitle] = useState();
     const [subtitle, setSubtitle] = useState();
-    const [link, setLink] = useState("/");
-    const [images, setImages] = useState([]);
+    const [video, setVideo] = useState();
+
     const [fileName, setFileName] = useState("");
 
     useEffect(() => {
         setTitle(sliderInfo?.title);
         setSubtitle(sliderInfo?.subtitle);
-        setLink(sliderInfo?.link);
     }, [sliderInfo]);
 
     const handleFileChange = (e) => {
-        setImages(e.target.files[0]);
+        setVideo(e.target.files[0]);
         const file = e.target.files[0];
         file && setFileName(file.name); // Almacena los archivos seleccionados
     };
@@ -34,11 +25,23 @@ export default function SliderAdmin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const sliderResponse = axiosClient.put("/slider/1", {
-            title,
-            subtitle,
-            link,
-        });
+        const formData = new FormData();
+        if (video) {
+            formData.append("video", video);
+        }
+
+        formData.append("title", title);
+        formData.append("subtitle", subtitle);
+
+        const sliderResponse = axiosClient.post(
+            "/slider/1?_method=PUT",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
         toast.promise(sliderResponse, {
             loading: "Actualizando...",
@@ -57,114 +60,6 @@ export default function SliderAdmin() {
         } catch (err) {
             console.log(err);
         }
-    };
-
-    const handleImageSubmit = async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData();
-
-        formData.append("image", images);
-
-        formData.append("slider_id", 1);
-
-        const response = axiosClient.post("/sliderimage", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        toast.promise(response, {
-            loading: "Subiendo imagen...",
-            success: "Imagen subida correctamente",
-            error: "Error al subir la imagen",
-        });
-
-        try {
-            await response;
-            fetchSliderImage();
-            fetchSliderInfo();
-
-            console.log("Imagenes subidas:", response);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const [imagesDND, setImagesDND] = useState([]);
-
-    useEffect(() => {
-        axiosClient
-            .get("/sliderimage")
-            .then((res) =>
-                setImagesDND(res.data.sort((a, b) => a.order - b.order))
-            )
-            .catch((err) => console.error(err));
-    }, [sliderInfo]);
-
-    const handleDragEnd = (event) => {
-        const { active, over } = event;
-
-        if (!over || active.id === over.id) return;
-
-        const oldIndex = imagesDND.findIndex((img) => img.id === active.id);
-        const newIndex = imagesDND.findIndex((img) => img.id === over.id);
-
-        if (oldIndex !== -1 && newIndex !== -1) {
-            const newImages = arrayMove(imagesDND, oldIndex, newIndex);
-
-            setImagesDND(newImages); // Se actualiza el estado correcto
-
-            axiosClient
-                .post("/slider-images/reorder", {
-                    order: newImages.map((img) => img.id),
-                })
-                .catch((err) => console.error("Error al reordenar:", err));
-        }
-    };
-
-    const handleDeleteImage = (id) => {
-        toast(
-            (t) => (
-                <span>
-                    ¿Seguro que deseas eliminar esta imagen?
-                    <div className="flex gap-2 mt-2">
-                        <button
-                            className="bg-red-500 text-white px-3 py-1 rounded"
-                            onClick={() => {
-                                axiosClient
-                                    .delete(`/sliderimage/${id}`)
-                                    .then(() => {
-                                        setImagesDND((prev) =>
-                                            prev.filter((img) => img.id !== id)
-                                        );
-                                        toast.success(
-                                            "Imagen eliminada correctamente"
-                                        );
-                                    })
-                                    .catch(() => {
-                                        toast.error(
-                                            "Error al eliminar la imagen"
-                                        );
-                                    })
-                                    .finally(() => toast.dismiss(t.id)); // Cierra la alerta después de la acción
-                            }}
-                        >
-                            Eliminar
-                        </button>
-                        <button
-                            className="bg-gray-300 px-3 py-1 rounded"
-                            onClick={() => toast.dismiss(t.id)} // Cierra la alerta sin hacer nada
-                        >
-                            Cancelar
-                        </button>
-                    </div>
-                </span>
-            ),
-            {
-                duration: Infinity, // Mantiene el toast visible por 5 segundos
-            }
-        );
     };
 
     return (
@@ -221,6 +116,39 @@ export default function SliderAdmin() {
                                     />
                                 </div>
                             </div>
+
+                            <div className="col-span-full flex flex-col gap-5">
+                                <label
+                                    htmlFor="video"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Video
+                                </label>
+                                <div className="mt-2 flex flex-row items-center">
+                                    <label
+                                        className="cursor-pointer bg-indigo-500   rounded-md text-white px-3 py-1.5 text-base outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 "
+                                        htmlFor="video"
+                                    >
+                                        Elegir Video
+                                    </label>
+                                    <span className="mx-2">{fileName}</span>
+
+                                    <input
+                                        type="file"
+                                        id="video"
+                                        name="video"
+                                        onChange={handleFileChange}
+                                        className="hidden"
+                                    />
+                                </div>
+                                <div>
+                                    <video
+                                        autoPlay
+                                        controls
+                                        src={sliderInfo?.video}
+                                    ></video>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className=" flex items-center justify-end gap-x-6">
@@ -233,55 +161,6 @@ export default function SliderAdmin() {
                     </div>
                 </div>
             </form>
-            <div className="flex flex-col gap-4 w-full col-span-full p-5">
-                <div className="flex flex-col gap-4 w-full">
-                    <DndContext
-                        collisionDetection={closestCenter}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <SortableContext
-                            items={imagesDND.map((img) => img.id)}
-                            strategy={horizontalListSortingStrategy}
-                        >
-                            <div className="flex gap-2">
-                                {imagesDND.map((img) => (
-                                    <SliderImageComponent
-                                        key={img.id}
-                                        id={img.id}
-                                        image={img.image_url}
-                                        onDelete={() =>
-                                            handleDeleteImage(img.id)
-                                        }
-                                    />
-                                ))}
-                            </div>
-                        </SortableContext>
-                    </DndContext>
-                </div>
-                <div className="flex items-center gap-4 w-full">
-                    <label className="cursor-pointer rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Elegir Imagen
-                        <input
-                            type="file"
-                            className="hidden"
-                            onChange={handleFileChange}
-                        />
-                    </label>
-                    {fileName && (
-                        <span className="text-sm text-gray-700">
-                            {fileName}
-                        </span>
-                    )}
-                </div>
-                <div>
-                    <button
-                        onClick={handleImageSubmit}
-                        className="cursor-pointer rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                    >
-                        Subir Imagen
-                    </button>
-                </div>
-            </div>
         </>
     );
 }

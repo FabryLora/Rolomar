@@ -8,9 +8,4 @@ class Slider extends Model
 {
 
     protected $guarded = [];
-
-    public function images()
-    {
-        return $this->hasMany(SliderImage::class);
-    }
 }
