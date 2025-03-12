@@ -1,15 +1,15 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Switch from "@mui/material/Switch";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
-import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function GrupoDeProductoRow({ grupoObject }) {
     const { categorias, fetchGrupoDeProductos } = useStateContext();
     const [editar, setEditar] = useState(false);
-
     const [nombre, setNombre] = useState(grupoObject?.nombre);
     const [imagen, setImagen] = useState();
     const [destacado, setDestacado] = useState(grupoObject?.destacado);
@@ -30,8 +30,6 @@ export default function GrupoDeProductoRow({ grupoObject }) {
         if (orden) {
             grupoData.append("orden", orden);
         }
-
-        grupoData.append("destacado", destacado ? 1 : 0);
 
         grupoData.append("categoria_id", categoriaId);
 
@@ -113,6 +111,20 @@ export default function GrupoDeProductoRow({ grupoObject }) {
         }
     };
 
+    const handleChange = (event) => {
+        setDestacado(event.target.checked);
+        const grupoData = new FormData();
+        grupoData.append("destacado", event.target.checked ? 1 : 0);
+        axiosClient
+            .post(
+                `/grupo-de-productos/${grupoObject?.id}?_method=PUT`,
+                grupoData
+            )
+            .then(() => {
+                fetchGrupoDeProductos();
+            });
+    };
+
     return (
         <tr
             className={`border-gray-300 border-b text-black h-[134px] ${
@@ -157,12 +169,10 @@ export default function GrupoDeProductoRow({ grupoObject }) {
             </td>
             <td className="text-center">{grupoObject?.orden}</td>
             <td className="text-center">
-                <input
-                    type="checkbox"
-                    name=""
-                    checked={grupoObject?.destacado}
-                    disabled
-                    id=""
+                <Switch
+                    checked={destacado}
+                    onChange={handleChange}
+                    inputProps={{ "aria-label": "controlled" }}
                 />
             </td>
             <td className="text-center">
@@ -242,24 +252,6 @@ export default function GrupoDeProductoRow({ grupoObject }) {
                                             setOrden(e.target.value)
                                         }
                                     />
-                                    <label htmlFor="destacadoo">
-                                        Destacado
-                                    </label>
-                                    <div className="flex flex-row gap-2">
-                                        <input
-                                            type="checkbox"
-                                            name="destacadoo"
-                                            id="destacadoo"
-                                            checked={destacado}
-                                            onChange={(e) =>
-                                                setDestacado(e.target.checked)
-                                            }
-                                        />
-                                        <label htmlFor="destacadoo">
-                                            Selecciona esta casilla si deseas
-                                            que el grupo se muestre en el inicio
-                                        </label>
-                                    </div>
 
                                     <label htmlFor="categoriaa">
                                         Categoría

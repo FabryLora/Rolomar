@@ -7,7 +7,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function DefaultLayout() {
     const location = useLocation();
 
-    const { userToken } = useStateContext();
+    const { userToken, categorias, grupoDeProductos } = useStateContext();
 
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
@@ -51,7 +51,12 @@ export default function DefaultLayout() {
                         className="font-bold"
                         to={`/${cleanPathname[0]}/${cleanPathname[1]}`}
                     >
-                        {capitalizeFirstLetter(cleanPathname[1])}
+                        {capitalizeFirstLetter(
+                            categorias?.find(
+                                (categoria) =>
+                                    Number(cleanPathname[1]) === categoria.id
+                            )?.nombre
+                        )}
                     </Link>
                 </div>
             )}
@@ -69,7 +74,10 @@ export default function DefaultLayout() {
                             .join("-")}`}
                     >
                         {capitalizeFirstLetter(
-                            cleanPathname[1].split("%20").join(" ")
+                            categorias?.find(
+                                (categoria) =>
+                                    Number(cleanPathname[1]) === categoria.id
+                            )?.nombre
                         )}
                     </Link>
                     <p>{"/"}</p>
@@ -77,7 +85,11 @@ export default function DefaultLayout() {
                         className="font-bold"
                         to={`/${cleanPathname[0]}/${cleanPathname[1]}/${cleanPathname[2]}`}
                     >
-                        {capitalizeFirstLetter(cleanPathname[2])}
+                        {capitalizeFirstLetter(
+                            grupoDeProductos?.find(
+                                (grupo) => Number(cleanPathname[2]) === grupo.id
+                            )?.nombre
+                        )}
                     </Link>
                 </div>
             )}

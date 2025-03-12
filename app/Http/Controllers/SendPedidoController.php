@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -11,9 +12,10 @@ class SendPedidoController extends Controller
     {
         $htmlContent = $request->input('html'); // Recibe el HTML renderizado
         $attachments = $request->file('attachments'); // Recibe los archivos adjuntos
+        $contactInfo = ContactInfo::first()->mail_dos;
 
-        Mail::send([], [], function ($message) use ($htmlContent, $attachments) {
-            $message->to('osoletest@gmail.com')
+        Mail::send([], [], function ($message) use ($htmlContent, $attachments, $contactInfo) {
+            $message->to($contactInfo)
                 ->subject('Correo de Pedido')
                 ->html($htmlContent);
 

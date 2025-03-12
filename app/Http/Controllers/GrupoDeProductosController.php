@@ -61,11 +61,11 @@ class GrupoDeProductosController extends Controller
         $grupoDeProductos = GrupoDeProductos::findOrFail($id);
 
         $data = $request->validate([
-            'nombre' => 'required',
+            'nombre' => 'sometimes',
             'imagen' => 'nullable|file',
             'destacado' => 'nullable',
             'orden' => 'nullable',
-            'categoria_id' => 'required|exists:categorias,id',
+            'categoria_id' => 'sometimes|exists:categorias,id',
         ]);
 
         if ($request->hasFile('imagen')) {

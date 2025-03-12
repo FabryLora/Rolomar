@@ -1,5 +1,6 @@
+import { Switch } from "@mui/material";
 import { AnimatePresence, motion } from "motion/react";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
@@ -12,7 +13,9 @@ export default function NovedadesRow({ novedadesObject }) {
     const [image, setImage] = useState();
     const [title, setTitle] = useState(novedadesObject?.title);
     const [text, setText] = useState(novedadesObject?.text);
-    const [featured, setFeatured] = useState(novedadesObject?.featured);
+    const [featured, setFeatured] = useState(
+        novedadesObject?.featured == 1 ? true : false
+    );
     const [type, setType] = useState(novedadesObject?.type);
 
     const handleFileChange = (e) => {
@@ -74,6 +77,23 @@ export default function NovedadesRow({ novedadesObject }) {
             fetchNovedades();
         } catch (error) {
             console.error("Error al eliminar la novcedad:", error);
+        }
+    };
+
+    const handleChange = async (e) => {
+        setFeatured(e.target.checked);
+        const formData = new FormData();
+        formData.append("featured", e.target.checked ? 1 : 0);
+        axiosClient.post(
+            `/novedades/${novedadesObject.id}?_method=PUT`,
+            formData
+        );
+
+        try {
+            await res;
+            fetchNovedades();
+        } catch (error) {
+            console.error("Error al actualizar la novedad:", error);
         }
     };
 
@@ -191,34 +211,10 @@ export default function NovedadesRow({ novedadesObject }) {
                 </td>
 
                 <td className="px-6 py-4 text-center">
-                    <input
-                        type="checkbox"
-                        checked={featured == 1}
-                        onChange={async (e) => {
-                            const newValue = e.target.checked ? 1 : 0;
-                            setFeatured(newValue);
-                            const res = axiosClient.put(
-                                `/novedades/${novedadesObject.id}`,
-                                {
-                                    featured: newValue,
-                                }
-                            );
-
-                            toast.promise(res, {
-                                loading: "Actualizando estado...",
-                                success: "Estado actualizado",
-                                error: "Error al actualizar el estado",
-                            });
-
-                            try {
-                                await res;
-                            } catch (error) {
-                                console.error(
-                                    "Error al actualizar el featured:",
-                                    error
-                                );
-                            }
-                        }}
+                    <Switch
+                        checked={featured}
+                        onChange={handleChange}
+                        inputProps={{ "aria-label": "controlled" }}
                     />
                 </td>
 
