@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import rolomarLogo from "../assets/logos/logo-principal.png";
+import rolomarLogo from "../assets/logos/calite.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
@@ -181,7 +181,7 @@ export default function Administrator() {
                         <Link to={"/"} className="w-full p-6">
                             <img
                                 className="w-full h-full object-cover"
-                                src={logos?.principal_url}
+                                src={rolomarLogo}
                                 alt=""
                             />
                         </Link>

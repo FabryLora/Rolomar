@@ -8,7 +8,7 @@ import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function NavBar() {
-    const { logos, setUserToken, userToken, userInfo, clearCart } =
+    const { logos, setUserToken, userToken, userInfo, clearCart, provincias } =
         useStateContext();
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
@@ -245,19 +245,31 @@ export default function NavBar() {
                                     <FontAwesomeIcon icon={faX} color="#fff" />
                                 </button>
                                 <div className="flex flex-col p-4 pt-8 gap-4">
-                                    {cleanPathname[0] !== "privado" &&
-                                        links.map((link) => (
-                                            <Link
-                                                onClick={() =>
-                                                    setTinyMenu(false)
-                                                }
-                                                key={link.title}
-                                                to={link.href}
-                                                className={`text-lg transition-colors relative hover:text-gray-400 text-white`}
-                                            >
-                                                {link.title}
-                                            </Link>
-                                        ))}
+                                    {cleanPathname[0] !== "privado"
+                                        ? links.map((link) => (
+                                              <Link
+                                                  onClick={() =>
+                                                      setTinyMenu(false)
+                                                  }
+                                                  key={link.title}
+                                                  to={link.href}
+                                                  className={`text-lg transition-colors relative hover:text-gray-400 text-white`}
+                                              >
+                                                  {link.title}
+                                              </Link>
+                                          ))
+                                        : linksPrivado.map((link) => (
+                                              <Link
+                                                  onClick={() =>
+                                                      setTinyMenu(false)
+                                                  }
+                                                  key={link.title}
+                                                  to={link.href}
+                                                  className={`text-lg transition-colors relative hover:text-gray-400 text-white`}
+                                              >
+                                                  {link.title}
+                                              </Link>
+                                          ))}
                                 </div>
                             </motion.div>
                         </motion.div>
@@ -667,14 +679,19 @@ export default function NavBar() {
                                                             Selecciona una
                                                             provincia
                                                         </option>
-                                                        <option value="test">
-                                                            test
-                                                        </option>
-                                                        {/* {provincias.map((pr) => (
-                                                     <option key={pr.id} value={pr.name}>
-                                                         {pr.name}
-                                                     </option>
-                                                 ))} */}
+
+                                                        {provincias.map(
+                                                            (pr) => (
+                                                                <option
+                                                                    key={pr.id}
+                                                                    value={
+                                                                        pr.name
+                                                                    }
+                                                                >
+                                                                    {pr.name}
+                                                                </option>
+                                                            )
+                                                        )}
                                                     </select>
                                                 </div>
                                                 <div className="flex flex-col gap-2">
@@ -702,23 +719,31 @@ export default function NavBar() {
                                                             Selecciona una
                                                             localidad
                                                         </option>
-                                                        <option value="test">
-                                                            test
-                                                        </option>
-                                                        {/* {provincias
-                                                     .find(
-                                                         (pr) =>
-                                                             pr.name ===
-                                                             userSubmitInfo.provincia
-                                                     )
-                                                     ?.localidades.map((loc, index) => (
-                                                         <option
-                                                             key={index}
-                                                             value={loc.name}
-                                                         >
-                                                             {loc.name}
-                                                         </option>
-                                                     ))} */}
+                                                        {provincias
+                                                            .find(
+                                                                (pr) =>
+                                                                    pr.name ===
+                                                                    userSubmitInfo.provincia
+                                                            )
+                                                            ?.localidades.map(
+                                                                (
+                                                                    loc,
+                                                                    index
+                                                                ) => (
+                                                                    <option
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        value={
+                                                                            loc.name
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            loc.name
+                                                                        }
+                                                                    </option>
+                                                                )
+                                                            )}
                                                     </select>
                                                 </div>
                                                 <div className="flex flex-col gap-4">

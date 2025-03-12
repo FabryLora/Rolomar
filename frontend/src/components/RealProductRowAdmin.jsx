@@ -16,6 +16,7 @@ export default function RealProductRowAdmin({ productObject }) {
     const [grupoId, setGrupoId] = useState();
     const [categoriaId, setCategoriaId] = useState("");
     const [editable, setEditable] = useState(false);
+    const [addWord, setAddWord] = useState("");
 
     useEffect(() => {
         setNombre(productObject?.nombre);
@@ -24,6 +25,7 @@ export default function RealProductRowAdmin({ productObject }) {
         setPrecioMinorista(productObject?.precio_minorista);
         setGrupoId(productObject?.grupo);
         setCategoriaId(productObject?.categoria?.id);
+        setAddWord(productObject?.addword);
     }, [productObject]);
 
     const handleFileChange = (e) => {
@@ -45,6 +47,7 @@ export default function RealProductRowAdmin({ productObject }) {
         formData.append("categoria_id", categoriaId);
         formData.append("grupo_de_productos_id", grupoId);
         formData.append("medida", "0");
+        formData.append("addword", addWord);
 
         try {
             const response = await axiosClient.post(
@@ -57,6 +60,7 @@ export default function RealProductRowAdmin({ productObject }) {
                 }
             );
             fetchProductos();
+            setEditable(false);
             toast.success("Guardado correctamente");
         } catch (err) {
             toast.error("Error al guardar");
@@ -157,6 +161,17 @@ export default function RealProductRowAdmin({ productObject }) {
                                             setPrecioMinorista(e.target.value)
                                         }
                                     />
+                                    <label htmlFor="adddword">Adword</label>
+                                    <input
+                                        className="border border-gray-300 p-2 rounded-md"
+                                        type="text"
+                                        name="precio_minorista"
+                                        id="adddword"
+                                        value={addWord}
+                                        onChange={(e) =>
+                                            setAddWord(e.target.value)
+                                        }
+                                    />
 
                                     <label htmlFor="grupoDeProducto">
                                         Grupo de productos
@@ -242,6 +257,10 @@ export default function RealProductRowAdmin({ productObject }) {
                             (grupos) => grupos?.id == productObject?.grupo
                         )?.nombre
                     }
+                </div>
+
+                <div className="table-cell px-6 py-4 align-middle">
+                    <p>{addWord}</p>
                 </div>
 
                 <div className="table-cell align-middle text-center w-[140px] ">

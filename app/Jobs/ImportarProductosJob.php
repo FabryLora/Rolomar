@@ -98,7 +98,8 @@ class ImportarProductosJob implements ShouldQueue
                     'categoria_id' => $categoria->id,
                     'precio_mayorista' => $precioMayorista,
                     'precio_minorista' => $precioMinorista,
-                    'grupo_de_productos_id' => $grupoDeProductos->id
+                    'grupo_de_productos_id' => $grupoDeProductos->id,
+                    'addword' => $nombreProductoCompleto
                 ]
             );
         }

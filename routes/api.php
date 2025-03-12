@@ -19,6 +19,7 @@ use App\Http\Controllers\NovedadesController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PedidoProductoController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\ProvinciaController;
 use App\Http\Controllers\SendContactInfoController;
 use App\Http\Controllers\SendPedidoController;
 use App\Http\Controllers\SliderController;
@@ -97,5 +98,9 @@ Route::apiResource('/brandimages', BrandImagesController::class);
 //
 Route::apiResource('/informacion-carrito', InformacionCarritoController::class);
 
-
+//
 Route::apiResource('/grupo-images', ImageGrupoController::class);
+
+
+//
+Route::apiResource('/provincia', ProvinciaController::class);

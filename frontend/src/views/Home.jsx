@@ -18,14 +18,7 @@ export default function Home() {
     } = useStateContext();
 
     const encontrarCategoria = (id) => {
-        return categorias.find((categoria) => categoria.id === id)?.nombre;
-    };
-
-    const quitarTildes = (cadena) => {
-        return cadena
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase();
+        return categorias.find((categoria) => categoria.id === id)?.id;
     };
 
     useEffect(() => {
@@ -64,18 +57,13 @@ export default function Home() {
                                 <Link
                                     to={`/productos/${encontrarCategoria(
                                         grupo?.categoria_id
-                                    )?.toLowerCase()}/${quitarTildes(
-                                        grupo?.nombre
-                                            ?.split(" ")
-                                            .join("-")
-                                            .toLowerCase()
-                                    )}`}
+                                    )}/${grupo?.id}`}
                                     key={index}
                                     className="w-[288px] h-[347px] border"
                                 >
-                                    <div className="h-[85%] w-full">
+                                    <div className="h-[280px] w-full">
                                         <img
-                                            className="w-full h-full object-contain"
+                                            className="w-full h-full object-cover"
                                             src={
                                                 grupo?.imagen_url ||
                                                 defaultPhoto
@@ -87,7 +75,7 @@ export default function Home() {
                                             alt=""
                                         />
                                     </div>
-                                    <div className="h-[15%] w-full border-t">
+                                    <div className="h-fit w-full border-t">
                                         <h2 className="pl-2 text-base font-bold">
                                             {grupo?.nombre}
                                         </h2>

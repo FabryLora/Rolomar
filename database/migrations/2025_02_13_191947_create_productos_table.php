@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('unidad_venta')->default(1);
             $table->decimal('precio_mayorista', 10, 2);
             $table->decimal('precio_minorista', 10, 2);
+            $table->string('addword')->nullable();
             $table->foreignIdFor(GrupoDeProductos::class, 'grupo_de_productos_id')->constrained();
             $table->foreignIdFor(Categoria::class, 'categoria_id')->constrained();
             $table->timestamps();

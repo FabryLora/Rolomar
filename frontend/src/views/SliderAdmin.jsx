@@ -8,7 +8,6 @@ export default function SliderAdmin() {
     const [title, setTitle] = useState();
     const [subtitle, setSubtitle] = useState();
     const [video, setVideo] = useState();
-
     const [fileName, setFileName] = useState("");
 
     useEffect(() => {
@@ -143,6 +142,7 @@ export default function SliderAdmin() {
                                 </div>
                                 <div>
                                     <video
+                                        className="w-1/2"
                                         autoPlay
                                         controls
                                         src={sliderInfo?.video}

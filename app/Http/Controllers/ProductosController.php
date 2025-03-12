@@ -31,6 +31,7 @@ class ProductosController extends Controller
             'unidad_venta' => 'nullable',
             'precio_minorista' => 'required',
             'precio_mayorista' => 'required',
+            'addword' => 'sometimes',
             'grupo_de_productos_id' => 'nullable|exists:grupo_de_productos,id',
             'categoria_id' => 'nullable|exists:categorias,id',
         ]);
@@ -68,6 +69,7 @@ class ProductosController extends Controller
             'medida' => 'required',
             'imagen' => 'sometimes | file',
             'unidad_venta' => 'nullable',
+            'addword' => 'sometimes',
             'grupo_de_productos_id' => 'nullable|exists:grupo_de_productos,id',
             'categoria_id' => 'nullable|exists:categorias,id',
             'precio_minorista' => 'required',

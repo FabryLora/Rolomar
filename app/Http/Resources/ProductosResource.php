@@ -23,6 +23,7 @@ class ProductosResource extends JsonResource
             'unidad_venta' => $this->unidad_venta,
             'precio_mayorista' => $this->precio_mayorista,
             'precio_minorista' => $this->precio_minorista,
+            'addword' => $this->addword,
             "categoria" => new CategoriaResource($this->categoria),
             "grupo" => $this->grupo_de_productos_id
         ];

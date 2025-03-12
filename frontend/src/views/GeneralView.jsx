@@ -30,8 +30,6 @@ export default function GeneralView() {
         );
     }, [location]);
 
-    console.log(cleanPathname);
-
     return (
         <div className="py-20 max-w-[1240px] mx-auto flex flex-row justify-between gap-10 max-sm:flex-col">
             {/* Botón para abrir el sidebar en pantallas pequeñas */}

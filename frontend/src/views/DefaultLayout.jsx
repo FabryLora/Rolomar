@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar";
+import WhatsappComponent from "../components/WhatsappComponent";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function DefaultLayout() {
@@ -95,6 +96,7 @@ export default function DefaultLayout() {
             )}
             <Outlet />
             <Footer />
+            <WhatsappComponent />
         </div>
     );
 }

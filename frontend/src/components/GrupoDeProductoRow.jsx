@@ -115,14 +115,10 @@ export default function GrupoDeProductoRow({ grupoObject }) {
         setDestacado(event.target.checked);
         const grupoData = new FormData();
         grupoData.append("destacado", event.target.checked ? 1 : 0);
-        axiosClient
-            .post(
-                `/grupo-de-productos/${grupoObject?.id}?_method=PUT`,
-                grupoData
-            )
-            .then(() => {
-                fetchGrupoDeProductos();
-            });
+        axiosClient.post(
+            `/grupo-de-productos/${grupoObject?.id}?_method=PUT`,
+            grupoData
+        );
     };
 
     return (

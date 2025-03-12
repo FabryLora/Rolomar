@@ -53,6 +53,8 @@ const StateContext = createContext({
     setConsultaProd: () => {},
     grupoImages: [],
     fetchImagesGrupo: () => {},
+    provincias: [],
+    fetchProvincias: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -79,6 +81,7 @@ export const ContextProvider = ({ children }) => {
     const [informacionCarrito, setInformacionCarrito] = useState({});
     const [consultaProd, setConsultaProd] = useState("");
     const [grupoImages, setGrupoImages] = useState([]);
+    const [provincias, setProvincias] = useState([]);
 
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
@@ -279,11 +282,16 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
+    const fetchProvincias = () => {
+        axiosClient.get("/provincia").then(({ data }) => {
+            setProvincias(data.data);
+        });
+    };
+
     useEffect(() => {
         fetchAllUsers();
         fetchAllAdmins();
         fetchSliderInfo();
-        fetchSliderImage();
         fetchLogos();
         fetchNosotrosInicio();
         fetchNovedades();
@@ -299,6 +307,7 @@ export const ContextProvider = ({ children }) => {
         fetchBrandImages();
         fetchInformacionCarrito();
         fetchImagesGrupo();
+        fetchProvincias();
     }, []);
 
     useEffect(() => {
@@ -316,6 +325,8 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                provincias,
+                fetchProvincias,
                 grupoImages,
                 fetchImagesGrupo,
                 consultaProd,

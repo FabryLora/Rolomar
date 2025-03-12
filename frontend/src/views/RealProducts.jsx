@@ -15,6 +15,7 @@ export default function RealProducts() {
     const [grupoId, setGrupoId] = useState("");
     const [categoriaId, setCategoriaId] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
+    const [addWord, setAddWord] = useState("");
 
     const handleFileChange = (e) => {
         setImage(e.target.files[0]);
@@ -34,6 +35,9 @@ export default function RealProducts() {
             grupoDeProductos?.find((grupo) => grupo?.id == grupoId)
                 ?.categoria_id
         );
+        if (addWord) {
+            formData.append("addword", addWord);
+        }
         formData.append("grupo_de_productos_id", grupoId);
         formData.append("medida", "a");
 
@@ -211,6 +215,26 @@ export default function RealProducts() {
                                     />
                                 </div>
                             </div>
+                            <div className="col-span-full">
+                                <label
+                                    htmlFor="addword"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Adword
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        value={addWord}
+                                        onChange={(ev) => {
+                                            setAddWord(ev.target.value);
+                                        }}
+                                        id="addword"
+                                        name="addword"
+                                        type="text"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    />
+                                </div>
+                            </div>
 
                             <div className="col-span-full">
                                 <label
@@ -285,6 +309,7 @@ export default function RealProducts() {
                         <div className="table-cell px-6 py-3">
                             Grupo de productos
                         </div>
+                        <div className="table-cell px-6 py-3">Adword</div>
                         <div className="table-cell py-3">Operaciones</div>
                     </div>
                 </div>

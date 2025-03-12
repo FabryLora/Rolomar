@@ -5,7 +5,7 @@ import UserAdmin from "../components/UserAdmin";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function ClientesAdmin() {
-    const { allUsers } = useStateContext();
+    const { allUsers, provincias } = useStateContext();
     const [error, setError] = useState(null);
     const [succ, setSucc] = useState(false);
     const [submiting, setSubmiting] = useState(false);
@@ -224,11 +224,11 @@ export default function ClientesAdmin() {
                                         Selecciona una provincia
                                     </option>
                                     <option value="test">test</option>
-                                    {/* {provincias.map((pr) => (
+                                    {provincias.map((pr) => (
                                         <option key={pr.id} value={pr.name}>
                                             {pr.name}
                                         </option>
-                                    ))} */}
+                                    ))}
                                 </select>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -249,7 +249,7 @@ export default function ClientesAdmin() {
                                         Selecciona una localidad
                                     </option>
                                     <option value="test">test</option>
-                                    {/* {provincias
+                                    {provincias
                                         .find(
                                             (pr) =>
                                                 pr.name ===
@@ -262,7 +262,7 @@ export default function ClientesAdmin() {
                                             >
                                                 {loc.name}
                                             </option>
-                                        ))} */}
+                                        ))}
                                 </select>
                             </div>
                             <div className="flex flex-col  ">

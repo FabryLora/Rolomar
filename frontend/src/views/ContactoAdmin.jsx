@@ -48,8 +48,8 @@ export default function ContactoAdmin() {
                 phone,
                 wp,
                 location,
-                ig,
-                fb,
+                ig: "a",
+                fb: "a",
             })
             .then(() => {
                 fetchContactInfo();
@@ -69,7 +69,7 @@ export default function ContactoAdmin() {
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <div className="mt-10 grid grid-cols-2 grid-rows-3 gap-x-6 gap-y-8 max-sm:grid-cols-1 ">
+                        <div className="mt-10 grid grid-cols-2 grid-rows-2 gap-x-6 gap-y-8 max-sm:grid-cols-1 ">
                             <div className="flex flex-row w-full gap-2">
                                 <div className="w-full">
                                     <label
@@ -199,59 +199,6 @@ export default function ContactoAdmin() {
                                             value={location}
                                             onChange={(ev) => {
                                                 setLocation(ev.target.value);
-                                            }}
-                                            id="username"
-                                            name="username"
-                                            type="text"
-                                            className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="">
-                                <label
-                                    htmlFor="username"
-                                    className="flex flex-row items-center gap-2 text-sm/6 font-medium text-gray-900"
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faSquareInstagram}
-                                        size="xl"
-                                    />
-                                    <p>Instagram</p>
-                                </label>
-                                <div className="mt-2">
-                                    <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                                        <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
-                                        <input
-                                            value={ig}
-                                            onChange={(ev) => {
-                                                setIg(ev.target.value);
-                                            }}
-                                            id="username"
-                                            name="username"
-                                            type="text"
-                                            className="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="">
-                                <label className="flex flex-row items-center gap-2 text-sm/6 font-medium text-gray-900">
-                                    <FontAwesomeIcon
-                                        icon={faSquareFacebook}
-                                        size="xl"
-                                    />
-                                    <p> Facebook</p>
-                                </label>
-                                <div className="mt-2">
-                                    <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                                        <div className="shrink-0 select-none text-base text-gray-500 sm:text-sm/6"></div>
-                                        <input
-                                            value={fb}
-                                            onChange={(ev) => {
-                                                setFb(ev.target.value);
                                             }}
                                             id="username"
                                             name="username"

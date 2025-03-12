@@ -11,14 +11,7 @@ export default function SearchBar() {
     const [descripcion, setDescripcion] = useState("");
 
     const encontrarCategoria = (id) => {
-        return categorias.find((categoria) => categoria.id === id)?.nombre;
-    };
-
-    const quitarTildes = (cadena) => {
-        return cadena
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase();
+        return categorias.find((categoria) => categoria.id === id)?.id;
     };
 
     const searchBarRef = useRef(null);
@@ -97,12 +90,7 @@ export default function SearchBar() {
                                     <Link
                                         to={`/productos/${encontrarCategoria(
                                             grupo?.categoria_id
-                                        )?.toLowerCase()}/${quitarTildes(
-                                            grupo?.nombre
-                                                ?.split(" ")
-                                                .join("-")
-                                                .toLowerCase()
-                                        )}`}
+                                        )}/${grupo?.id}`}
                                         key={index}
                                         className="flex flex-row items-center gap-2 hover:bg-gray-200 p-2"
                                     >

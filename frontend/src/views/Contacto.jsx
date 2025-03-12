@@ -18,10 +18,36 @@ export default function Contacto() {
     }, []);
 
     const contactoInfo = [
-        { icon: locationIcon, text: contactInfo?.location },
-        { icon: letterIcon, text: contactInfo?.mail },
-        { icon: phoneIcon, text: contactInfo?.phone },
-        { icon: whatsappIcon, text: contactInfo?.wp },
+        {
+            icon: locationIcon,
+            text: contactInfo?.location,
+            link: `https://www.google.com/maps?q=${contactInfo?.location}`,
+            type: "location",
+        },
+        {
+            icon: letterIcon,
+            text: contactInfo?.mail,
+            link: `mailto:${contactInfo?.mail}`,
+            type: "mail",
+        },
+        {
+            icon: letterIcon,
+            text: contactInfo?.mail_dos,
+            link: `mailto:${contactInfo?.mail_dos}`,
+            type: "mail",
+        },
+        {
+            icon: phoneIcon,
+            text: contactInfo?.phone,
+            link: `tel:${contactInfo?.phone}`,
+            type: "phone",
+        },
+        {
+            icon: whatsappIcon,
+            text: contactInfo?.wp,
+            link: `https://wa.me/${contactInfo?.wp}`,
+            type: "wp",
+        },
     ];
 
     const inputInfo = [
@@ -103,7 +129,22 @@ export default function Contacto() {
                                 >
                                     <img src={item.icon} alt="" />
                                     <p className="break-words w-[50%]">
-                                        {item.text}
+                                        <a
+                                            href={item.link}
+                                            className=""
+                                            target={
+                                                item.type === "location"
+                                                    ? "_blank"
+                                                    : "_self"
+                                            }
+                                            rel={
+                                                item.type === "location"
+                                                    ? "noopener noreferrer"
+                                                    : ""
+                                            }
+                                        >
+                                            {item.text}
+                                        </a>
                                     </p>
                                 </div>
                             ))}
