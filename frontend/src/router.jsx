@@ -7,6 +7,7 @@ import CategoriasAdmin from "./views/CategoriasAdmin";
 import ClientesAdmin from "./views/ClientesAdmin";
 import Contacto from "./views/Contacto";
 import ContactoAdmin from "./views/ContactoAdmin";
+import Contenido from "./views/Contenido";
 import DefaultLayout from "./views/DefaultLayout";
 import GeneralView from "./views/GeneralView";
 import GruposDeProductos from "./views/GruposDeProductos";
@@ -169,6 +170,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/informacion",
                 element: <InformacionCarrito />,
+            },
+            {
+                path: "/dashboard/contenido",
+                element: <Contenido />,
             },
         ],
     },

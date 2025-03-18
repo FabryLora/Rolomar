@@ -17,6 +17,7 @@ class NosotrosInicioResource extends JsonResource
         return [
             "id" => $this->id,
             "text" => $this->text,
+            "title" => $this->title,
             "image_url" => url('storage/' . $this->image),
         ];
     }

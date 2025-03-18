@@ -38,7 +38,7 @@ class NosotrosInicioController extends Controller
         $nosotrosInicio = NosotrosInicio::find($id);
 
         $data = $request->validate([
-
+            'title' => 'required | string',
             'text' => 'required | string',
             'image' => 'sometimes | file | mimes:jpg,jpeg,png,gif',
         ]);

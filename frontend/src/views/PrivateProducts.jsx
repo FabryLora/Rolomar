@@ -140,8 +140,8 @@ export default function PrivateProducts() {
                     <p className="text-center"></p>
                 </div>
                 <div className="h-fit">
-                    {paginatedProducts?.map((prod, index) => (
-                        <ProductRow key={index} product={prod} />
+                    {paginatedProducts?.map((prod) => (
+                        <ProductRow key={prod?.id} product={prod} />
                     ))}
                 </div>
             </div>

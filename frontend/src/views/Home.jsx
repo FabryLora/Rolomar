@@ -47,9 +47,18 @@ export default function Home() {
             <SearchBar />
             <div className="max-w-[1240px] mx-auto py-10">
                 <div>
-                    <h1 className="text-4xl font-bold max-md:px-6">
-                        Productos destacados
-                    </h1>
+                    <div className="w-full flex flex-row justify-between items-center">
+                        <h1 className="text-4xl font-bold max-md:px-6">
+                            Productos destacados
+                        </h1>
+                        <Link
+                            to={"/productos"}
+                            className="w-[122px] h-[41px] flex justify-center items-center font-bold border border-primary-red text-primary-red hover:text-white hover:bg-primary-red"
+                        >
+                            Ver todos
+                        </Link>
+                    </div>
+
                     <div className="flex flex-row flex-wrap justify-between gap-y-10 max-sm:flex-col max-sm:items-center">
                         {grupoDeProductos
                             ?.filter((grup) => grup?.destacado == "1")
@@ -117,12 +126,18 @@ export default function Home() {
                     transition={{ duration: 1 }}
                     className="flex flex-col w-full max-md:items-center max-md:justify-center"
                 >
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: nosotrosInicio?.text,
-                        }}
-                        className="custom-container w-full h-full  prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-white px-20 pt-20 max-md:p-6"
-                    ></div>
+                    <div className="flex flex-col h-full px-20 pt-20 gap-10">
+                        <h2 className="text-white text-3xl font-normal">
+                            {nosotrosInicio?.title}
+                        </h2>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: nosotrosInicio?.text,
+                            }}
+                            className="custom-container w-full h-full  prose prose-sm sm:prose lg:prose-lg xl:prose-xl text-white  max-md:p-6"
+                        />
+                    </div>
+
                     <Link
                         to={"/nosotros"}
                         className="h-[41px] w-[181px] bg-white text-primary-red mx-20 mb-10 flex justify-center items-center"

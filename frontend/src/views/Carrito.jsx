@@ -352,7 +352,7 @@ export default function Carrito() {
 
                     {userInfo?.descuento > 0 && (
                         <div className="flex flex-row justify-between w-full text-green-500">
-                            <p>Descuento %{userInfo?.descuento}</p>
+                            <p>Descuento {userInfo?.descuento}%</p>
                             <p>
                                 -$
                                 {(
@@ -360,6 +360,7 @@ export default function Carrito() {
                                     (userInfo.descuento / 100)
                                 )?.toLocaleString("es-AR", {
                                     minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
                                 })}
                             </p>
                         </div>

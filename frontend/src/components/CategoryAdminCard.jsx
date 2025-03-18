@@ -70,11 +70,7 @@ export default function CategoryAdminCard({ category }) {
     };
 
     return (
-        <tr
-            className={`border text-black ${
-                category?.id % 2 === 0 ? "bg-gray-200" : "bg-white"
-            }`}
-        >
+        <tr className={`border text-black odd:bg-gray-200 even:bg-white`}>
             <td className=" w-[90px] h-[90px]">
                 <img
                     className="w-full h-full object-contain"
@@ -120,13 +116,13 @@ export default function CategoryAdminCard({ category }) {
                                         <input
                                             type="file"
                                             name="imagen"
-                                            id="imagen"
+                                            id="imagenedit"
                                             onChange={hanldeFileChange}
                                             className="hidden"
                                         />
                                         <label
                                             className="cursor-pointer bg-indigo-500 rounded-md text-white py-1 px-2"
-                                            htmlFor="imagen"
+                                            htmlFor="imagenedit"
                                         >
                                             Elegir imagen
                                         </label>

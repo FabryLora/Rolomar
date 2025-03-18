@@ -1,8 +1,16 @@
 import {
     faBars,
-    faChevronUp,
+    faBoxArchive,
+    faBuilding,
+    faChevronRight,
+    faEnvelope,
+    faGear,
     faHouse,
+    faLock,
+    faNewspaper,
+    faShield,
     faUser,
+    faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
@@ -38,47 +46,38 @@ export default function Administrator() {
             href: "#",
             subHref: [
                 { title: "Slider", href: "/dashboard/slider" },
-                { title: "Logos", href: "/dashboard/logos" },
+                { title: "Contenido", href: "/dashboard/contenido" },
+            ],
+        },
 
-                {
-                    title: "Nosotros Inicio",
-                    href: "/dashboard/nosotros-inicio",
-                },
-                {
-                    title: "Marcas slider",
-                    href: "/dashboard/marcas",
-                },
-            ],
-        },
-        {
-            id: "catalogo",
-            open: false,
-            title: "Catalogo",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                { title: "Categorias", href: "/dashboard/categorias" },
-                {
-                    title: "Grupo de Productos",
-                    href: "/dashboard/grupo-de-productos",
-                },
-                { title: "Productos", href: "/dashboard/productos" },
-            ],
-        },
         {
             id: "nosotros",
             open: false,
             title: "Nosotros",
-            icon: faHouse,
+            icon: faBuilding,
             href: "#",
             subHref: [{ title: "Nosotros", href: "/dashboard/nosotros" }],
         },
-
+        {
+            id: "catalogo",
+            open: false,
+            title: "Productos",
+            icon: faBoxArchive,
+            href: "#",
+            subHref: [
+                { title: "Categorias", href: "/dashboard/categorias" },
+                {
+                    title: "Productos",
+                    href: "/dashboard/grupo-de-productos",
+                },
+                { title: "Sub Productos", href: "/dashboard/productos" },
+            ],
+        },
         {
             id: "novedades",
             open: false,
             title: "Novedades",
-            icon: faHouse,
+            icon: faNewspaper,
             href: "#",
             subHref: [
                 { title: "Tarjetas Novedades", href: "/dashboard/novedades" },
@@ -88,18 +87,25 @@ export default function Administrator() {
             id: "contacto",
             open: false,
             title: "Contacto",
-            icon: faHouse,
+            icon: faEnvelope,
             href: "#",
             subHref: [{ title: "Contacto", href: "/dashboard/contacto" }],
         },
         {
-            id: "usuarios",
+            id: "clientes",
             open: false,
-            title: "Usuarios",
-            icon: faHouse,
+            title: "Clientes",
+            icon: faUsers,
+            href: "#",
+            subHref: [{ title: "Clientes", href: "/dashboard/clientes" }],
+        },
+        {
+            id: "administradores",
+            open: false,
+            title: "Administradores",
+            icon: faShield,
             href: "#",
             subHref: [
-                { title: "Clientes", href: "/dashboard/clientes" },
                 {
                     title: "Administradores",
                     href: "/dashboard/administradores",
@@ -110,7 +116,7 @@ export default function Administrator() {
             id: "metadatos",
             open: false,
             title: "Metadatos",
-            icon: faHouse,
+            icon: faGear,
             href: "#",
             subHref: [{ title: "Metadatos", href: "/dashboard/metadatos" }],
         },
@@ -118,7 +124,7 @@ export default function Administrator() {
             id: "zonaprivada",
             open: false,
             title: "Zona Privada",
-            icon: faHouse,
+            icon: faLock,
             href: "#",
             subHref: [
                 { title: "Pedidos", href: "/dashboard/pedidos-privada" },
@@ -152,9 +158,10 @@ export default function Administrator() {
 
     const toggleDropdown = (id) => {
         setDropdowns((prevDropdowns) =>
-            prevDropdowns.map((drop) =>
-                drop.id === id ? { ...drop, open: !drop.open } : drop
-            )
+            prevDropdowns.map((drop) => ({
+                ...drop,
+                open: drop.id === id ? !drop.open : false,
+            }))
         );
     };
 
@@ -194,40 +201,44 @@ export default function Administrator() {
                                                 onClick={() =>
                                                     toggleDropdown(drop.id)
                                                 }
-                                                className="flex flex-row w-full justify-between items-center border-b p-4"
+                                                className="flex flex-row w-full justify-between items-center  p-4"
                                             >
-                                                <div className="flex flex-row gap-2">
-                                                    {/* <FontAwesomeIcon
-                                                size="lg"
-                                                icon={drop.icon}
-                                            /> */}
+                                                <div className="flex flex-row gap-2 items-center">
+                                                    <button
+                                                        type="button"
+                                                        className="w-4  h-4 flex items-center justify-center"
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            size="base"
+                                                            icon={drop.icon}
+                                                        />
+                                                    </button>
+
                                                     <Link to={drop.href}>
                                                         {drop.title}
                                                     </Link>
                                                 </div>
                                                 <MotionFontAwesomeIcon
-                                                    size="lg"
-                                                    icon={faChevronUp}
+                                                    animate={{
+                                                        rotate: drop.open
+                                                            ? 90
+                                                            : 0,
+                                                    }}
+                                                    transition={{
+                                                        ease: "linear",
+                                                        duration: 0.1,
+                                                    }}
+                                                    size="xs"
+                                                    icon={faChevronRight}
                                                 />
                                             </button>
                                             <AnimatePresence>
                                                 {drop.open && (
-                                                    <motion.ul
-                                                        initial={{ height: 0 }}
-                                                        animate={{
-                                                            height: "fit-content",
-                                                        }}
-                                                        exit={{ height: 0 }}
-                                                        transition={{
-                                                            ease: "linear",
-                                                            duration: 0.2,
-                                                        }}
-                                                        className="flex flex-col gap-2 overflow-hidden py-2 h-fit"
-                                                    >
+                                                    <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit border-l ml-6">
                                                         {drop.subHref.map(
                                                             (sub, index) => (
                                                                 <MotionLink
-                                                                    className="pl-4"
+                                                                    className="mx-4 px-1"
                                                                     whileHover={{
                                                                         backgroundColor:
                                                                             "#fff",
@@ -242,7 +253,7 @@ export default function Administrator() {
                                                                 </MotionLink>
                                                             )
                                                         )}
-                                                    </motion.ul>
+                                                    </ul>
                                                 )}
                                             </AnimatePresence>
                                         </li>

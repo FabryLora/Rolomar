@@ -176,7 +176,7 @@ export default function MultipleView() {
                                     grup?.categoria_id ===
                                     grupoObjeto?.categoria_id
                             )
-                            ?.slice(0, 6)
+                            ?.slice(0, 3)
                             ?.map((grupo, index) => (
                                 <Link
                                     onClick={() => window.scrollTo(0, 0)}

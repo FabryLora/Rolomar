@@ -21,7 +21,7 @@ export default function ProductRow({ product }) {
     }, [product]);
     const [cantidad, setCantidad] = useState(
         cart?.find((prod) => prod?.id == product?.id)?.additionalInfo
-            ?.cantidad || 1
+            ?.cantidad || product?.unidad_venta
     );
     const [extraInfo, setExtraInfo] = useState({
         cantidad: 0,
@@ -29,8 +29,11 @@ export default function ProductRow({ product }) {
     });
     const [carrito, setCarrito] = useState(false);
     const [trash, setTrash] = useState(false);
+
     const handleChange = (value) => {
-        if (value >= 0) setCantidad(value);
+        const unidad = Number(product.unidad_venta);
+        let newValue = Math.round(value / unidad) * unidad; // Redondea al múltiplo más cercano
+        if (newValue >= unidad) setCantidad(newValue);
     };
 
     const location = useLocation();
@@ -56,8 +59,8 @@ export default function ProductRow({ product }) {
     useEffect(() => {
         setSubtotal(
             userInfo?.lista == 2
-                ? Number(product?.precio_mayorista) * cantidad * unidadDeVenta
-                : Number(product?.precio_minorista) * cantidad * unidadDeVenta
+                ? Number(product?.precio_mayorista) * cantidad
+                : Number(product?.precio_minorista) * cantidad
         );
     }, [cantidad, product, userInfo, unidadDeVenta]);
 
@@ -98,16 +101,22 @@ export default function ProductRow({ product }) {
                                 onChange={(e) => {
                                     const value = Number(e.target.value);
                                     if (!isNaN(value) && value >= 0) {
-                                        setCantidad(value);
+                                        handleChange(value);
                                     }
                                 }}
                                 type="number"
                                 className="text-lg max-w-[50px] outline-none border-none bg-transparent text-left"
                             />
+
                             <div className="flex flex-col justify-center h-full">
                                 <button
                                     className="flex items-center max-h-[12px]"
-                                    onClick={() => handleChange(cantidad + 1)}
+                                    onClick={() =>
+                                        handleChange(
+                                            Number(cantidad) +
+                                                Number(product.unidad_venta)
+                                        )
+                                    }
                                 >
                                     <FontAwesomeIcon
                                         icon={faChevronUp}
@@ -116,7 +125,12 @@ export default function ProductRow({ product }) {
                                 </button>
                                 <button
                                     className="flex items-center max-h-[12px]"
-                                    onClick={() => handleChange(cantidad - 1)}
+                                    onClick={() =>
+                                        handleChange(
+                                            Number(cantidad) -
+                                                Number(product.unidad_venta)
+                                        )
+                                    }
                                 >
                                     <FontAwesomeIcon
                                         icon={faChevronDown}

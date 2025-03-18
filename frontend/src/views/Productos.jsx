@@ -6,7 +6,7 @@ import CategoryCard from "../components/CategoryCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Productos() {
-    const { categorias, metadatos, productos, grupoDeProductos } =
+    const { categorias, metadatos, fetchCategorias, grupoDeProductos } =
         useStateContext();
     const [currentCategory, setCurrentCategory] = useState("");
     const [search, setSearch] = useState(false);
@@ -165,9 +165,26 @@ export default function Productos() {
             </div>
 
             <div className="flex flex-row gap-y-7 flex-wrap gap-7 max-sm:flex-col max-sm:items-center max-sm:mt-20 ">
-                {categorias?.map((category, index) => (
-                    <CategoryCard key={index} categoryObject={category} />
-                ))}
+                {categorias
+                    ?.slice() // Crear una copia para no mutar el estado original
+                    .sort((a, b) => {
+                        if (!isNaN(a.orden) && !isNaN(b.orden)) {
+                            // Si ambos son números, ordenar numéricamente
+                            return Number(a.orden) - Number(b.orden);
+                        }
+                        // Si contienen letras, ordenar alfabéticamente (case-insensitive)
+                        return String(a.orden).localeCompare(
+                            String(b.orden),
+                            undefined,
+                            { numeric: true }
+                        );
+                    })
+                    .map((category) => (
+                        <CategoryCard
+                            key={category?.id}
+                            categoryObject={category}
+                        />
+                    ))}
             </div>
         </div>
     );

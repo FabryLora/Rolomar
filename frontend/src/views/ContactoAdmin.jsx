@@ -65,7 +65,7 @@ export default function ContactoAdmin() {
             <Toaster />
             <form
                 onSubmit={submit}
-                className="p-5 flex flex-col justify-between h-screen"
+                className="p-5 flex flex-col gap-5 h-screen"
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
@@ -212,12 +212,12 @@ export default function ContactoAdmin() {
                     </div>
                 </div>
 
-                <div className="mt-6 flex items-center justify-end gap-x-6">
+                <div className="flex items-center justify-start">
                     <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        className="rounded-md bg-primary-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:scale-95 transition-transform"
                     >
-                        Guardar
+                        Actualizar
                     </button>
                 </div>
             </form>

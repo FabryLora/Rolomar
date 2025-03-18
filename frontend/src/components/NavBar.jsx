@@ -293,6 +293,10 @@ export default function NavBar() {
                                 key={link.title}
                                 to={link.href}
                                 className={`text-lg transition-colors relative ${
+                                    cleanPathname[0] ===
+                                        link?.title?.toLowerCase() &&
+                                    "font-bold"
+                                } ${
                                     scrolled || cleanPathname[0] !== "inicio"
                                         ? "text-black"
                                         : "text-white"
@@ -328,6 +332,10 @@ export default function NavBar() {
                                 key={link.title}
                                 to={link.href}
                                 className={`text-lg transition-colors relative ${
+                                    cleanPathname[1] ===
+                                        link?.title?.toLowerCase() &&
+                                    "font-bold"
+                                } ${
                                     scrolled || cleanPathname[0] !== "inicio"
                                         ? "text-black"
                                         : "text-white"
