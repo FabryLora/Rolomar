@@ -1,3 +1,5 @@
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -70,30 +72,38 @@ export default function CategoryAdminCard({ category }) {
     };
 
     return (
-        <tr className={`border text-black odd:bg-gray-200 even:bg-white`}>
-            <td className=" w-[90px] h-[90px]">
+        <tr className={`border text-black odd:bg-gray-100 even:bg-white`}>
+            <td className=" align-middle">{orden}</td>
+            <td className=" align-middle pl-3">{nombre}</td>
+            <td className=" w-[90px] h-[90px] px-8">
                 <img
                     className="w-full h-full object-contain"
                     src={category?.imagen_url}
                     alt=""
                 />
             </td>
-            <td className=" align-middle pl-3">{nombre}</td>
 
-            <td className=" align-middle">{orden}</td>
             <td className="text-center w-[140px]">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-row gap-3 justify-center">
                     <button
                         onClick={() => setEdit(true)}
-                        className="bg-blue-500 py-1 px-2 text-white rounded-md"
+                        className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
                     >
-                        Editar
+                        <FontAwesomeIcon
+                            icon={faPen}
+                            size="lg"
+                            color="#3b82f6"
+                        />
                     </button>
                     <button
                         onClick={deleteCategory}
-                        className="bg-primary-red py-1 px-2 text-white rounded-md"
+                        className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
                     >
-                        Eliminar
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            size="lg"
+                            color="#bc1d31"
+                        />
                     </button>
                 </div>
             </td>

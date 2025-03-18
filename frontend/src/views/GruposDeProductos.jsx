@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import axiosClient from "../axios";
@@ -17,6 +18,7 @@ export default function GruposDeProductos() {
     const [destacado, setDestacado] = useState(null);
     const [orden, setOrden] = useState();
     const [categoriaId, setCategoriaId] = useState();
+    const [createView, setCreateView] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
@@ -24,14 +26,20 @@ export default function GruposDeProductos() {
     const [searchTerm, setSearchTerm] = useState("");
 
     // Filtrar antes de paginar
-    const filteredGrupos = grupoDeProductos?.filter((grupo) =>
-        grupo.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredGrupos = grupoDeProductos
+        ?.filter((grupo) =>
+            grupo.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        ?.sort((a, b) => {
+            if (a.orden === null) return 1; // Mueve null al final
+            if (b.orden === null) return -1; // Mueve null al final
+            return a.orden.localeCompare(b.orden, undefined, { numeric: true });
+        });
 
     // Calcular el total de páginas
     const totalPages = Math.ceil(filteredGrupos?.length / itemsPerPage);
 
-    // Obtener los elementos de la página actual después del filtro
+    // Obtener los elementos de la página actual después del filtro y ordenamiento
     const currentItems = filteredGrupos?.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
@@ -103,156 +111,205 @@ export default function GruposDeProductos() {
     };
 
     return (
-        <div className="relative overflow-x-auto px-6">
+        <div className="relative overflow-x-auto px-6 py-10">
             <Toaster />
-            <form
-                onSubmit={handleSubmit}
-                className=" flex flex-col justify-between h-fit"
-            >
-                <div className="space-y-12">
-                    <div className="border-b border-gray-900/10 pb-12">
-                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="cover-photo"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Imagen de Portada
-                                </label>
-                                <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
-                                    <div className="flex items-center justify-start p-4 w-1/2">
-                                        <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
-                                            <div className="items-center gap-2 flex text-sm/6 text-gray-600">
-                                                <label
-                                                    className="bg-indigo-600 text-white py-2 px-3 rounded-md cursor-pointer"
-                                                    htmlFor="portada"
-                                                >
-                                                    Elegir Imagen
-                                                </label>
-                                                {imagen?.name}
+            <AnimatePresence>
+                {createView && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+                    >
+                        <form
+                            onSubmit={handleSubmit}
+                            className=" flex flex-col justify-between h-fit bg-white p-4 rounded-md"
+                        >
+                            <h2 className="text-xl font-bold p-2">
+                                Crear Producto
+                            </h2>
+                            <div className="space-y-12">
+                                <div className="border-b border-gray-900/10 pb-12">
+                                    <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                                        <div className="col-span-full">
+                                            <label
+                                                htmlFor="cover-photo"
+                                                className="block text-sm/6 font-medium text-gray-900"
+                                            >
+                                                Imagen de Portada
+                                            </label>
+                                            <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25 ">
+                                                <div className="flex items-center justify-start p-4 w-1/2">
+                                                    <div className="text-center items-center h-fit self-center flex flex-row justify-start gap-3">
+                                                        <div className="items-center gap-2 flex text-sm/6 text-gray-600">
+                                                            <label
+                                                                className="bg-indigo-600 text-white py-2 px-3 rounded-md cursor-pointer"
+                                                                htmlFor="portada"
+                                                            >
+                                                                Elegir Imagen
+                                                            </label>
+                                                            {imagen?.name}
+                                                            <input
+                                                                className="hidden"
+                                                                accept="image/*"
+                                                                id="portada"
+                                                                name="file-upload"
+                                                                type="file"
+                                                                onChange={
+                                                                    handleFileChange
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-span-full">
+                                            <label
+                                                htmlFor="name"
+                                                className="block text-sm/6 font-medium text-gray-900"
+                                            >
+                                                Nombre
+                                                <sapan className="text-red-500">
+                                                    *
+                                                </sapan>
+                                            </label>
+                                            <div className="mt-2">
                                                 <input
-                                                    className="hidden"
-                                                    accept="image/*"
-                                                    id="portada"
-                                                    name="file-upload"
-                                                    type="file"
-                                                    onChange={handleFileChange}
+                                                    value={nombre}
+                                                    onChange={(ev) =>
+                                                        setNombre(
+                                                            ev.target.value
+                                                        )
+                                                    }
+                                                    id="name"
+                                                    name="name"
+                                                    type="text"
+                                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                                                 />
                                             </div>
                                         </div>
+
+                                        <div className="col-span-full">
+                                            <label
+                                                htmlFor="categoria"
+                                                className="block text-sm/6 font-medium text-gray-900"
+                                            >
+                                                Categoria
+                                                <apan className="text-red-500">
+                                                    *
+                                                </apan>
+                                            </label>
+                                            <div className="mt-2">
+                                                <select
+                                                    value={categoriaId}
+                                                    onChange={(ev) =>
+                                                        setCategoriaId(
+                                                            ev.target.value
+                                                        )
+                                                    }
+                                                    id="categoria"
+                                                    name="categoria"
+                                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                                >
+                                                    <option
+                                                        value=""
+                                                        selected
+                                                        disabled
+                                                    >
+                                                        Seleccione una categoria
+                                                    </option>
+                                                    {categorias.map(
+                                                        (category, index) => (
+                                                            <option
+                                                                key={index}
+                                                                value={
+                                                                    category?.id
+                                                                }
+                                                            >
+                                                                {
+                                                                    category?.nombre
+                                                                }
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-span-full">
+                                            <label
+                                                htmlFor="orden"
+                                                className="block text-sm/6 font-medium text-gray-900"
+                                            >
+                                                Orden
+                                            </label>
+                                            <div className="mt-2">
+                                                <input
+                                                    value={orden}
+                                                    onChange={(ev) =>
+                                                        setOrden(
+                                                            ev.target.value
+                                                        )
+                                                    }
+                                                    id="orden"
+                                                    name="name"
+                                                    type="text"
+                                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="col-span-full flex flex-row gap-2">
+                                            <input
+                                                checked={destacado}
+                                                onChange={(e) =>
+                                                    setDestacado(
+                                                        e.target.checked
+                                                    )
+                                                }
+                                                type="checkbox"
+                                                name=""
+                                                id="destacado"
+                                            />
+                                            <label
+                                                htmlFor="destacado"
+                                                className="block text-sm/6 font-medium text-gray-900"
+                                            >
+                                                Seleccionar esta casilla si
+                                                desea que este grupo de
+                                                productos se muestre en el
+                                                inicio
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="name"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Nombre
-                                    <apan className="text-red-500">*</apan>
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        value={nombre}
-                                        onChange={(ev) =>
-                                            setNombre(ev.target.value)
-                                        }
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="categoria"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Categoria
-                                    <apan className="text-red-500">*</apan>
-                                </label>
-                                <div className="mt-2">
-                                    <select
-                                        value={categoriaId}
-                                        onChange={(ev) =>
-                                            setCategoriaId(ev.target.value)
-                                        }
-                                        id="categoria"
-                                        name="categoria"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                <div className="mt-6 flex items-center justify-end gap-x-6">
+                                    <button
+                                        onClick={() => setCreateView(false)}
+                                        type="button"
+                                        className="rounded-md bg-primary-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     >
-                                        <option value="" selected disabled>
-                                            Seleccione una categoria
-                                        </option>
-                                        {categorias.map((category, index) => (
-                                            <option
-                                                key={index}
-                                                value={category?.id}
-                                            >
-                                                {category?.nombre}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        Cancelar
+                                    </button>
+
+                                    <button
+                                        type="submit"
+                                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                    >
+                                        Guardar
+                                    </button>
                                 </div>
                             </div>
-
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="orden"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Orden
-                                </label>
-                                <div className="mt-2">
-                                    <input
-                                        value={orden}
-                                        onChange={(ev) =>
-                                            setOrden(ev.target.value)
-                                        }
-                                        id="orden"
-                                        name="name"
-                                        type="text"
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="col-span-full flex flex-row gap-2">
-                                <input
-                                    checked={destacado}
-                                    onChange={(e) =>
-                                        setDestacado(e.target.checked)
-                                    }
-                                    type="checkbox"
-                                    name=""
-                                    id="destacado"
-                                />
-                                <label
-                                    htmlFor="destacado"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Seleccionar esta casilla si desea que este
-                                    grupo de productos se muestre en el inicio
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-6 flex items-center justify-end gap-x-6">
-                        <button
-                            type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Guardar
-                        </button>
-                    </div>
-                </div>
-            </form>
+                        </form>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <div>
-                <h2 className="text-2xl font-bold py-2">Grupos de productos</h2>
-                <div className="mb-4">
+                <h2 className="text-2xl font-bold py-2">Productos</h2>
+
+                <div className="mb-4 flex flex-row gap-5">
                     <input
                         type="text"
                         placeholder="Buscar grupo por nombre..."
@@ -263,14 +320,21 @@ export default function GruposDeProductos() {
                         }}
                         className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm"
                     />
+                    <button
+                        onClick={() => setCreateView(true)}
+                        className="text-white bg-primary-red py-1 h-fit w-[200px] px-2 rounded-md"
+                    >
+                        Crear Producto
+                    </button>
                 </div>
             </div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" className="px-6 py-3 text-center">
-                            Imagenes de portada
+                            Orden
                         </th>
+
                         <th scope="col" className="px-6 py-3 text-center">
                             Nombre
                         </th>
@@ -278,7 +342,7 @@ export default function GruposDeProductos() {
                             Categoria
                         </th>
                         <th scope="col" className="px-6 py-3 text-center">
-                            Orden
+                            Imagenes de portada
                         </th>
                         <th scope="col" className="px-6 py-3 text-center">
                             Destacado

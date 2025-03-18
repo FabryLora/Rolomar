@@ -135,7 +135,7 @@ const router = createBrowserRouter([
                 element: <CategoriasAdmin />,
             },
             {
-                path: "/dashboard/grupo-de-productos",
+                path: "/dashboard/productos",
                 element: <GruposDeProductos />,
             },
 
@@ -156,7 +156,7 @@ const router = createBrowserRouter([
                 element: <PedidosAdmin />,
             },
             {
-                path: "/dashboard/productos",
+                path: "/dashboard/sub-productos",
                 element: <RealProducts />,
             },
             {

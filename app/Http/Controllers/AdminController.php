@@ -9,6 +9,7 @@ use App\Http\Requests\SignupAdminRequest;
 use App\Http\Resources\AdminResource;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -72,6 +73,14 @@ class AdminController extends Controller
 
 
 
+    public function meunico(Request $request)
+    {
+        return response()->json([
+            'id' => $request->user()->id,
+            'user' => new AdminResource($request->user()),
+        ]);
+    }
+
 
     public function me(Request $request)
     {
@@ -110,5 +119,21 @@ class AdminController extends Controller
             'message' => 'Admin updated successfully',
             'user' => $admin
         ]);
+    }
+
+    public function destroy($id)
+    {
+        // Verifica si el admin está autenticado usando el guard 'admin'
+
+        // Verifica si el admin a eliminar existe
+        $adminToDelete = Admin::find($id);
+        if (!$adminToDelete) {
+            return response()->json(['error' => 'Admin not found'], 404);
+        }
+
+        // Elimina el admin
+        $adminToDelete->delete();
+
+        return response()->json(['message' => 'Admin deleted successfully'], 200);
     }
 }

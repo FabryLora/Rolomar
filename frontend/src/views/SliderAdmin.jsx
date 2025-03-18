@@ -125,7 +125,7 @@ export default function SliderAdmin() {
                                 </label>
                                 <div className="mt-2 flex flex-row items-center">
                                     <label
-                                        className="cursor-pointer bg-indigo-500   rounded-md text-white px-3 py-1.5 text-base outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 "
+                                        className="cursor-pointer bg-primary-red   rounded-md text-white px-3 py-1.5 text-base outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 "
                                         htmlFor="video"
                                     >
                                         Elegir Video
@@ -151,12 +151,12 @@ export default function SliderAdmin() {
                             </div>
                         </div>
                     </div>
-                    <div className=" flex items-center justify-end gap-x-6">
+                    <div className=" flex items-center justify-start gap-x-6">
                         <button
                             type="submit"
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="rounded-md bg-primary-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:scale-95 transition-transform"
                         >
-                            Guardar
+                            Actualizar
                         </button>
                     </div>
                 </div>

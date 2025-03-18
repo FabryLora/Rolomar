@@ -370,7 +370,7 @@ export default function Contenido() {
                     </div>
                 </div>
             </form>
-            <div className="px-6 flex flex-col gap-5 min-h-[510px]">
+            <div className="px-6 flex flex-col gap-5 min-h-[510px] pb-10">
                 <h2 className="text-3xl border-b-2 pb-2">Marcas</h2>
                 <div className="flex flex-col gap-10">
                     <Toaster />

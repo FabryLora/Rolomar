@@ -1,3 +1,5 @@
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -96,9 +98,7 @@ export default function UserAdmin({ user }) {
 
     return (
         <tr
-            className={`border-b h-[134px] text-center text-base text-black ${
-                user?.id % 2 === 0 ? "bg-gray-200" : "bg-white"
-            }`}
+            className={`border-b h-[134px] text-center text-base text-black odd:bg-gray-100 even:bg-white`}
         >
             <td>{user?.nomcuit}</td>
             <td>{user?.email}</td>
@@ -107,7 +107,7 @@ export default function UserAdmin({ user }) {
                     user?.descuento > 0 ? "text-green-500" : "text-gray-500"
                 }
             >
-                %{user?.descuento}
+                {user?.descuento}%
             </td>
             <td>{user?.provincia}</td>
             <td>{user?.localidad}</td>
@@ -132,18 +132,26 @@ export default function UserAdmin({ user }) {
                 )}
             </td>
             <td>
-                <div className="flex flex-col gap-2 px-5">
+                <div className="flex flex-row gap-3 justify-center">
                     <button
                         onClick={() => setUpdateView(true)}
-                        className="bg-blue-500 text-white px-2 rounded-md"
+                        className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
                     >
-                        Editar
+                        <FontAwesomeIcon
+                            icon={faPen}
+                            size="lg"
+                            color="#3b82f6"
+                        />
                     </button>
                     <button
                         onClick={deleteUser}
-                        className="bg-red-500 text-white px-2 rounded-md"
+                        className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
                     >
-                        Eliminar
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            size="lg"
+                            color="#bc1d31"
+                        />
                     </button>
                 </div>
             </td>
@@ -157,7 +165,7 @@ export default function UserAdmin({ user }) {
                     >
                         <form
                             onSubmit={onSubmit}
-                            className="w-fit h-fit flex flex-col gap-3 bg-white p-5 rounded-md shadow-md border"
+                            className="w-fit h-fit flex flex-col gap-3 bg-white p-5 shadow-md border rounded-md"
                         >
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="flex flex-col gap-2 col-span-2">
@@ -382,23 +390,21 @@ export default function UserAdmin({ user }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-row w-full justify-evenly">
+                            <div className="flex flex-row w-full justify-end gap-5">
                                 <button
                                     onClick={() => setUpdateView(false)}
-                                    className={`w-[325px] h-[47px] bg-blue-500 text-white self-center my-5`}
+                                    className={`py-1 px-2 rounded-md bg-primary-red text-white self-center my-5`}
                                     type="button"
                                 >
-                                    CANCELAR
+                                    Cancelar
                                 </button>
                                 <button
-                                    className={`w-[325px] h-[47px] bg-primary-red text-white self-center my-5 ${
+                                    className={` py-1 px-2 rounded-md bg-primary-red text-white self-center my-5 ${
                                         submiting ? "bg-gray-400" : ""
                                     }`}
                                     type="submit"
                                 >
-                                    {submiting
-                                        ? "Cargando..."
-                                        : "ACTUALIZAR CLIENTE"}
+                                    {submiting ? "Cargando..." : "Actualizar"}
                                 </button>
                             </div>
                         </form>

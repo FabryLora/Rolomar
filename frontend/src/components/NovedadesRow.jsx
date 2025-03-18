@@ -1,3 +1,5 @@
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Switch } from "@mui/material";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
@@ -180,9 +182,7 @@ export default function NovedadesRow({ novedadesObject }) {
                 )}
             </AnimatePresence>
             <tr
-                className={`text-black border-b  h-[134px] ${
-                    novedadesObject?.id % 2 == 0 ? "bg-gray-200" : "bg-white"
-                }`}
+                className={`text-black border-b  h-[134px] odd:bg-gray-100 even:bg-white`}
             >
                 <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto">
                     <div className="flex flex-row gap-2">
@@ -219,12 +219,28 @@ export default function NovedadesRow({ novedadesObject }) {
                 </td>
 
                 <td>
-                    <button
-                        className="bg-blue-500 rounded-md text-white py-2 px-6"
-                        onClick={() => setEditable(true)}
-                    >
-                        Editar
-                    </button>
+                    <div className="flex flex-row gap-3 justify-center">
+                        <button
+                            onClick={() => setEditable(true)}
+                            className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
+                        >
+                            <FontAwesomeIcon
+                                icon={faPen}
+                                size="lg"
+                                color="#3b82f6"
+                            />
+                        </button>
+                        <button
+                            onClick={deleteGroup}
+                            className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
+                        >
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                size="lg"
+                                color="#bc1d31"
+                            />
+                        </button>
+                    </div>
                 </td>
             </tr>
         </>

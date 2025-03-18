@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
 //Cliente
 Route::put('/users/{id}', [AuthController::class, 'update']);
 Route::delete('/users/{id}', [AuthController::class, 'destroy']);
@@ -46,6 +47,12 @@ Route::get('/me-admin', [AdminController::class, 'me']);
 Route::post('/login-admin', [AdminController::class, 'login']);
 Route::post('/signup-admin', [AdminController::class, 'signup']);
 Route::put('/admin/{id}', [AdminController::class, 'update']);
+Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
+
+
+
+
+
 Route::get('/alladmins', [AdminController::class, 'index']);
 
 //DefaultLayout

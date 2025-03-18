@@ -1,7 +1,12 @@
-import { faEdit, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faEdit,
+    faPen,
+    faTrash,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -32,6 +37,25 @@ export default function AdministradorRow({ adminObject }) {
             });
     };
 
+    const deleteAdmin = async () => {
+        console.log(adminObject?.id);
+
+        const response = axiosClient.delete(`/admin/${adminObject?.id}`);
+
+        toast.promise(response, {
+            loading: "Eliminando...",
+            success: "Eliminado correctamente",
+            error: "Error al eliminar",
+        });
+
+        try {
+            await response;
+            fetchAllAdmins();
+        } catch (error) {
+            console.log("Error al eliminar:", error);
+        }
+    };
+
     return (
         <>
             <tr
@@ -39,19 +63,38 @@ export default function AdministradorRow({ adminObject }) {
                     adminObject?.id % 2 === 0 ? "bg-gray-200" : "bg-white"
                 }`}
             >
-                <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white max-w-[340px] overflow-x-auto text-center">
+                <td className="px-6 py-4 font-medium text-black whitespace-nowrap  max-w-[340px] overflow-x-auto text-center">
                     {adminObject.name}
                 </td>
                 <td className="text-center">
-                    <button onClick={() => setEdit(!edit)}>
-                        <FontAwesomeIcon icon={faEdit} size="2xl" />
-                    </button>
+                    <div className="flex flex-row gap-3 justify-center">
+                        <button
+                            onClick={() => setEdit(true)}
+                            className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
+                        >
+                            <FontAwesomeIcon
+                                icon={faPen}
+                                size="lg"
+                                color="#3b82f6"
+                            />
+                        </button>
+                        <button
+                            onClick={deleteAdmin}
+                            className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
+                        >
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                size="lg"
+                                color="#bc1d31"
+                            />
+                        </button>
+                    </div>
                 </td>
             </tr>
             {edit && (
                 <>
-                    <div className="fixed w-screen h-screen top-0 left-0 bg-black opacity-50"></div>
-                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 right-10 mb-20 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit border text-black">
+                    <div className="fixed w-screen h-screen top-0 left-0 bg-black opacity-50 z-50"></div>
+                    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 right-10 mb-20 bg-white shadow-md p-5 font-roboto-condensed w-fit h-fit border text-black z-50">
                         <button
                             onClick={() => setEdit(!edit)}
                             className="self-end"

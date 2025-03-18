@@ -16,17 +16,17 @@ export default function Nosotros() {
     const nosotrosInfo = [
         {
             icon: mision,
-            title: "Misión",
+            title: nosotros?.title_mision,
             text: nosotros?.mision,
         },
         {
             icon: vision,
-            title: "Visión",
+            title: nosotros?.title_vision,
             text: nosotros?.vision,
         },
         {
             icon: valores,
-            title: "Valores",
+            title: nosotros?.title_valores,
             text: nosotros?.valores,
         },
     ];
@@ -83,12 +83,17 @@ export default function Nosotros() {
                     className="flex flex-col h-full max-md:max-w-[600px] w-full lg:max-w-none items-center"
                 >
                     <div className="flex flex-col gap-6 items-start overflow-y-auto max-h-[678px] w-full">
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: nosotros?.text || "",
-                            }}
-                            className="custom-content font-roboto-condensed px-12 prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full"
-                        ></div>
+                        <div className="px-12 flex flex-col gap-5">
+                            <h2 className="text-3xl font-medium">
+                                {nosotros?.title}
+                            </h2>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: nosotros?.text || "",
+                                }}
+                                className="custom-content font-roboto-condensed prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full min-w-full max-w-full"
+                            ></div>
+                        </div>
                     </div>
                 </motion.div>
             </div>
@@ -96,7 +101,7 @@ export default function Nosotros() {
             <div className="h-fit w-full bg-special-white flex justify-center pb-20 bg-[#F5F5F5]">
                 <div className="mx-auto max-w-[1240px]">
                     <h2 className="font-bold text-[40px] py-20 max-md:text-center">
-                        ¿Por que elegirnos?
+                        ¿Porqué elegirnos?
                     </h2>
                     <div className="flex flex-row flex-wrap gap-y-20 justify-between gap-5 max-md:justify-center">
                         {nosotrosInfo.map((info, index) => (

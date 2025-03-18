@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('imagen')->nullable();
             $table->boolean('destacado')->nullable();
             $table->string('orden')->nullable();
-            $table->foreignIdFor(Categoria::class, 'categoria_id')->constrained();
+            $table->foreignIdFor(Categoria::class, 'categoria_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

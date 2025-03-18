@@ -42,6 +42,10 @@ class NosotrosController extends Controller
         $data = $request->validate([
 
             'text' => 'required | string',
+            'title_mision' => 'required | string',
+            'title_vision' => 'required | string',
+            'title_valores' => 'required | string',
+            'title' => 'required | string',
             'image' => 'sometimes | file | mimes:jpg,jpeg,png,gif',
             'mision' => 'required | string',
             'vision' => 'required | string',

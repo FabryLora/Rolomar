@@ -5,10 +5,14 @@ const axiosClient = axios.create({
 });
 
 axiosClient.interceptors.request.use((config) => {
-    const isAdminRoute = config.url.includes('/adm');
+    const isAdminRoute = config.url.includes('/admin');
+    
+    
     const token = isAdminRoute
         ? localStorage.getItem("ADMIN_TOKEN")
         : localStorage.getItem("TOKEN");
+
+        
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -25,7 +29,7 @@ axiosClient.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             localStorage.removeItem("TOKEN");
-            window.location.reload();
+            /* window.location.reload(); */
             /* router.navigate("/login"); */
             return error;
         }

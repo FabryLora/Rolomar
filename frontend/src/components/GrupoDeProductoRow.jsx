@@ -1,4 +1,4 @@
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Switch from "@mui/material/Switch";
 import { AnimatePresence, motion } from "motion/react";
@@ -123,10 +123,19 @@ export default function GrupoDeProductoRow({ grupoObject }) {
 
     return (
         <tr
-            className={`border-gray-300 border-b text-black h-[134px] ${
-                grupoObject?.id % 2 === 0 ? "bg-gray-100" : "bg-white"
-            }`}
+            className={`border-gray-300 border-b text-black h-[134px] odd:bg-gray-100 even:bg-white`}
         >
+            <td className="text-center">{grupoObject?.orden}</td>
+            <td className="text-center">{grupoObject?.nombre}</td>
+            <td className="text-center">
+                {
+                    categorias?.find(
+                        (categoria) =>
+                            categoria?.id === Number(grupoObject?.categoria_id)
+                    )?.nombre
+                }
+            </td>
+
             <td className="text-center h-[100px]">
                 {grupoObject?.images?.length > 0 ? (
                     <div className="flex flex-row gap-2 justify-center">
@@ -154,16 +163,6 @@ export default function GrupoDeProductoRow({ grupoObject }) {
                     <p>Sin imagen</p>
                 )}
             </td>
-            <td className="text-center">{grupoObject?.nombre}</td>
-            <td className="text-center">
-                {
-                    categorias?.find(
-                        (categoria) =>
-                            categoria?.id === Number(grupoObject?.categoria_id)
-                    )?.nombre
-                }
-            </td>
-            <td className="text-center">{grupoObject?.orden}</td>
             <td className="text-center">
                 <Switch
                     checked={destacado}
@@ -172,18 +171,26 @@ export default function GrupoDeProductoRow({ grupoObject }) {
                 />
             </td>
             <td className="text-center">
-                <div className="flex flex-col gap-3 px-2">
+                <div className="flex flex-row gap-3 justify-center">
                     <button
                         onClick={() => setEditar(true)}
-                        className="bg-blue-500 py-1 px-2 text-white rounded-md"
+                        className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
                     >
-                        Editar
+                        <FontAwesomeIcon
+                            icon={faPen}
+                            size="lg"
+                            color="#3b82f6"
+                        />
                     </button>
                     <button
                         onClick={deleteGrupo}
-                        className="bg-primary-red py-1 px-2 text-white rounded-md"
+                        className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
                     >
-                        Eliminar
+                        <FontAwesomeIcon
+                            icon={faTrash}
+                            size="lg"
+                            color="#bc1d31"
+                        />
                     </button>
                 </div>
             </td>

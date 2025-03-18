@@ -77,7 +77,7 @@ export default function CategoriasAdmin() {
     const totalPages = Math.ceil(filteredCategorias.length / itemsPerPage);
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full py-10">
             <Toaster />
             <AnimatePresence>
                 {createView && (
@@ -160,19 +160,19 @@ export default function CategoriasAdmin() {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <div className="flex flex-col w-full px-6 mx-auto py-10 gap-3">
-                <h1 className="text-2xl">Categorias</h1>
-                <div className="w-full flex flex-row gap-5">
+            <div className="flex flex-col w-full px-6 mx-auto gap-3">
+                <h1 className="text-2xl font-bold">Categorias</h1>
+                <div className="w-full flex h-fit flex-row gap-5">
                     <input
                         type="text"
                         placeholder="Buscar categoría..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-md w-full"
+                        className="px-3 border border-gray-300 rounded-md w-full"
                     />
                     <button
                         onClick={() => setCreateView(true)}
-                        className="bg-blue-500 hover:bg-blue-700 w-[200px] text-white font-bold py-1 px-4 rounded"
+                        className="bg-primary-red hover:bg-blue-700 w-[200px] text-white font-bold py-1 px-4 rounded"
                     >
                         Crear categoria
                     </button>
@@ -182,11 +182,12 @@ export default function CategoriasAdmin() {
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
                         <thead className="text-xs text-gray-600 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <td className="min-w-[200px] py-2 pl-3 text-center">
+                                <td className="text-center">ORDEN</td>
+
+                                <td className="text-center ">NOMBRE</td>
+                                <td className="w-[400px] py-2 px-3 text-center">
                                     IMAGEN
                                 </td>
-                                <td className="text-center">NOMBRE</td>
-                                <td className="text-center">ORDEN</td>
                                 <td className="text-center">EDITAR</td>
                             </tr>
                         </thead>

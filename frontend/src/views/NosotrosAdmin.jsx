@@ -11,8 +11,12 @@ export default function NosotrosAdmin() {
     const [mision, setMision] = useState();
     const [vision, setVision] = useState();
     const [valores, setValores] = useState();
+    const [titleMision, setTitleMision] = useState();
+    const [titleVision, setTitleVision] = useState();
+    const [titleValores, setTitleValores] = useState();
+    const [title, setTitle] = useState();
 
-    const editorRef = useRef(null); // Referencia al editor
+    const editorRefs = useRef({});
 
     useEffect(() => {
         fetchNosotros();
@@ -23,10 +27,23 @@ export default function NosotrosAdmin() {
         setMision(nosotros?.mision);
         setVision(nosotros?.vision);
         setValores(nosotros?.valores);
+        setTitle(nosotros?.title);
+        setTitleMision(nosotros?.title_mision);
+        setTitleVision(nosotros?.title_vision);
+        setTitleValores(nosotros?.title_valores);
 
         // Si el editor está inicializado, actualiza el contenido
-        if (editorRef.current && nosotros?.text) {
-            editorRef.current.summernote("code", nosotros?.text);
+        if (editorRefs.current.text && nosotros?.text) {
+            editorRefs.current.text.summernote("code", nosotros.text);
+        }
+        if (editorRefs.current.mision && nosotros?.mision) {
+            editorRefs.current.mision.summernote("code", nosotros.mision);
+        }
+        if (editorRefs.current.vision && nosotros?.vision) {
+            editorRefs.current.vision.summernote("code", nosotros.vision);
+        }
+        if (editorRefs.current.valores && nosotros?.valores) {
+            editorRefs.current.valores.summernote("code", nosotros.valores);
         }
     }, [nosotros]);
 
@@ -44,10 +61,26 @@ export default function NosotrosAdmin() {
             formData.append("image", image);
         }
 
-        formData.append("text", editorRef.current.summernote("code"));
-        formData.append("mision", mision);
-        formData.append("vision", vision);
-        formData.append("valores", valores);
+        formData.append(
+            "text",
+            editorRefs.current.text?.summernote("code") || ""
+        );
+        formData.append("title", title);
+        formData.append("title_mision", titleMision);
+        formData.append("title_vision", titleVision);
+        formData.append("title_valores", titleValores);
+        formData.append(
+            "mision",
+            editorRefs.current.mision?.summernote("code") || ""
+        );
+        formData.append(
+            "vision",
+            editorRefs.current.vision?.summernote("code") || ""
+        );
+        formData.append(
+            "valores",
+            editorRefs.current.valores?.summernote("code") || ""
+        );
 
         const res = axiosClient.post("/nosotros/1?_method=PUT", formData, {
             headers: {
@@ -79,7 +112,27 @@ export default function NosotrosAdmin() {
             >
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div className="flex flex-col gap-10">
+                            <div className="col-span-full">
+                                <label
+                                    htmlFor="titu"
+                                    className="block text-sm/6 font-medium text-gray-900"
+                                >
+                                    Titutlo
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        value={title}
+                                        onChange={(e) =>
+                                            setTitle(e.target.value)
+                                        }
+                                        id="titu"
+                                        name="titu"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                    />
+                                </div>
+                            </div>
+
                             <div className="col-span-full">
                                 <label className="block text-sm/6 font-medium text-gray-900">
                                     Texto
@@ -102,17 +155,12 @@ export default function NosotrosAdmin() {
 
                                 <div className="custom-container mt-2 min-w-[900px] prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
                                     <ReactSummernoteLite
+                                        height={200}
                                         className="w-full"
                                         onInit={({ note }) => {
-                                            if (!editorRef.current) {
-                                                editorRef.current = note; // Guarda la referencia del editor solo una vez
-
-                                                if (text) {
-                                                    note.summernote(
-                                                        "code",
-                                                        text
-                                                    );
-                                                }
+                                            editorRefs.current.text = note;
+                                            if (text) {
+                                                note.summernote("code", text);
                                             }
                                         }}
                                         tabsize={2}
@@ -171,7 +219,7 @@ export default function NosotrosAdmin() {
                                     <div className="flex items-center justify-center w-1/2">
                                         <div className="text-center items-center h-fit self-center">
                                             <div className="mt-4 flex text-sm flex-col gap-2 text-gray-600">
-                                                <label className="cursor-pointer rounded-md bg-white font-semibold text-indigo-600 hover:text-indigo-500">
+                                                <label className="cursor-pointer rounded-md bg-primary-red font-semibold text-white py-1 px-2">
                                                     <span>Cambiar Imagen</span>
 
                                                     <input
@@ -188,67 +236,204 @@ export default function NosotrosAdmin() {
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="mision"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Mision
-                                </label>
-                                <div className="mt-2">
-                                    <textarea
-                                        value={mision}
+                            <div className="flex flex-row justify-between w-full gap-5">
+                                <div className="w-full">
+                                    <input
+                                        value={titleMision}
                                         onChange={(e) =>
-                                            setMision(e.target.value)
+                                            setTitleMision(e.target.value)
                                         }
-                                        id="mision"
-                                        name="mision"
-                                        rows={4}
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        type="text"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400"
                                     />
+                                    <div className="custom-container mt-2  prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
+                                        <ReactSummernoteLite
+                                            height={200}
+                                            className="w-full"
+                                            onInit={({ note }) => {
+                                                editorRefs.current.mision =
+                                                    note;
+                                                if (mision) {
+                                                    note.summernote(
+                                                        "code",
+                                                        mision
+                                                    );
+                                                }
+                                            }}
+                                            tabsize={2}
+                                            toolbar={[
+                                                ["style", ["style"]],
+                                                [
+                                                    "font",
+                                                    [
+                                                        "bold",
+                                                        "underline",
+                                                        "clear",
+                                                        "strikethrough",
+                                                    ],
+                                                ],
+                                                ["fontsize", ["fontsize"]],
+                                                ["fontname", ["fontname"]],
+                                                ["color", ["color"]],
+                                                [
+                                                    "para",
+                                                    ["ul", "ol", "paragraph"],
+                                                ],
+                                                ["table", ["table"]],
+                                                [
+                                                    "insert",
+                                                    [
+                                                        "link",
+                                                        "picture",
+                                                        "video",
+                                                        "hr",
+                                                    ],
+                                                ],
+                                                [
+                                                    "view",
+                                                    [
+                                                        "fullscreen",
+                                                        "codeview",
+                                                        "help",
+                                                    ],
+                                                ],
+                                            ]}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="vision"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Vision
-                                </label>
-                                <div className="mt-2">
-                                    <textarea
-                                        value={vision}
+                                <div className="w-full">
+                                    <input
+                                        value={titleVision}
                                         onChange={(e) =>
-                                            setVision(e.target.value)
+                                            setTitleVision(e.target.value)
                                         }
-                                        id="vision"
-                                        name="vision"
-                                        rows={4}
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        type="text"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400"
                                     />
+                                    <div className="custom-container mt-2  prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
+                                        <ReactSummernoteLite
+                                            height={200}
+                                            className="w-full"
+                                            onInit={({ note }) => {
+                                                editorRefs.current.vision =
+                                                    note;
+                                                if (vision) {
+                                                    note.summernote(
+                                                        "code",
+                                                        vision
+                                                    );
+                                                }
+                                            }}
+                                            tabsize={2}
+                                            toolbar={[
+                                                ["style", ["style"]],
+                                                [
+                                                    "font",
+                                                    [
+                                                        "bold",
+                                                        "underline",
+                                                        "clear",
+                                                        "strikethrough",
+                                                        "superscript",
+                                                        "subscript",
+                                                    ],
+                                                ],
+                                                ["fontsize", ["fontsize"]],
+                                                ["fontname", ["fontname"]],
+                                                ["color", ["color"]],
+                                                [
+                                                    "para",
+                                                    ["ul", "ol", "paragraph"],
+                                                ],
+                                                ["table", ["table"]],
+                                                [
+                                                    "insert",
+                                                    [
+                                                        "link",
+                                                        "picture",
+                                                        "video",
+                                                        "hr",
+                                                    ],
+                                                ],
+                                                [
+                                                    "view",
+                                                    [
+                                                        "fullscreen",
+                                                        "codeview",
+                                                        "help",
+                                                    ],
+                                                ],
+                                            ]}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="col-span-full">
-                                <label
-                                    htmlFor="sustentabilidad"
-                                    className="block text-sm/6 font-medium text-gray-900"
-                                >
-                                    Valores
-                                </label>
-                                <div className="mt-2">
-                                    <textarea
-                                        value={valores}
+                                <div className="w-full">
+                                    <input
+                                        value={titleValores}
                                         onChange={(e) =>
-                                            setValores(e.target.value)
+                                            setTitleValores(e.target.value)
                                         }
-                                        id="sustentabilidad"
-                                        name="sustentabilidad"
-                                        rows={4}
-                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        type="text"
+                                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400"
                                     />
+                                    <div className="custom-container mt-2  prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
+                                        <ReactSummernoteLite
+                                            height={200}
+                                            className="w-full"
+                                            onInit={({ note }) => {
+                                                editorRefs.current.valores =
+                                                    note;
+                                                if (valores) {
+                                                    note.summernote(
+                                                        "code",
+                                                        valores
+                                                    );
+                                                }
+                                            }}
+                                            tabsize={2}
+                                            toolbar={[
+                                                ["style", ["style"]],
+                                                [
+                                                    "font",
+                                                    [
+                                                        "bold",
+                                                        "underline",
+                                                        "clear",
+                                                        "strikethrough",
+                                                        "superscript",
+                                                        "subscript",
+                                                    ],
+                                                ],
+                                                ["fontsize", ["fontsize"]],
+                                                ["fontname", ["fontname"]],
+                                                ["color", ["color"]],
+                                                [
+                                                    "para",
+                                                    ["ul", "ol", "paragraph"],
+                                                ],
+                                                ["table", ["table"]],
+                                                [
+                                                    "insert",
+                                                    [
+                                                        "link",
+                                                        "picture",
+                                                        "video",
+                                                        "hr",
+                                                    ],
+                                                ],
+                                                [
+                                                    "view",
+                                                    [
+                                                        "fullscreen",
+                                                        "codeview",
+                                                        "help",
+                                                    ],
+                                                ],
+                                            ]}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -257,7 +442,7 @@ export default function NosotrosAdmin() {
                 <div className="mt-6 flex items-center justify-end gap-x-6 pb-10">
                     <button
                         type="submit"
-                        className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                        className="rounded-md bg-primary-red px-3 py-2 text-sm font-semibold text-white shadow-sm "
                     >
                         Actualizar
                     </button>

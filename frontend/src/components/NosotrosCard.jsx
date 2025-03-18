@@ -6,7 +6,7 @@ export default function NosotrosCard({ title, text, icon }) {
             initial={{ y: 100, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 1 }}
-            className="flex flex-col bg-white w-[392px] h-[410px] px-10 py-20 items-center gap-2"
+            className="flex flex-col bg-white w-[392px] h-fit min-h-[457px] px-10 py-20 items-center gap-2"
         >
             <div className=" flex flex-col items-center gap-5">
                 <img
@@ -14,13 +14,11 @@ export default function NosotrosCard({ title, text, icon }) {
                     src={icon}
                     alt=""
                 />
-                <h2 className="text-[30px] font-semibold">{title}</h2>
+                <h2 className="text-[20px] font-semibold">{title}</h2>
             </div>
 
             <div className=" flex flex-col overflow-hidden ">
-                <p className="text-base text-center text-[#515A53] break-words leading-relaxed whitespace-pre-line">
-                    {text}
-                </p>
+                <div dangerouslySetInnerHTML={{ __html: text }}></div>
             </div>
         </motion.div>
     );

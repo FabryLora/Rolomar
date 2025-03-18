@@ -1,6 +1,8 @@
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -219,9 +221,7 @@ export default function RealProductRowAdmin({ productObject }) {
             <form
                 method="POST"
                 onSubmit={update}
-                className={`table-row h-[134px] border-b ${
-                    productObject?.id % 2 === 0 ? "bg-gray-100" : "bg-white"
-                }`}
+                className={`table-row h-[134px] border-b even:bg-gray-100 odd:bg-white`}
             >
                 <div className="table-cell px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white align-middle">
                     <div className="flex flex-row overflow-x-auto scrollbar-hide gap-2">
@@ -239,16 +239,16 @@ export default function RealProductRowAdmin({ productObject }) {
                     <p>{nombre}</p>
                 </div>
 
-                <div className="table-cell px-6 py-4 align-middle">
+                <div className="table-cell px-6 py-4 align-middle w-[200px]">
                     <p>{codigo}</p>
                 </div>
 
                 <div className="table-cell px-6 py-4 align-middle">
-                    <p>${precioMayorista}</p>
+                    <p>$ {precioMayorista}</p>
                 </div>
 
                 <div className="table-cell px-6 py-4 align-middle">
-                    <p>${precioMinorista}</p>
+                    <p>$ {precioMinorista}</p>
                 </div>
 
                 <div className="table-cell px-6 py-4 align-middle">
@@ -264,20 +264,26 @@ export default function RealProductRowAdmin({ productObject }) {
                 </div>
 
                 <div className="table-cell align-middle text-center w-[140px] ">
-                    <div className="flex flex-col gap-3 px-2 ">
+                    <div className="flex flex-row gap-3 justify-center">
                         <button
-                            type="button"
                             onClick={() => setEditable(true)}
-                            className="bg-blue-500 py-1 px-2 text-white rounded-md"
+                            className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
                         >
-                            Editar
+                            <FontAwesomeIcon
+                                icon={faPen}
+                                size="lg"
+                                color="#3b82f6"
+                            />
                         </button>
                         <button
-                            type="button"
                             onClick={deleteProduct}
-                            className="bg-primary-red py-1 px-2 text-white rounded-md"
+                            className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
                         >
-                            Eliminar
+                            <FontAwesomeIcon
+                                icon={faTrash}
+                                size="lg"
+                                color="#bc1d31"
+                            />
                         </button>
                     </div>
                 </div>

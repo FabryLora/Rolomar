@@ -14,14 +14,21 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
-import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+    Link,
+    Navigate,
+    Outlet,
+    useLocation,
+    useNavigate,
+} from "react-router-dom";
 import rolomarLogo from "../assets/logos/calite.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
-    const { adminToken, setAdminToken, adminInfo, logos } = useStateContext();
+    const { adminToken, setAdminToken, adminInfo } = useStateContext();
     const [sidebar, setSidebar] = useState(true);
+    const navigate = useNavigate();
 
     const MotionFontAwesomeIcon = motion.create(FontAwesomeIcon);
     const MotionLink = motion.create(Link);
@@ -55,8 +62,8 @@ export default function Administrator() {
             open: false,
             title: "Nosotros",
             icon: faBuilding,
-            href: "#",
-            subHref: [{ title: "Nosotros", href: "/dashboard/nosotros" }],
+            href: "/dashboard/nosotros",
+            subHref: [],
         },
         {
             id: "catalogo",
@@ -68,9 +75,9 @@ export default function Administrator() {
                 { title: "Categorias", href: "/dashboard/categorias" },
                 {
                     title: "Productos",
-                    href: "/dashboard/grupo-de-productos",
+                    href: "/dashboard/productos",
                 },
-                { title: "Sub Productos", href: "/dashboard/productos" },
+                { title: "Sub Productos", href: "/dashboard/sub-productos" },
             ],
         },
         {
@@ -78,47 +85,40 @@ export default function Administrator() {
             open: false,
             title: "Novedades",
             icon: faNewspaper,
-            href: "#",
-            subHref: [
-                { title: "Tarjetas Novedades", href: "/dashboard/novedades" },
-            ],
+            href: "/dashboard/novedades",
+            subHref: [],
         },
         {
             id: "contacto",
             open: false,
             title: "Contacto",
             icon: faEnvelope,
-            href: "#",
-            subHref: [{ title: "Contacto", href: "/dashboard/contacto" }],
+            href: "/dashboard/contacto",
+            subHref: [],
         },
         {
             id: "clientes",
             open: false,
             title: "Clientes",
             icon: faUsers,
-            href: "#",
-            subHref: [{ title: "Clientes", href: "/dashboard/clientes" }],
+            href: "/dashboard/clientes",
+            subHref: [],
         },
         {
             id: "administradores",
             open: false,
             title: "Administradores",
             icon: faShield,
-            href: "#",
-            subHref: [
-                {
-                    title: "Administradores",
-                    href: "/dashboard/administradores",
-                },
-            ],
+            href: "/dashboard/administradores",
+            subHref: [],
         },
         {
             id: "metadatos",
             open: false,
             title: "Metadatos",
             icon: faGear,
-            href: "#",
-            subHref: [{ title: "Metadatos", href: "/dashboard/metadatos" }],
+            href: "/dashboard/metadatos",
+            subHref: [],
         },
         {
             id: "zonaprivada",
@@ -198,9 +198,12 @@ export default function Administrator() {
                                     {dropdowns.map((drop) => (
                                         <li key={drop.id}>
                                             <button
-                                                onClick={() =>
-                                                    toggleDropdown(drop.id)
-                                                }
+                                                onClick={() => {
+                                                    if (drop.subHref == false) {
+                                                        navigate(drop.href);
+                                                    }
+                                                    toggleDropdown(drop.id);
+                                                }}
                                                 className="flex flex-row w-full justify-between items-center  p-4"
                                             >
                                                 <div className="flex flex-row gap-2 items-center">
@@ -218,43 +221,53 @@ export default function Administrator() {
                                                         {drop.title}
                                                     </Link>
                                                 </div>
-                                                <MotionFontAwesomeIcon
-                                                    animate={{
-                                                        rotate: drop.open
-                                                            ? 90
-                                                            : 0,
-                                                    }}
-                                                    transition={{
-                                                        ease: "linear",
-                                                        duration: 0.1,
-                                                    }}
-                                                    size="xs"
-                                                    icon={faChevronRight}
-                                                />
+                                                {drop.subHref != false && (
+                                                    <MotionFontAwesomeIcon
+                                                        animate={{
+                                                            rotate: drop.open
+                                                                ? 90
+                                                                : 0,
+                                                        }}
+                                                        transition={{
+                                                            ease: "linear",
+                                                            duration: 0.1,
+                                                        }}
+                                                        size="xs"
+                                                        icon={faChevronRight}
+                                                    />
+                                                )}
                                             </button>
                                             <AnimatePresence>
-                                                {drop.open && (
-                                                    <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit border-l ml-6">
-                                                        {drop.subHref.map(
-                                                            (sub, index) => (
-                                                                <MotionLink
-                                                                    className="mx-4 px-1"
-                                                                    whileHover={{
-                                                                        backgroundColor:
-                                                                            "#fff",
-                                                                        color: "#000",
-                                                                    }}
-                                                                    key={index}
-                                                                    to={
-                                                                        sub.href
-                                                                    }
-                                                                >
-                                                                    {sub.title}
-                                                                </MotionLink>
-                                                            )
-                                                        )}
-                                                    </ul>
-                                                )}
+                                                {drop.open &&
+                                                    drop.subHref != false && (
+                                                        <ul className="flex flex-col gap-2 overflow-hidden py-2 h-fit border-l ml-6">
+                                                            {drop.subHref.map(
+                                                                (
+                                                                    sub,
+                                                                    index
+                                                                ) => (
+                                                                    <MotionLink
+                                                                        className="mx-4 px-1"
+                                                                        whileHover={{
+                                                                            backgroundColor:
+                                                                                "#fff",
+                                                                            color: "#000",
+                                                                        }}
+                                                                        key={
+                                                                            index
+                                                                        }
+                                                                        to={
+                                                                            sub.href
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            sub.title
+                                                                        }
+                                                                    </MotionLink>
+                                                                )
+                                                            )}
+                                                        </ul>
+                                                    )}
                                             </AnimatePresence>
                                         </li>
                                     ))}

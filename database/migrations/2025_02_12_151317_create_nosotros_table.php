@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('nosotros', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->string("image");
             $table->longText('text');
-            $table->string('mision');
-            $table->string('vision');
-            $table->string('valores');
+            $table->string('title_mision');
+            $table->longText('mision');
+            $table->string('title_vision');
+            $table->longText('vision');
+            $table->string('title_valores');
+            $table->longText('valores');
             $table->timestamps();
         });
     }

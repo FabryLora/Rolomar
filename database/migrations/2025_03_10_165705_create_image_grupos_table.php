@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string("orden")->nullable();
             $table->string("image")->nullable();
-            $table->foreignIdFor(GrupoDeProductos::class, "grupo_de_productos_id")->constrained();
+            $table->foreignIdFor(GrupoDeProductos::class, "grupo_de_productos_id")->constrained()->onDelete("cascade");
             $table->timestamps();
         });
     }
