@@ -61,7 +61,7 @@ export default function RealProductRowAdmin({ productObject }) {
                     },
                 }
             );
-            fetchProductos();
+            fetchProductos(true);
             setEditable(false);
             toast.success("Guardado correctamente");
         } catch (err) {
@@ -72,7 +72,7 @@ export default function RealProductRowAdmin({ productObject }) {
     const deleteProduct = async () => {
         try {
             await axiosClient.delete(`/productos/${productObject.id}`);
-            fetchProductos();
+            fetchProductos(true);
             setEditable(false);
             toast.success("Producto eliminado correctamente");
         } catch (error) {
@@ -266,6 +266,7 @@ export default function RealProductRowAdmin({ productObject }) {
                 <div className="table-cell align-middle text-center w-[140px] ">
                     <div className="flex flex-row gap-3 justify-center">
                         <button
+                            type="button"
                             onClick={() => setEditable(true)}
                             className="border-blue-500 border py-1 px-2 text-white rounded-md w-10 h-10"
                         >
@@ -276,6 +277,7 @@ export default function RealProductRowAdmin({ productObject }) {
                             />
                         </button>
                         <button
+                            type="button"
                             onClick={deleteProduct}
                             className="border-primary-red border py-1 px-2 text-white rounded-md w-10 h-10"
                         >

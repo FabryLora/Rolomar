@@ -46,7 +46,7 @@ export default function CategoryAdminCard({ category }) {
         try {
             await response;
             console.log(response);
-            fetchCategorias();
+            fetchCategorias(true);
             setEdit(false);
         } catch (error) {
             console.error("Error al guardar:", error);
@@ -65,7 +65,7 @@ export default function CategoryAdminCard({ category }) {
         try {
             await response;
             console.log(response);
-            fetchCategorias();
+            fetchCategorias(true);
         } catch (error) {
             console.error("Error al eliminar:", error);
         }

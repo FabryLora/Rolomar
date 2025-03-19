@@ -43,7 +43,7 @@ export default function CategoriasAdmin() {
 
         try {
             await reposnse;
-            fetchCategorias();
+            fetchCategorias(true);
             setCreateView(false);
         } catch (error) {
             console.error("Error al guardar:", error);

@@ -57,7 +57,7 @@ export default function RealProducts() {
 
         try {
             await response;
-            fetchProductos();
+            fetchProductos(true);
         } catch (err) {
             console.error("Error al guardar:", err);
         }

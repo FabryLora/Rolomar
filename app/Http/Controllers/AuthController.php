@@ -120,7 +120,7 @@ class AuthController extends Controller
 
         $data = $request->validate([
             'nomcuit' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|max:255|unique:users,email,' . $id,
+            'email' => 'nullable|email|max:255|unique:users,email,' . $id,
             'cuit' => 'nullable|string|max:20',
             'direccion' => 'nullable|string|max:255',
             'provincia' => 'nullable|string|max:255',

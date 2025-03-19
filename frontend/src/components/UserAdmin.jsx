@@ -236,7 +236,6 @@ export default function UserAdmin({ user }) {
                                         type="email"
                                         name="5"
                                         id="5"
-                                        required
                                     />
                                 </div>
 

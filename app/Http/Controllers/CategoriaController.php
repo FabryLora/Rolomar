@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CategoriaResource;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoriaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        $onlyCategoria = $request->input('input');
+        if ($onlyCategoria) {
+            return CategoriaResource::collection(Categoria::all());
+        }
         return CategoriaResource::collection(Categoria::with(['grupos', 'productos'])->get());
     }
 
@@ -22,7 +28,7 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $data = $request->validate(rules: [
             'nombre' => 'required',
             'imagen' => 'nullable|file',
             'orden' => 'nullable',

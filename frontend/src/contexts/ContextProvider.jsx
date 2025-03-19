@@ -222,22 +222,28 @@ export const ContextProvider = ({ children }) => {
         });
     };
 
-    const fetchProductos = () => {
-        axiosClient.get("/productos").then(({ data }) => {
-            setProductos(data.data);
-        });
+    const fetchProductos = (props = null) => {
+        axiosClient
+            .get("/productos", { params: { state: props } })
+            .then(({ data }) => {
+                setProductos(data.data);
+            });
     };
 
-    const fetchGrupoDeProductos = () => {
-        axiosClient.get("/grupo-de-productos").then(({ data }) => {
-            setGrupoDeProductos(data.data);
-        });
+    const fetchGrupoDeProductos = (props = null) => {
+        axiosClient
+            .get("/grupo-de-productos", { params: { state: props } })
+            .then(({ data }) => {
+                setGrupoDeProductos(data.data);
+            });
     };
 
-    const fetchCategorias = () => {
-        axiosClient.get("/categorias").then(({ data }) => {
-            setCategorias(data.data);
-        });
+    const fetchCategorias = (props = null) => {
+        axiosClient
+            .get("/categorias", { params: { input: props } })
+            .then(({ data }) => {
+                setCategorias(data.data);
+            });
     };
 
     const fetchPedidos = () => {
@@ -297,9 +303,9 @@ export const ContextProvider = ({ children }) => {
         fetchNovedades();
         fetchNosotros();
         fetchContactInfo();
-        fetchProductos();
+        fetchProductos(true);
         fetchGrupoDeProductos();
-        fetchCategorias();
+        fetchCategorias(true);
         fetchPedidos();
         fetchPedidoProductos();
         fetchListadeprecios();

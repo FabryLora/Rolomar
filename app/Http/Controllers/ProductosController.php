@@ -12,8 +12,14 @@ class ProductosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $onlyProductos = $request->state;
+
+        if ($onlyProductos) {
+            return ProductosResource::collection(Productos::all());
+        }
+
         return ProductosResource::collection(Productos::with(['grupo', 'categoria'])->get());
     }
 
@@ -51,6 +57,7 @@ class ProductosController extends Controller
      */
     public function show(Productos $productos)
     {
+        $productos->load('grupo', 'categoria');
         return new ProductosResource($productos);
     }
 

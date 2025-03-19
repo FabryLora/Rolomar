@@ -12,8 +12,14 @@ class GrupoDeProductosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $onlyGrupo = $request->state;
+
+        if ($onlyGrupo) {
+            return GrupoDeProductosResource::collection(GrupoDeProductos::with('images')->get());
+        }
+
         return GrupoDeProductosResource::collection(GrupoDeProductos::with('productos', 'images')->get());
     }
 
@@ -48,6 +54,7 @@ class GrupoDeProductosController extends Controller
      */
     public function show(GrupoDeProductos $grupoDeProductos)
     {
+        $grupoDeProductos->load('productos', 'images');
         return new GrupoDeProductosResource($grupoDeProductos);
     }
 

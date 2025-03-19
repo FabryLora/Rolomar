@@ -24,7 +24,7 @@ class ProductosResource extends JsonResource
             'precio_mayorista' => $this->precio_mayorista,
             'precio_minorista' => $this->precio_minorista,
             'addword' => $this->addword,
-            "categoria" => new CategoriaResource($this->categoria),
+            "categoria" => new CategoriaResource($this->whenLoaded('categoria')),
             "grupo" => $this->grupo_de_productos_id
         ];
     }

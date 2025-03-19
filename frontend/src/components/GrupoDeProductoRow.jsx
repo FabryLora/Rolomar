@@ -64,7 +64,7 @@ export default function GrupoDeProductoRow({ grupoObject }) {
             toast.success("Guardado correctamente");
             console.log(grupoResponse);
             setEditar(false);
-            fetchGrupoDeProductos();
+            fetchGrupoDeProductos(true);
         } catch (err) {
             toast.error("Error al guardar");
             console.error("Error al guardar:", err);
@@ -85,7 +85,7 @@ export default function GrupoDeProductoRow({ grupoObject }) {
         try {
             await response;
 
-            fetchGrupoDeProductos();
+            fetchGrupoDeProductos(true);
         } catch (err) {
             console.error("Error al eliminar:", err);
         }

@@ -6,12 +6,8 @@ import GrupoDeProductoRow from "../components/GrupoDeProductoRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function GruposDeProductos() {
-    const {
-        categorias,
-
-        fetchGrupoDeProductos,
-        grupoDeProductos,
-    } = useStateContext();
+    const { categorias, fetchGrupoDeProductos, grupoDeProductos } =
+        useStateContext();
 
     const [nombre, setNombre] = useState();
     const [imagen, setImagen] = useState();
@@ -103,7 +99,8 @@ export default function GruposDeProductos() {
 
             console.log(grupoResponse);
             toast.success("Grupo de productos guardado correctamente");
-            fetchGrupoDeProductos();
+            setCreateView(false);
+            fetchGrupoDeProductos(true);
         } catch (err) {
             console.error("Error al guardar:", err);
             toast.error("Error al guardar el grupo de productos");

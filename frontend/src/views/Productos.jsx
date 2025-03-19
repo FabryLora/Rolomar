@@ -6,8 +6,7 @@ import CategoryCard from "../components/CategoryCard";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Productos() {
-    const { categorias, metadatos, fetchCategorias, grupoDeProductos } =
-        useStateContext();
+    const { categorias, metadatos, grupoDeProductos } = useStateContext();
     const [currentCategory, setCurrentCategory] = useState("");
     const [search, setSearch] = useState(false);
     const [descripcion, setDescripcion] = useState("");

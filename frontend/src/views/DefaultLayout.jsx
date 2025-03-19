@@ -8,20 +8,27 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function DefaultLayout() {
     const location = useLocation();
 
-    const { userToken, categorias, grupoDeProductos } = useStateContext();
+    const { userToken, categorias, grupoDeProductos, fetchCategorias } =
+        useStateContext();
 
     const [cleanPathname, setCleanPathname] = useState(
         location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
     );
 
     const capitalizeFirstLetter = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1);
+        return str?.charAt(0).toUpperCase() + str?.slice(1);
     };
 
     useEffect(() => {
         setCleanPathname(
             location.pathname.replace(/^\/+/, "").replace(/-/g, " ").split("/")
         );
+    }, [location]);
+
+    useEffect(() => {
+        if (cleanPathname[0] == "productos") {
+            fetchCategorias();
+        }
     }, [location]);
 
     if (userToken) {

@@ -59,7 +59,7 @@ export default function Home() {
                         </Link>
                     </div>
 
-                    <div className="flex flex-row flex-wrap justify-between gap-y-10 max-sm:flex-col max-sm:items-center">
+                    <div className="grid grid-cols-4 gap-y-10 max-sm:flex-col max-sm:items-center gap-5">
                         {grupoDeProductos
                             ?.filter((grup) => grup?.destacado == "1")
                             ?.map((grupo, index) => (
@@ -68,7 +68,7 @@ export default function Home() {
                                         grupo?.categoria_id
                                     )}/${grupo?.id}`}
                                     key={index}
-                                    className="w-[288px] h-[347px] border"
+                                    className=" h-[347px] border"
                                 >
                                     <div className="h-[280px] w-full">
                                         <img
