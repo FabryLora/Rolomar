@@ -325,26 +325,45 @@ export default function GruposDeProductos() {
                     </button>
                 </div>
             </div>
+
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" className="px-6 py-3 text-center">
+                <thead className="  font-inter  text-black bg-gray-300 uppercase">
+                    <tr className="">
+                        <th
+                            scope="col"
+                            className="px-6 py-3 text-center font-medium"
+                        >
                             Orden
                         </th>
 
-                        <th scope="col" className="px-6 py-3 text-center">
+                        <th
+                            scope="col"
+                            className="px-6 py-3 text-center font-medium"
+                        >
                             Nombre
                         </th>
-                        <th scope="col" className="px-6 py-3 text-center">
+                        <th
+                            scope="col"
+                            className="px-6 py-3 text-center font-medium"
+                        >
                             Categoria
                         </th>
-                        <th scope="col" className="px-6 py-3 text-center">
+                        <th
+                            scope="col"
+                            className="px-6 py-3 text-center font-medium"
+                        >
                             Imagenes de portada
                         </th>
-                        <th scope="col" className="px-6 py-3 text-center">
+                        <th
+                            scope="col"
+                            className="px-6 py-3 text-center font-medium"
+                        >
                             Destacado
                         </th>
-                        <th scope="col" className="px-6 py-3 text-center">
+                        <th
+                            scope="col"
+                            className="px-6 py-3 text-center font-medium"
+                        >
                             Editar
                         </th>
                     </tr>

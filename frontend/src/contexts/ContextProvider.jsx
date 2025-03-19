@@ -303,9 +303,9 @@ export const ContextProvider = ({ children }) => {
         fetchNovedades();
         fetchNosotros();
         fetchContactInfo();
-        fetchProductos(true);
+        fetchProductos();
         fetchGrupoDeProductos();
-        fetchCategorias(true);
+        fetchCategorias();
         fetchPedidos();
         fetchPedidoProductos();
         fetchListadeprecios();

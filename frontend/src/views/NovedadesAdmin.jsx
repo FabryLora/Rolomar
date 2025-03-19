@@ -47,6 +47,7 @@ export default function NovedadesAdmin() {
             console.log(novedadesResponse);
 
             fetchNovedades();
+            setCreateView(false);
         } catch (err) {
             console.error("Error al guardar:", err);
         }

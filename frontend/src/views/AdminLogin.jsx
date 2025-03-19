@@ -21,6 +21,7 @@ export default function AdminLogin() {
             });
 
             setAdminToken(data.adminToken);
+            localStorage.setItem("adminName", user);
         } catch (error) {
             console.error(error);
             setError("Usuario o contraseña incorrectos");

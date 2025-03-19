@@ -351,22 +351,30 @@ export default function RealProducts() {
             </div>
 
             <div className="table w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 px-6 ">
-                <div className="table-header-group text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div className="table-header-group text-sm font-medium text-black bg-gray-300 uppercase">
                     <div className="table-row">
-                        <div className="table-cell px-6 py-3">Imagen</div>
-                        <div className="table-cell px-6 py-3">Nombre</div>
-                        <div className="table-cell px-6 py-3">Código</div>
-                        <div className="table-cell px-6 py-3">
+                        <div className="table-cell px-6 py-3 align-middle">
+                            Imagen
+                        </div>
+                        <div className="table-cell px-6 py-3 align-middle">
+                            Nombre
+                        </div>
+                        <div className="table-cell px-6 py-3 align-middle">
+                            Código
+                        </div>
+                        <div className="table-cell px-6 py-3 align-middle">
                             Precio mayorista
                         </div>
-                        <div className="table-cell px-6 py-3">
+                        <div className="table-cell px-6 py-3 align-middle">
                             Precio minorista
                         </div>
-                        <div className="table-cell px-6 py-3">
+                        <div className="table-cell px-6 py-3 align-middle">
                             Grupo de productos
                         </div>
-                        <div className="table-cell px-6 py-3">Adword</div>
-                        <div className="table-cell py-3 text-center">
+                        <div className="table-cell px-6 py-3 align-middle">
+                            Adword
+                        </div>
+                        <div className="table-cell py-3 text-center align-middle">
                             Operaciones
                         </div>
                     </div>

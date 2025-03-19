@@ -60,7 +60,7 @@ export default function MarcasAdmin() {
                     <div className=" flex flex-row gap-2 items-center">
                         <label
                             htmlFor="imagen"
-                            className="bg-indigo-500 text-white px-2 py-1 rounded-md cursor-pointer"
+                            className="bg-primary-red text-white px-2 py-1 rounded-md cursor-pointer"
                         >
                             Elegir Imagen
                             <input
@@ -75,7 +75,7 @@ export default function MarcasAdmin() {
                     <span className="">{image?.name}</span>
                     <button
                         onClick={addImage}
-                        className="bg-green-500 text-white px-2 py-1 rounded-md"
+                        className="bg-indigo-500 text-white px-2 py-1 rounded-md"
                     >
                         Subir Imagen
                     </button>
@@ -96,7 +96,7 @@ export default function MarcasAdmin() {
                             />
                             <button
                                 onClick={() => deleteImage(image.id)}
-                                className="bg-red-500 text-white px-2 py-1 rounded-md"
+                                className="bg-primary-red text-white px-2 py-1 rounded-md"
                             >
                                 Eliminar
                             </button>

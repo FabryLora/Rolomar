@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('informacion_carritos', function (Blueprint $table) {
             $table->id();
-            $table->text('informacion');
+            $table->longText('informacion');
             $table->timestamps();
         });
     }

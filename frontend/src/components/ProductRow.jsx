@@ -77,10 +77,10 @@ export default function ProductRow({ product }) {
                 />
             </div>
             <p className="text-left">{product?.codigo}</p>
-            <p className="text-left">{product?.categoria?.nombre}</p>
-            <p className="text-center">{product?.nombre}</p>
+            <p className="text-left ">{product?.categoria?.nombre}</p>
+            <p className="text-left">{product?.nombre}</p>
             <p className="text-center">
-                $
+                ${" "}
                 {userInfo?.lista == 2
                     ? Number(product?.precio_mayorista)?.toLocaleString("es-AR")
                     : Number(product?.precio_minorista)?.toLocaleString(

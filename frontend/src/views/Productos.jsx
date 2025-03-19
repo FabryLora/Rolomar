@@ -69,7 +69,7 @@ export default function Productos() {
                 >
                     <select
                         onChange={(e) => setCurrentCategory(e.target.value)}
-                        className="w-full text-primary-red pl-2 border max-sm:w-full max-sm:h-[55px]"
+                        className="w-full text-black pl-2 border max-sm:w-full max-sm:h-[55px]"
                     >
                         <option
                             className="text-black"
@@ -124,14 +124,7 @@ export default function Productos() {
                                     )
                                     ?.map((grupo, index) => (
                                         <Link
-                                            to={`/productos/${encontrarCategoria(
-                                                grupo?.categoria_id
-                                            )?.toLowerCase()}/${quitarTildes(
-                                                grupo?.nombre
-                                                    ?.split(" ")
-                                                    .join("-")
-                                                    .toLowerCase()
-                                            )}`}
+                                            to={`/productos/${grupo?.categoria_id}/${grupo?.id}`}
                                             key={index}
                                             className="flex flex-row items-center gap-2 hover:bg-gray-200 p-2"
                                         >

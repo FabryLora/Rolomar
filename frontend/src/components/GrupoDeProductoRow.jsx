@@ -105,7 +105,7 @@ export default function GrupoDeProductoRow({ grupoObject }) {
         try {
             await response;
 
-            fetchGrupoDeProductos();
+            fetchGrupoDeProductos(true);
         } catch (err) {
             console.error("Error al eliminar:", err);
         }

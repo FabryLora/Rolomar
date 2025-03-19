@@ -368,7 +368,7 @@ export default function NavBar() {
                     <div ref={menuRef} className="relative">
                         <button
                             onClick={() => setUserMenu(!userMenu)}
-                            className={` h-[41px] w-[154px] border transition-all ${
+                            className={` min-h-[41px] w-[154px] border transition-all ${
                                 scrolled || cleanPathname[0] !== "inicio"
                                     ? "border-black text-black hover:bg-black hover:text-white"
                                     : "border-white text-white hover:bg-white hover:text-black"

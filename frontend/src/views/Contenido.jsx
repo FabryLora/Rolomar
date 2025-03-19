@@ -264,7 +264,7 @@ export default function Contenido() {
 
                                 <div className="custom-container mt-2 min-w-[900px] prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-full">
                                     <ReactSummernoteLite
-                                        className="w-full"
+                                        className="w-full "
                                         onInit={({ note }) => {
                                             if (!editorRef.current) {
                                                 editorRef.current = note; // Guarda la referencia del editor solo una vez
@@ -370,64 +370,6 @@ export default function Contenido() {
                     </div>
                 </div>
             </form>
-            <div className="px-6 flex flex-col gap-5 min-h-[510px] pb-10">
-                <h2 className="text-3xl border-b-2 pb-2">Marcas</h2>
-                <div className="flex flex-col gap-10">
-                    <Toaster />
-                    <div className="flex flex-col gap-3">
-                        <h2 className="text-2xl font-bold">Agregar Marcas</h2>
-                        <div className="flex flex-col gap-3 w-fit items-center">
-                            <div className=" flex flex-row gap-2 items-center">
-                                <label
-                                    htmlFor="marca"
-                                    className="bg-primary-red text-white px-2 py-1 rounded-md cursor-pointer"
-                                >
-                                    Elegir Imagen
-                                    <input
-                                        onChange={(e) =>
-                                            setImageMarcas(e.target.files[0])
-                                        }
-                                        type="file"
-                                        name="imagen"
-                                        id="marca"
-                                        className="hidden"
-                                    />
-                                </label>
-                            </div>
-                            <span className="">{imageMarcas?.name}</span>
-                            <button
-                                onClick={addImage}
-                                className="bg-primary-red text-white px-2 py-1 rounded-md"
-                            >
-                                Subir Imagen
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-5">
-                        <h2 className="text-2xl font-bold">Marcas agregadas</h2>
-                        <div className="flex flex-row gap-3 flex-wrap max-w-[800px]">
-                            {brandImages?.map((image) => (
-                                <div
-                                    key={image.id}
-                                    className="flex flex-col gap-2 w-40 h-40"
-                                >
-                                    <img
-                                        src={image.image_url}
-                                        alt=""
-                                        className="w-full h-full object-cover border"
-                                    />
-                                    <button
-                                        onClick={() => deleteImage(image.id)}
-                                        className="bg-red-500 text-white px-2 py-1 rounded-md"
-                                    >
-                                        Eliminar
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 }

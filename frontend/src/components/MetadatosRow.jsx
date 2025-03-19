@@ -10,6 +10,12 @@ export default function MetadatosRow({ metadatosObject }) {
     const [keywords, setKeywords] = useState();
     const [descripcion, setDescripcion] = useState();
 
+    function truncarTexto(texto, maxLength) {
+        return texto.length > maxLength
+            ? texto.slice(0, maxLength) + "..."
+            : texto;
+    }
+
     useEffect(() => {
         setSeccion(metadatosObject.seccion);
         setKeywords(metadatosObject.keywords);
@@ -43,11 +49,11 @@ export default function MetadatosRow({ metadatosObject }) {
             <div className="table-cell align-middle pl-2">{seccion}</div>
 
             <div className="table-cell align-middle max-w-[200px] max-h-[100px] break-words pr-2">
-                {keywords}
+                {truncarTexto(keywords, 90)}
             </div>
 
             <div className="table-cell align-middle max-w-[200px] break-words">
-                {descripcion}
+                {truncarTexto(descripcion, 90)}
             </div>
 
             <div className="table-cell text-center align-middle">

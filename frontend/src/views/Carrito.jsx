@@ -253,13 +253,16 @@ export default function Carrito() {
                         Informacion importante
                     </h2>
                 </div>
-                <p className="p-5 break-words whitespace-pre-line">
-                    {informacionCarrito?.informacion}
-                </p>
+                <div
+                    className="p-5 "
+                    dangerouslySetInnerHTML={{
+                        __html: informacionCarrito?.informacion,
+                    }}
+                ></div>
             </div>
             <div className="w-full border bg-gray-50 h-[206px] max-sm:col-span-2 max-sm:order-3">
                 <div className="bg-[#EAEAEA] p-3">
-                    <h2 className="text-lg font-semibold">Entrega</h2>
+                    <h2 className=" text-xl font-bold">Entrega</h2>
                 </div>
 
                 <div className="flex flex-col gap-6 justify-center w-full h-[160px]">

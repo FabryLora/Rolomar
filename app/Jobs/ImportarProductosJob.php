@@ -39,8 +39,8 @@ class ImportarProductosJob implements ShouldQueue
             $nombreProductoCompleto = isset($row['B']) ? mb_convert_encoding(trim($row['B']), 'UTF-8', 'auto') : null;
             $imagenBase = isset($row['C']) ? str_pad(trim($row['C']), 3, '0', STR_PAD_LEFT) : null;
             $categoriaNombre = isset($row['D']) ? mb_convert_encoding(trim($row['D']), 'UTF-8', 'auto') : null;
-            $precioMayorista = isset($row['E']) ? mb_convert_encoding(trim($row['E']), 'UTF-8', 'auto') : null;
-            $precioMinorista = isset($row['F']) ? mb_convert_encoding(trim($row['F']), 'UTF-8', 'auto') : null;
+            $precioMayorista = isset($row['F']) ? mb_convert_encoding(trim($row['F']), 'UTF-8', 'auto') : null;
+            $precioMinorista = isset($row['E']) ? mb_convert_encoding(trim($row['E']), 'UTF-8', 'auto') : null;
             $unidadVenta = isset($row['G']) ? mb_convert_encoding(trim($row['G']), 'UTF-8', 'auto') : null;
 
 

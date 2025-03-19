@@ -80,7 +80,7 @@ export default function ContactoAdmin() {
                                             icon={faEnvelope}
                                             size="lg"
                                         />
-                                        <p>Mail</p>
+                                        <p>Mail {`(contacto)`}</p>
                                     </label>
                                     <div className="mt-2">
                                         <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
@@ -107,7 +107,7 @@ export default function ContactoAdmin() {
                                             icon={faEnvelope}
                                             size="lg"
                                         />
-                                        <p>Mail</p>
+                                        <p>Mail {`(pedido)`}</p>
                                     </label>
                                     <div className="mt-2">
                                         <div className="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">

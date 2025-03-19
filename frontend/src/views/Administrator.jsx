@@ -54,6 +54,7 @@ export default function Administrator() {
             subHref: [
                 { title: "Slider", href: "/dashboard/slider" },
                 { title: "Contenido", href: "/dashboard/contenido" },
+                { title: "Marcas", href: "/dashboard/marcas" },
             ],
         },
 
@@ -295,7 +296,11 @@ export default function Administrator() {
 
                     <div className="flex flex-row gap-3">
                         <div className="">
-                            <h2>{adminInfo[0]?.name.toUpperCase()}</h2>
+                            <h2>
+                                {localStorage
+                                    ?.getItem("adminName")
+                                    ?.toUpperCase()}
+                            </h2>
                         </div>
                         <button
                             className="relative "

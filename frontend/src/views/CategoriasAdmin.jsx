@@ -180,7 +180,7 @@ export default function CategoriasAdmin() {
 
                 <div className="flex justify-center w-full">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border">
-                        <thead className="text-xs text-gray-600 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <thead className="text-sm font-medium text-black bg-gray-300 uppercase">
                             <tr>
                                 <td className="text-center">ORDEN</td>
 
