@@ -1,4 +1,4 @@
-export default function PedidoTemplate({ pedido, user, productos }) {
+export default function PedidoTemplate({ pedido, user, productos, extra }) {
     return (
         <div
             style={{
@@ -247,6 +247,11 @@ export default function PedidoTemplate({ pedido, user, productos }) {
                 >
                     <p>
                         <strong>Subtotal:</strong> ${pedido?.subtotal}
+                    </p>
+
+                    <p>
+                        <strong>Descuento aplicado:</strong> -${" "}
+                        {extra?.descuentoAplicado}
                     </p>
 
                     <p>

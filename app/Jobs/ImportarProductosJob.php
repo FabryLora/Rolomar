@@ -68,40 +68,50 @@ class ImportarProductosJob implements ShouldQueue
             $variante = trim($matches[2] ?? '');
 
             // Buscar o crear la categoría
-            $categoria = Categoria::updateOrCreate(
-                ['nombre' => $categoriaNombre ?: "Categoria"],
-                ['imagen' => $imagen, 'orden' => null]
-            );
+            // Buscar o crear la categoría sin modificar 'orden' ni 'imagen' si ya existe
+            $categoria = Categoria::firstOrNew(['nombre' => $categoriaNombre ?: "Categoria"]);
+            if (!$categoria->exists) {
+                $categoria->imagen = $imagen;
+                $categoria->orden = null;
+                $categoria->save();
+            }
 
-            // Buscar o crear el grupo de productos con el nombre base
-            $grupoDeProductos = GrupoDeProductos::updateOrCreate(
-                ['nombre' => $nombreBase, 'categoria_id' => $categoria->id],
-                ['imagen' => $imagen, 'orden' => null, 'destacado' => null]
-            );
+            // Buscar o crear el grupo de productos sin modificar 'orden' ni 'imagen' si ya existe
+            $grupoDeProductos = GrupoDeProductos::firstOrNew([
+                'nombre' => $nombreBase,
+                'categoria_id' => $categoria->id
+            ]);
 
-            // Crear la imagen del grupo solo si la imagen no es null
+            if (!$grupoDeProductos->exists) {
+                $grupoDeProductos->imagen = $imagen;
+                $grupoDeProductos->orden = null;
+                $grupoDeProductos->destacado = null;
+                $grupoDeProductos->save();
+            }
+
+            // Crear la imagen del grupo solo si la imagen no es null y aún no existe
             if ($imagen !== null) {
                 ImageGrupo::firstOrCreate(
                     ['grupo_de_productos_id' => $grupoDeProductos->id, 'image' => $imagen]
                 );
             }
 
+            // Buscar o crear el producto sin modificar la imagen ni el orden si ya existe
+            $producto = Productos::firstOrNew(['codigo' => $codigo]);
 
-            // Crear o actualizar el producto dentro del grupo
-            Productos::updateOrCreate(
-                ['codigo' => $codigo],
-                [
-                    'nombre' => $nombreProductoCompleto,
-                    'medida' => 'Unidad',
-                    'imagen' => $imagen,
-                    'unidad_venta' => $unidadVenta ?: 1,
-                    'categoria_id' => $categoria->id,
-                    'precio_mayorista' => $precioMayorista,
-                    'precio_minorista' => $precioMinorista,
-                    'grupo_de_productos_id' => $grupoDeProductos->id,
-                    'addword' => $nombreProductoCompleto
-                ]
-            );
+            if (!$producto->exists) {
+                $producto->imagen = $imagen;
+            }
+
+            $producto->nombre = $nombreProductoCompleto;
+            $producto->medida = 'Unidad';
+            $producto->unidad_venta = $unidadVenta ?: 1;
+            $producto->categoria_id = $categoria->id;
+            $producto->precio_mayorista = $precioMayorista;
+            $producto->precio_minorista = $precioMinorista;
+            $producto->grupo_de_productos_id = $grupoDeProductos->id;
+            $producto->addword = $nombreProductoCompleto;
+            $producto->save();
         }
     }
 }

@@ -51,17 +51,20 @@ export default function Carrito() {
         let subtotal = 0;
         let iva = 0;
         let total = 0;
-        let descuento = userInfo?.descuento > 0 ? userInfo.descuento : 0; // Verificamos si hay descuento válido
+
+        let descuento =
+            Number(userInfo?.descuento) > 0 ? Number(userInfo.descuento) : 0; // Verificamos si hay descuento válido
 
         cart.forEach((prod) => {
             subtotal += parseFloat(prod.additionalInfo.subtotal);
         });
 
         let subtotalConDescuento = subtotal * (1 - descuento / 100); // Aplicamos el descuento si existe
+
         total = subtotalConDescuento * 1.21;
         iva = total - subtotalConDescuento;
 
-        setSubtotal(subtotalConDescuento.toFixed(2));
+        setSubtotal(subtotal.toFixed(2));
         setIva(iva.toFixed(2));
         setTotalFinal(total.toFixed(2));
     }, [cart, userInfo, tipo_entrega]);
@@ -121,13 +124,16 @@ export default function Carrito() {
                 `/pedidos/${pedidoId}`
             );
             const pedidoObject = responsePedido.data.data;
-            console.log(pedidoObject);
 
             const htmlContent = ReactDOMServer.renderToString(
                 <PedidoTemplate
                     pedido={pedidoObject}
                     user={userInfo}
                     productos={productos}
+                    extra={{
+                        descuentoAplicado:
+                            parseFloat(subtotal) * (userInfo.descuento / 100),
+                    }}
                 />
             );
 
@@ -254,7 +260,7 @@ export default function Carrito() {
                     </h2>
                 </div>
                 <div
-                    className="p-5 "
+                    className="p-5"
                     dangerouslySetInnerHTML={{
                         __html: informacionCarrito?.informacion,
                     }}

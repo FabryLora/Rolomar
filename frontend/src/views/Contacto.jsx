@@ -17,6 +17,10 @@ export default function Contacto() {
         window.scrollTo(0, 0);
     }, []);
 
+    const dejarSoloNumeros = (string) => {
+        return string?.replace(/\D/g, "");
+    };
+
     const contactoInfo = [
         {
             icon: locationIcon,
@@ -45,7 +49,7 @@ export default function Contacto() {
         {
             icon: whatsappIcon,
             text: contactInfo?.wp,
-            link: `https://wa.me/${contactInfo?.wp}`,
+            link: `https://wa.me/${dejarSoloNumeros(contactInfo?.wp)}`,
             type: "wp",
         },
     ];
