@@ -12,14 +12,16 @@ export default function BrandSlider() {
             <Swiper
                 modules={[Pagination, Autoplay]}
                 spaceBetween={0}
-                slidesPerView={3} // Predeterminado para pantallas pequeñas
+                slidesPerView={6} // Mostramos hasta 6 elementos a la vez
+                slidesPerGroup={6} // Avanzamos de 6 en 6
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
+                loop={false} // Desactivamos el loop para evitar paginación extra
                 breakpoints={{
-                    480: { slidesPerView: 3 },
-                    768: { slidesPerView: 4 },
-                    1024: { slidesPerView: 6 },
-                    1280: { slidesPerView: 6 },
+                    480: { slidesPerView: 3, slidesPerGroup: 3 },
+                    768: { slidesPerView: 4, slidesPerGroup: 4 },
+                    1024: { slidesPerView: 6, slidesPerGroup: 6 },
+                    1280: { slidesPerView: 6, slidesPerGroup: 6 },
                 }}
                 className="h-[180px]"
             >

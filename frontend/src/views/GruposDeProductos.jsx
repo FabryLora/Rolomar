@@ -20,6 +20,7 @@ export default function GruposDeProductos() {
     const itemsPerPage = 10;
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [excelView, setExcelView] = useState(false);
 
     // Filtrar antes de paginar
     const filteredGrupos = grupoDeProductos
@@ -107,9 +108,80 @@ export default function GruposDeProductos() {
         }
     };
 
+    const [filex, setFilex] = useState(null);
+    const [mensaje, setMensaje] = useState("");
+
+    const handleFileChangee = (event) => {
+        setFilex(event.target.files[0]);
+    };
+
+    const handleUpload = async () => {
+        if (!filex) {
+            setMensaje("Selecciona un archivo primero.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("archivo", filex);
+
+        try {
+            const response = await axiosClient.post(
+                "/importar-excel",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            setMensaje(response.data.message);
+            setExcelView(false);
+            toast.success(mensaje);
+        } catch (error) {
+            setMensaje("Error al subir el archivo.");
+            console.error(error);
+        }
+    };
+
     return (
         <div className="relative overflow-x-auto px-6 py-10">
             <Toaster />
+            <AnimatePresence>
+                {excelView && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+                    >
+                        <div className="flex flex-col bg-white p-5 rounded-md gap-5">
+                            <h2 className="text-2xl font-bold mb-2">
+                                Importar productos
+                            </h2>
+                            <input
+                                type="file"
+                                onChange={handleFileChangee}
+                                className="mb-2"
+                            />
+                            <div className="flex flex-row justify-end gap-2">
+                                <button
+                                    onClick={() => setExcelView(false)}
+                                    className="px-4 py-2 bg-primary-red text-white rounded"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    onClick={handleUpload}
+                                    className="px-4 py-2 bg-primary-red text-white rounded"
+                                >
+                                    Subir Archivo
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <AnimatePresence>
                 {createView && (
                     <motion.div
@@ -194,9 +266,9 @@ export default function GruposDeProductos() {
                                                 className="block text-sm/6 font-medium text-gray-900"
                                             >
                                                 Categoria
-                                                <apan className="text-red-500">
+                                                <sapan className="text-red-500">
                                                     *
-                                                </apan>
+                                                </sapan>
                                             </label>
                                             <div className="mt-2">
                                                 <select
@@ -322,6 +394,12 @@ export default function GruposDeProductos() {
                         className="text-white bg-primary-red py-1 h-fit w-[200px] px-2 rounded-md"
                     >
                         Crear Producto
+                    </button>
+                    <button
+                        onClick={() => setExcelView(true)}
+                        className="text-white bg-primary-red py-1 h-fit w-[300px] px-2 rounded-md"
+                    >
+                        Subir excel de productos
                     </button>
                 </div>
             </div>

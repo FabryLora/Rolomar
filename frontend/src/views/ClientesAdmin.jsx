@@ -12,6 +12,8 @@ export default function ClientesAdmin() {
     const [submiting, setSubmiting] = useState(false);
     const [createView, setcreateView] = useState(false);
 
+    const [excelView, setExcelView] = useState(false);
+
     const [userSubmitInfo, setUserSubmitInfo] = useState({
         nomcuit: "",
         email: "",
@@ -25,6 +27,42 @@ export default function ClientesAdmin() {
         autorizado: "1",
         descuento: "0",
     });
+
+    const [file, setFile] = useState(null);
+    const [mensaje, setMensaje] = useState("");
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+
+    const handleUpload = async () => {
+        if (!file) {
+            setMensaje("Selecciona un archivo primero.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("archivo", file);
+
+        try {
+            const response = await axiosClient.post(
+                "/importar-usuarios",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            setMensaje(response.data.message);
+            setExcelView(false);
+            toast.success({ mensaje });
+        } catch (error) {
+            setMensaje("Error al subir el archivo.");
+            console.error(error);
+        }
+    };
 
     const handleChange = (event) => {
         setUserSubmitInfo({
@@ -74,6 +112,41 @@ export default function ClientesAdmin() {
     return (
         <div className="h-screen px-6 py-10">
             <Toaster />
+            <AnimatePresence>
+                {excelView && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50"
+                    >
+                        <div className="flex flex-col bg-white p-5 rounded-md gap-5">
+                            <h2 className="text-2xl font-bold mb-2">
+                                Importar usuarios
+                            </h2>
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                className="mb-2"
+                            />
+                            <div className="flex flex-row justify-end gap-2">
+                                <button
+                                    onClick={() => setExcelView(false)}
+                                    className="px-4 py-2 bg-primary-red text-white rounded"
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    onClick={handleUpload}
+                                    className="px-4 py-2 bg-primary-red text-white rounded"
+                                >
+                                    Subir Archivo
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
             <AnimatePresence>
                 {createView && (
                     <motion.div
@@ -380,6 +453,12 @@ export default function ClientesAdmin() {
                         className="text-white bg-primary-red py-1 px-2 rounded-md w-[200px]"
                     >
                         Registrar cliente
+                    </button>
+                    <button
+                        onClick={() => setExcelView(true)}
+                        className="text-white bg-primary-red py-1 px-2 rounded-md w-[300px] "
+                    >
+                        Cargar excel de clientes
                     </button>
                 </div>
 

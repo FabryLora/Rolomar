@@ -11,8 +11,8 @@ export default function MetadatosRow({ metadatosObject }) {
     const [descripcion, setDescripcion] = useState();
 
     function truncarTexto(texto, maxLength) {
-        return texto.length > maxLength
-            ? texto.slice(0, maxLength) + "..."
+        return texto?.length > maxLength
+            ? texto?.slice(0, maxLength) + "..."
             : texto;
     }
 

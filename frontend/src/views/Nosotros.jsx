@@ -101,7 +101,7 @@ export default function Nosotros() {
             <div className="h-fit w-full bg-special-white flex justify-center pb-20 bg-[#F5F5F5]">
                 <div className="mx-auto max-w-[1240px]">
                     <h2 className="font-bold text-[40px] py-20 max-md:text-center">
-                        ¿Porqué elegirnos?
+                        ¿Por qué elegirnos?
                     </h2>
                     <div className="flex flex-row flex-wrap gap-y-20 justify-between gap-5 max-md:justify-center">
                         {nosotrosInfo.map((info, index) => (

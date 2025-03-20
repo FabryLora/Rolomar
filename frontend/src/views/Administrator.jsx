@@ -139,20 +139,6 @@ export default function Administrator() {
                 },
             ],
         },
-        {
-            id: "excel",
-            open: false,
-            title: "Cargar datos",
-            icon: faHouse,
-            href: "#",
-            subHref: [
-                {
-                    title: "Cargar productos",
-                    href: "/dashboard/subir-productos",
-                },
-                { title: "Cargar usuarios", href: "/dashboard/subir-usuarios" },
-            ],
-        },
     ]);
 
     const [userMenu, setUserMenu] = useState(false);
