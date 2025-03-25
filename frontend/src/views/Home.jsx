@@ -94,7 +94,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-row h-[700px] max-md:h-[900px] my-10 bg-primary-red max-md:flex-col">
+            <div className="flex flex-row h-[700px] max-md:h-fit my-10 bg-primary-red max-md:flex-col">
                 <motion.div
                     initial={{ x: -20, opacity: 0 }}
                     whileInView={{ x: 0, opacity: 1 }}
@@ -126,8 +126,8 @@ export default function Home() {
                     transition={{ duration: 1 }}
                     className="flex flex-col w-full max-md:items-center max-md:justify-center"
                 >
-                    <div className="flex flex-col h-full px-20 pt-20 gap-10">
-                        <h2 className="text-white text-3xl font-normal">
+                    <div className="flex flex-col h-full px-20 pt-20 max-md:py-0 max-md:px-2 gap-10 max-md:gap-4">
+                        <h2 className="text-white text-3xl font-normal max-md:text-center">
                             {nosotrosInicio?.title}
                         </h2>
                         <div
