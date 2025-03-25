@@ -12,8 +12,8 @@ export default function BrandSlider() {
             <Swiper
                 modules={[Pagination, Autoplay]}
                 spaceBetween={0}
-                slidesPerView={6} // Mostramos hasta 6 elementos a la vez
-                slidesPerGroup={6} // Avanzamos de 6 en 6
+                slidesPerView={3} // Mostramos hasta 6 elementos a la vez
+                slidesPerGroup={3} // Avanzamos de 6 en 6
                 pagination={{ clickable: true }}
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
                 loop={false} // Desactivamos el loop para evitar paginación extra

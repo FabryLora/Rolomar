@@ -59,7 +59,7 @@ export default function Home() {
                         </Link>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-y-10 max-sm:flex-col max-sm:items-center gap-5">
+                    <div className="grid grid-cols-4 gap-y-10 max-sm:flex-col max-sm:items-center gap-5 max-sm:grid-cols-1">
                         {grupoDeProductos
                             ?.filter((grup) => grup?.destacado == "1")
                             ?.map((grupo, index) => (

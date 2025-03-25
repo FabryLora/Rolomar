@@ -133,6 +133,7 @@ export default function Contenido() {
                 <div className="w-full">
                     <div className=" border-gray-900/10 pb-12">
                         <h2 className="text-3xl border-b-2 pb-2">Logos</h2>
+                        <p>Resolucion recomendada: 249px * 154px</p>
                         <div className="flex flex-row justify-between gap-5 pt-5">
                             <div className="w-full">
                                 <label
@@ -325,6 +326,7 @@ export default function Contenido() {
                                 >
                                     Imagen
                                 </label>
+                                <p>Resolucion recomendada: 671px * 573px</p>
                                 <div className="mt-2 flex justify-between rounded-lg border shadow-lg">
                                     <div className=" w-1/2 h-[300px]">
                                         <img

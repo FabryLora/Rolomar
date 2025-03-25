@@ -3,8 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import toast from "react-hot-toast";
-import axiosClient from "../axios";
 
 export default function SliderImageComponent({ image, id, onDelete }) {
     const { attributes, listeners, setNodeRef, transform, transition } =

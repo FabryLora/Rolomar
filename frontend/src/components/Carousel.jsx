@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 
 const Carousel = () => {

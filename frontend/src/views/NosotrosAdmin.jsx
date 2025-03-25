@@ -208,6 +208,7 @@ export default function NosotrosAdmin() {
                                 <label className="block font-medium text-gray-900 text-xl">
                                     Imagen
                                 </label>
+                                <p>Resolucion recomendada: 184px * 141px</p>
                                 <div className="mt-2 flex justify-between rounded-lg border border-dashed border-gray-900/25">
                                     <div className="w-1/2 h-[200px]">
                                         <img

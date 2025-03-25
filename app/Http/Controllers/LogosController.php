@@ -19,7 +19,6 @@ class LogosController extends Controller
 
 
 
-
     /**
      * Display the specified resource.
      */

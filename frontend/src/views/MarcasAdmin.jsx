@@ -56,6 +56,7 @@ export default function MarcasAdmin() {
             <Toaster />
             <div className="flex flex-col gap-3">
                 <h2 className="text-2xl font-bold">Agregar Marcas</h2>
+                <p>Resolucion recomendada: 184px * 141px</p>
                 <div className="flex flex-col gap-3 w-fit items-center">
                     <div className=" flex flex-row gap-2 items-center">
                         <label
