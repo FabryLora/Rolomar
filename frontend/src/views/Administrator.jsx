@@ -10,11 +10,10 @@ import {
     faNewspaper,
     faShield,
     faUser,
-    faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Link,
     Navigate,
