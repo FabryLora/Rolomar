@@ -87,7 +87,6 @@ export default function PrivateProducts() {
 
             <div className="h-[134px] w-full bg-primary-blue text-black max-sm:h-fit">
                 <div className="flex flex-col gap-2 justify-center h-full max-sm:px-6 max-sm:w-full">
-                    <h2>Buscar por:</h2>
                     <div className="flex flex-row justify-evenly w-full gap-5 max-sm:flex-col">
                         <select
                             className="h-[41px] bg-transparent border w-full px-3"

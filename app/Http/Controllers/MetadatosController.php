@@ -54,8 +54,8 @@ class MetadatosController extends Controller
 
         $data = $request->validate([
             'seccion' => 'required',
-            'descripcion' => 'required',
-            'keywords' => 'required',
+            'descripcion' => 'sometimes',
+            'keywords' => 'sometimes',
         ]);
 
         $metadatos->update($data);

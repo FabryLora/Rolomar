@@ -317,6 +317,16 @@ export default function Administrator() {
                         </AnimatePresence>
                     </div>
                 </div>
+                <div>
+                    {finalPath === "" && (
+                        <p className="text-black font-medium p-6">
+                            Aquí podrás gestionar el contenido de tu sitio web.
+                            Desde este panel podrás acceder a todas las
+                            herramientas necesarias para mantener tu sitio
+                            actualizado y optimizado.
+                        </p>
+                    )}
+                </div>
                 <Outlet />
             </div>
         </div>
