@@ -4,7 +4,7 @@ import MiPedidoRow from "../components/MiPedidoRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Mispedidos() {
-    const { pedidos, userInfo, fetchPedidos } = useStateContext();
+    const { pedidos, currentUser, fetchPedidos } = useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -28,7 +28,7 @@ export default function Mispedidos() {
                 </thead>
                 <tbody>
                     {pedidos
-                        .filter((pedido) => pedido?.user_id === userInfo?.id)
+                        .filter((pedido) => pedido?.user_id === currentUser?.id)
                         .map((pedido, index) => (
                             <MiPedidoRow
                                 key={index}

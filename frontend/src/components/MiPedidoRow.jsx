@@ -9,7 +9,7 @@ import { useStateContext } from "../contexts/ContextProvider";
 export default function MiPedidoRow({ pedido, productosPed }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { userInfo, productos, addToCart, pedidoProductos, cart } =
+    const { currentUser, productos, addToCart, pedidoProductos, cart } =
         useStateContext();
 
     const menuRef = useRef(null);
@@ -299,7 +299,7 @@ export default function MiPedidoRow({ pedido, productosPed }) {
                                                     }}
                                                 >
                                                     $
-                                                    {userInfo?.lista == "1"
+                                                    {currentUser?.lista == "1"
                                                         ? productos?.find(
                                                               (prod) =>
                                                                   prod?.id ==

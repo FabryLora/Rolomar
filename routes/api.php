@@ -29,9 +29,13 @@ use App\Models\SliderImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me-admin', [AdminController::class, 'meunico']);
 });
 
 
@@ -43,7 +47,7 @@ Route::post('/signup', [AuthController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
 //Admin
-Route::get('/me-admin', [AdminController::class, 'me']);
+
 Route::post('/login-admin', [AdminController::class, 'login']);
 Route::post('/signup-admin', [AdminController::class, 'signup']);
 Route::put('/admin/{id}', [AdminController::class, 'update']);

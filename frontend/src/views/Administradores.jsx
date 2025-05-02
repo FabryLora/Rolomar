@@ -97,13 +97,13 @@ export default function Administradores() {
                             <div className="flex flex-row justify-end gap-2">
                                 <button
                                     onClick={() => setCreateView(false)}
-                                    className="rounded-md py-1 px-2 bg-primary-red text-white self-center my-5"
+                                    className="rounded-md py-1 px-2 bg-primary-orange text-white self-center my-5"
                                     type="button"
                                 >
                                     Cancelar
                                 </button>
                                 <button
-                                    className="rounded-md py-1 px-2 bg-primary-red text-white self-center"
+                                    className="rounded-md py-1 px-2 bg-primary-orange text-white self-center"
                                     type="submit"
                                 >
                                     Registrar
@@ -117,7 +117,7 @@ export default function Administradores() {
                 <h2 className="text-2xl font-bold">Administradores</h2>
                 <button
                     onClick={() => setCreateView(true)}
-                    className="py-1 px-2 rounded-md text-white bg-primary-red"
+                    className="py-1 px-2 rounded-md text-white bg-primary-orange"
                 >
                     Registrar administrador
                 </button>

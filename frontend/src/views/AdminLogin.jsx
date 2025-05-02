@@ -9,7 +9,7 @@ export default function AdminLogin() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [login, setLogin] = useState(false);
-    const { adminToken, setAdminToken } = useStateContext();
+    const { adminToken, setAdminToken, setCurrentAdmin } = useStateContext();
 
     const onSubmit = async (ev) => {
         ev.preventDefault();
@@ -19,9 +19,9 @@ export default function AdminLogin() {
                 name: user,
                 password: password,
             });
-
-            setAdminToken(data.adminToken);
-            localStorage.setItem("adminName", user);
+            console.log(data);
+            setCurrentAdmin(data.admin);
+            setAdminToken(data.token);
         } catch (error) {
             console.error(error);
             setError("Usuario o contraseña incorrectos");

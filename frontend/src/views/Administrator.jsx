@@ -25,7 +25,7 @@ import rolomarLogo from "../assets/logos/calite.png";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Administrator() {
-    const { adminToken, setAdminToken, adminInfo } = useStateContext();
+    const { adminToken, setAdminToken, currentAdmin } = useStateContext();
     const [sidebar, setSidebar] = useState(true);
     const navigate = useNavigate();
 
@@ -278,11 +278,7 @@ export default function Administrator() {
 
                     <div className="flex flex-row gap-3">
                         <div className="">
-                            <h2>
-                                {localStorage
-                                    ?.getItem("adminName")
-                                    ?.toUpperCase()}
-                            </h2>
+                            <h2>{currentAdmin?.name?.toUpperCase()}</h2>
                         </div>
                         <button
                             className="relative "

@@ -26,16 +26,15 @@ class AdminController extends Controller
             "password" => "required|confirmed|string|min:8",
         ]);
 
-        /**  @var \App\Models\Admin $admin */
         $admin = Admin::create([
             'name' => $data['name'],
             'password' => bcrypt($data['password'])
         ]);
-        $adminToken = $admin->createToken('main')->plainTextToken;
+        $token = $admin->createToken('admin')->plainTextToken;
 
         return response([
-            'user' => $admin,
-            'adminToken' => $adminToken
+            'admin' => $admin,
+            'token' => $token
         ]);
     }
 
@@ -56,13 +55,12 @@ class AdminController extends Controller
             ], 422);
         }
 
-        /**  @var \App\Models\Admin $admin */
         $admin = Auth::guard('admin')->user();
-        $adminToken = $admin->createToken('main')->plainTextToken;
+        $token = $admin->createToken('admin')->plainTextToken;
 
         return response([
-            'user' => $admin,
-            'adminToken' => $adminToken
+            'admin' => $admin,
+            'token' => $token
         ]);
     }
 
@@ -75,10 +73,7 @@ class AdminController extends Controller
 
     public function meunico(Request $request)
     {
-        return response()->json([
-            'id' => $request->user()->id,
-            'user' => new AdminResource($request->user()),
-        ]);
+        return $request->user();
     }
 
 

@@ -12,9 +12,8 @@ export default function Carrito() {
     const {
         cart,
         clearCart,
-        userInfo,
+        currentUser,
         pedidos,
-        userId,
         productos,
         informacionCarrito,
     } = useStateContext();
@@ -53,7 +52,9 @@ export default function Carrito() {
         let total = 0;
 
         let descuento =
-            Number(userInfo?.descuento) > 0 ? Number(userInfo.descuento) : 0; // Verificamos si hay descuento válido
+            Number(currentUser?.descuento) > 0
+                ? Number(currentUser.descuento)
+                : 0; // Verificamos si hay descuento válido
 
         cart.forEach((prod) => {
             subtotal += parseFloat(prod.additionalInfo.subtotal);
@@ -67,7 +68,7 @@ export default function Carrito() {
         setSubtotal(subtotal.toFixed(2));
         setIva(iva.toFixed(2));
         setTotalFinal(total.toFixed(2));
-    }, [cart, userInfo, tipo_entrega]);
+    }, [cart, currentUser, tipo_entrega]);
 
     useEffect(() => {
         setArchivo(archivo);
@@ -89,7 +90,7 @@ export default function Carrito() {
         formData.append("subtotal", subtotal ? subtotal : 0);
         formData.append("iva", iva ? iva : 0);
         formData.append("entregado", 0);
-        formData.append("user_id", userId);
+        formData.append("user_id", currentUser?.id);
         if (totalFinal !== "0.00") {
             formData.append("total", totalFinal);
         }
@@ -128,11 +129,12 @@ export default function Carrito() {
             const htmlContent = ReactDOMServer.renderToString(
                 <PedidoTemplate
                     pedido={pedidoObject}
-                    user={userInfo}
+                    user={currentUser}
                     productos={productos}
                     extra={{
                         descuentoAplicado:
-                            parseFloat(subtotal) * (userInfo.descuento / 100),
+                            parseFloat(subtotal) *
+                            (currentUser.descuento / 100),
                     }}
                 />
             );
@@ -359,14 +361,14 @@ export default function Carrito() {
                         </p>
                     </div>
 
-                    {userInfo?.descuento > 0 && (
+                    {currentUser?.descuento > 0 && (
                         <div className="flex flex-row justify-between w-full text-green-500">
-                            <p>Descuento {userInfo?.descuento}%</p>
+                            <p>Descuento {currentUser?.descuento}%</p>
                             <p>
                                 -$
                                 {(
                                     parseFloat(subtotal) *
-                                    (userInfo.descuento / 100)
+                                    (currentUser.descuento / 100)
                                 )?.toLocaleString("es-AR", {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,

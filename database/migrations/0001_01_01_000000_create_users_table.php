@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nomcuit');
             $table->string('email')->nullable();
-            $table->timestamp('email_verified_at')->nullable()->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string("cuit");
             $table->string("direccion")->nullable();

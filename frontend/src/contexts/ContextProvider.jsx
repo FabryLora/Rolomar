@@ -4,8 +4,12 @@ import axiosClient from "../axios";
 const StateContext = createContext({
     userToken: null,
     adminToken: null,
+    currentAdmin: null,
+    currentUser: null,
     setUserToken: () => {},
     setAdminToken: () => {},
+    setCurrentAdmin: () => {},
+    setCurrentUser: () => {},
     allUsers: [],
     fetchAllUsers: () => {},
     userInfo: [],
@@ -83,6 +87,36 @@ export const ContextProvider = ({ children }) => {
     const [grupoImages, setGrupoImages] = useState([]);
     const [provincias, setProvincias] = useState([]);
 
+    const [currentUser, setCurrentUser] = useState({});
+    const [userToken, _setUserToken] = useState(
+        localStorage.getItem("TOKEN") || ""
+    );
+
+    // Admin state
+    const [currentAdmin, setCurrentAdmin] = useState({});
+    const [adminToken, _setAdminToken] = useState(
+        localStorage.getItem("ADMIN_TOKEN") || ""
+    );
+
+    const setUserToken = (token) => {
+        if (token) {
+            localStorage.setItem("TOKEN", token);
+        } else {
+            localStorage.removeItem("TOKEN");
+        }
+        _setUserToken(token);
+    };
+
+    // Admin token handlers
+    const setAdminToken = (token) => {
+        if (token) {
+            localStorage.setItem("ADMIN_TOKEN", token);
+        } else {
+            localStorage.removeItem("ADMIN_TOKEN");
+        }
+        _setAdminToken(token);
+    };
+
     const [cart, setCart] = useState(() => {
         const savedCart = localStorage.getItem("cart");
         return savedCart ? JSON.parse(savedCart) : [];
@@ -130,31 +164,6 @@ export const ContextProvider = ({ children }) => {
         localStorage.setItem("cart", JSON.stringify(cart));
     }, [cart]);
 
-    const [userToken, _setUserToken] = useState(
-        localStorage.getItem("TOKEN") || ""
-    );
-    const [adminToken, _setAdminToken] = useState(
-        localStorage.getItem("ADMIN_TOKEN") || ""
-    );
-
-    const setUserToken = (token) => {
-        if (token) {
-            localStorage.setItem("TOKEN", token);
-        } else {
-            localStorage.removeItem("TOKEN");
-        }
-        _setUserToken(token);
-    };
-
-    const setAdminToken = (token) => {
-        if (token) {
-            localStorage.setItem("ADMIN_TOKEN", token);
-        } else {
-            localStorage.removeItem("ADMIN_TOKEN");
-        }
-        _setAdminToken(token);
-    };
-
     const fetchAllUsers = () => {
         axiosClient.get("/allusers").then(({ data }) => {
             setAllUsers(data.data);
@@ -163,8 +172,7 @@ export const ContextProvider = ({ children }) => {
 
     const fetchUserInfo = () => {
         axiosClient.get("/me").then(({ data }) => {
-            setUserInfo(data[0]);
-            setUserId(data.id);
+            setCurrentUser(data);
         });
     };
 
@@ -176,7 +184,7 @@ export const ContextProvider = ({ children }) => {
 
     const fetchAdminInfo = () => {
         axiosClient.get("/me-admin").then(({ data }) => {
-            setAdminInfo(data);
+            setCurrentAdmin(data);
         });
     };
 
@@ -331,6 +339,10 @@ export const ContextProvider = ({ children }) => {
     return (
         <StateContext.Provider
             value={{
+                currentUser,
+                currentAdmin,
+                setCurrentAdmin,
+                setCurrentUser,
                 provincias,
                 fetchProvincias,
                 grupoImages,

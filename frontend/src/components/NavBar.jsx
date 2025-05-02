@@ -8,8 +8,16 @@ import axiosClient from "../axios";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function NavBar() {
-    const { logos, setUserToken, userToken, userInfo, clearCart, provincias } =
-        useStateContext();
+    const {
+        logos,
+        setUserToken,
+        userToken,
+        userInfo,
+        clearCart,
+        provincias,
+        setCurrentUser,
+        currentUser,
+    } = useStateContext();
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const [userMenu, setUserMenu] = useState(false);
@@ -118,7 +126,10 @@ export default function NavBar() {
             })
             .then(({ data }) => {
                 setSubmiting(false);
+
+                setCurrentUser(data.user);
                 setUserToken(data.token);
+                console.log(currentUser);
             })
             .catch((error) => {
                 setSubmiting(false);
@@ -378,7 +389,7 @@ export default function NavBar() {
                                     : "text-primary-red border-primary-red hover:text-black hover:bg-primary-red"
                             }`}
                         >
-                            {userToken ? userInfo?.nomcuit : "Zona privada"}
+                            {userToken ? currentUser?.nomcuit : "Zona privada"}
                         </button>
                         <AnimatePresence>
                             {userMenu && cleanPathname[0] === "privado" && (
@@ -395,11 +406,11 @@ export default function NavBar() {
                                     <div>
                                         <p className="text-lg">
                                             <span className="font-bold">
-                                                {userInfo?.nomcuit}
+                                                {currentUser?.nomcuit}
                                             </span>
                                         </p>
                                         <p className="text-sm">
-                                            {userInfo?.email}
+                                            {currentUser?.email}
                                         </p>
                                     </div>
                                     <button

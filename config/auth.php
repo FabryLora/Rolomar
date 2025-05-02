@@ -12,8 +12,20 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'admin' => [ // Nuevo guard para admins
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'admin' => [
             'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
+        'admin-api' => [
+            'driver' => 'sanctum',
             'provider' => 'admins',
         ],
     ],
