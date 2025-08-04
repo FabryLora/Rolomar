@@ -9,7 +9,7 @@ import trashButton from "../assets/iconos/trash-icon.svg";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function ProductRow({ product }) {
-    const { addToCart, removeFromCart, userInfo, cart } = useStateContext();
+    const { addToCart, removeFromCart, currentUser, cart } = useStateContext();
 
     const [subtotal, setSubtotal] = useState(
         product?.additionalInfo?.subtotal || 0
@@ -58,11 +58,11 @@ export default function ProductRow({ product }) {
 
     useEffect(() => {
         setSubtotal(
-            userInfo?.lista == 2
+            currentUser?.lista == 2
                 ? Number(product?.precio_mayorista) * cantidad
                 : Number(product?.precio_minorista) * cantidad
         );
-    }, [cantidad, product, userInfo, unidadDeVenta]);
+    }, [cantidad, product, currentUser, unidadDeVenta]);
 
     return (
         <div className="grid grid-cols-9 items-center justify-center py-2 border-b text-[#515A53]">
@@ -81,7 +81,7 @@ export default function ProductRow({ product }) {
             <p className="text-left">{product?.nombre}</p>
             <p className="text-center">
                 ${" "}
-                {userInfo?.lista == 2
+                {currentUser?.lista == 2
                     ? Number(product?.precio_mayorista)?.toLocaleString("es-AR")
                     : Number(product?.precio_minorista)?.toLocaleString(
                           "es-AR"

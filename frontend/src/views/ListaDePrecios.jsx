@@ -1,13 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ListadeproductosPrivadoRow from "../components/ListadeproductosPrivadoRow";
 import { useStateContext } from "../contexts/ContextProvider";
 
 export default function ListaDePrecios() {
-    const { listadeprecios } = useStateContext();
+    const { listadeprecios, currentUser, fetchListadeprecios } =
+        useStateContext();
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        fetchListadeprecios();
+    }, []);
+
+    const [rol, setRol] = useState(
+        currentUser?.lista == "2" ? "mayorista" : "minorista"
+    );
+
+    useEffect(() => {
+        setRol(currentUser?.lista == "2" ? "mayorista" : "minorista");
+    }, [currentUser]);
 
     return (
         <div className="w-full py-20 min-h-[500px]">
@@ -22,12 +35,14 @@ export default function ListaDePrecios() {
                     </tr>
                 </thead>
                 <tbody>
-                    {listadeprecios?.map((listadeprecio, index) => (
-                        <ListadeproductosPrivadoRow
-                            key={index}
-                            archivoObject={listadeprecio}
-                        />
-                    ))}
+                    {listadeprecios
+                        ?.filter((lista) => lista?.nombre?.includes(rol))
+                        ?.map((listadeprecio, index) => (
+                            <ListadeproductosPrivadoRow
+                                key={index}
+                                archivoObject={listadeprecio}
+                            />
+                        ))}
                 </tbody>
             </table>
         </div>
